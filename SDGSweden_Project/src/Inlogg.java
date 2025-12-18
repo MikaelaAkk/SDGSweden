@@ -5,7 +5,7 @@
 
 /**
  *
- * @author lucya
+ * @author Lucy Alp, Olivia Collin, Mikaela Ak, Elin Jugås
  */
 public class Inlogg extends javax.swing.JFrame {
     
@@ -16,6 +16,11 @@ public class Inlogg extends javax.swing.JFrame {
      */
     public Inlogg() {
         initComponents();
+    }
+    
+    public int test(){
+        int x =1;
+        return x;
     }
 
     /**
