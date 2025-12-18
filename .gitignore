@@ -24,3 +24,6 @@ hs_err_pid*
 replay_pid*
 /SDGSweden_Project/nbproject/private/
 /SDGSweden_Project/build/
+.DS_Store
+MySQL_Resurser/.DS_Store
+MySQL_Resurser/__MACOSX/.DS_Store
