@@ -18,6 +18,10 @@ public class Inlogg extends javax.swing.JFrame {
         initComponents();
     }
     
+    public void loggaIn(String ePost, String Lösenord){
+        
+    }
+    
     public int test(){
         int x =1;
         return x;
