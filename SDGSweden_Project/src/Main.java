@@ -3,17 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 
+import oru.inf.InfDB;
+import oru.inf.InfException;
 /**
  *
  * @author User
  */
 public class Main {
+    
+    private static InfDB idb;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        try{
+            idb = new InfDB("sdgsweden", "3306", "root", "4Getmiejj");
+            new Inlogg().setVisible(true);
+        } catch (InfException ex){
+            System.out.println(ex.getMessage());
+        
+        }
     }
     
 }

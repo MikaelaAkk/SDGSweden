@@ -36,17 +36,66 @@ public class Inlogg extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        lblEpost = new javax.swing.JLabel();
+        lblLosenord = new javax.swing.JLabel();
+        tfEpost = new javax.swing.JTextField();
+        tfLosenord = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        btnLoggaIn = new javax.swing.JButton();
+
+        jTextField2.setText("jTextField2");
+
+        jLabel3.setText("jLabel3");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblEpost.setText("E-post");
+
+        lblLosenord.setText("Lösenord");
+
+        jLabel4.setText("jLabel4");
+
+        btnLoggaIn.setText("Logga in");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblLosenord)
+                        .addGap(14, 14, 14)
+                        .addComponent(tfLosenord))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblEpost)
+                        .addGap(28, 28, 28)
+                        .addComponent(tfEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(btnLoggaIn)))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEpost)
+                    .addComponent(tfEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLosenord)
+                    .addComponent(tfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLoggaIn)
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         pack();
@@ -78,5 +127,13 @@ public class Inlogg extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLoggaIn;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblLosenord;
+    private javax.swing.JTextField tfEpost;
+    private javax.swing.JTextField tfLosenord;
     // End of variables declaration//GEN-END:variables
 }
