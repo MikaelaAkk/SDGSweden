@@ -3,19 +3,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import oru.inf.InfDB;
+import oru.inf.InfException;
+
 /**
  *
  * @author Lucy Alp, Olivia Collin, Mikaela Ak, Elin Jugås
  */
 public class Inlogg extends javax.swing.JFrame {
     
+    private InfDB idb;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inlogg.class.getName());
 
     /**
      * Creates new form Inlogg
      */
-    public Inlogg() {
+    public Inlogg(InfDB idb) {
+        this.idb = idb;
         initComponents();
+        lblFelMeddelande.setVisible(false);
     }
     
     public void loggaIn(String ePost, String Lösenord){
@@ -42,7 +49,7 @@ public class Inlogg extends javax.swing.JFrame {
         lblLosenord = new javax.swing.JLabel();
         tfEpost = new javax.swing.JTextField();
         tfLosenord = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        lblFelMeddelande = new javax.swing.JLabel();
         btnLoggaIn = new javax.swing.JButton();
 
         jTextField2.setText("jTextField2");
@@ -55,28 +62,32 @@ public class Inlogg extends javax.swing.JFrame {
 
         lblLosenord.setText("Lösenord");
 
-        jLabel4.setText("jLabel4");
+        lblFelMeddelande.setForeground(new java.awt.Color(255, 51, 51));
+        lblFelMeddelande.setText("Felaktig epost eller lösnord");
 
         btnLoggaIn.setText("Logga in");
+        btnLoggaIn.addActionListener(this::btnLoggaInActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblLosenord)
-                        .addGap(14, 14, 14)
-                        .addComponent(tfLosenord))
+                        .addGap(90, 90, 90)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblFelMeddelande)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblLosenord)
+                                .addGap(14, 14, 14)
+                                .addComponent(tfLosenord))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblEpost)
+                                .addGap(28, 28, 28)
+                                .addComponent(tfEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEpost)
-                        .addGap(28, 28, 28)
-                        .addComponent(tfEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
+                        .addGap(127, 127, 127)
                         .addComponent(btnLoggaIn)))
                 .addContainerGap(118, Short.MAX_VALUE))
         );
@@ -92,19 +103,38 @@ public class Inlogg extends javax.swing.JFrame {
                     .addComponent(lblLosenord)
                     .addComponent(tfLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblFelMeddelande)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLoggaIn)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
+        String ePost = tfEpost.getText();
+        String losen = tfLosenord.getText();
+        
+        try{
+            String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost+"'";
+            System.out.println(sqlFraga);
+            String dbLosen = idb.fetchSingle(sqlFraga);
+            if(losen.equals(dbLosen)){
+                new Meny(idb, ePost).setVisible(true);
+                this.setVisible(false);
+            }
+            else{
+            lblFelMeddelande.setVisible(true);  
+            }
+        } catch (InfException ex){
+            System.out.println(ex.getMessage());
+    }//GEN-LAST:event_btnLoggaInActionPerformed
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -123,15 +153,22 @@ public class Inlogg extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Inlogg().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run() {
+                
+            }
+              
+        });
     }
+                
+                
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoggaIn;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblFelMeddelande;
     private javax.swing.JLabel lblLosenord;
     private javax.swing.JTextField tfEpost;
     private javax.swing.JTextField tfLosenord;

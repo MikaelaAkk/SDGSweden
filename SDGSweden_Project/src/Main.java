@@ -20,7 +20,7 @@ public class Main {
         
         try{
             idb = new InfDB("sdgsweden", "3306", "root", "4Getmiejj");
-            new Inlogg().setVisible(true);
+            new Inlogg(idb).setVisible(true);
         } catch (InfException ex){
             System.out.println(ex.getMessage());
         
