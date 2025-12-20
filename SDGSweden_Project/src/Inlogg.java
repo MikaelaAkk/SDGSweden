@@ -125,7 +125,7 @@ public class Inlogg extends javax.swing.JFrame {
                 String isAdministrator = idb.fetchSingle("SELECT aid FROM administrator WHERE aid = " + aid); 
                 String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + "LIMIT 1");
                 if(isAdministrator !=null){
-                    new MenyAdmin(idb, epost).setVisibl(true);
+                    new MenyAdministrator(idb, epost).setVisibl(true);
                 }
                 else if(isProjektChef !=null){
                     new MenyProjektledare(idb, epost).setVisible(true);
