@@ -132,7 +132,7 @@ public class Inlogg extends javax.swing.JFrame {
                     new MenyProjektChef(idb, ePost).setVisible(true);
                 }
                 else {
-                    new Meny(idb, ePost).setVisible(true);
+                    new MenyHandläggare(idb, ePost).setVisible(true);
                 }
 
                 this.dispose();

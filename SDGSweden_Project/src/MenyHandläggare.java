@@ -8,17 +8,17 @@ import oru.inf.InfException;
  *
  * @author oliviacollin
  */
-public class Meny extends javax.swing.JFrame {
+public class MenyHandläggare extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
     
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Meny.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyHandläggare.class.getName());
 
     /**
      * Creates new form Meny
      */
-    public Meny(InfDB idb, String inloggadAnvandare) {
+    public MenyHandläggare(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
@@ -98,7 +98,7 @@ public class Meny extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run(){
         }
-                //new Meny().setVisible(true));
+                //new MenyHandläggare().setVisible(true));
                 });
     }
 
