@@ -11,9 +11,9 @@ import oru.inf.InfException;
  * @author Lucy Alp, Olivia Collin, Mikaela Ak, Elin Jugås
  */
 public class Inlogg extends javax.swing.JFrame {
-    
+
     private InfDB idb;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inlogg.class.getName());
 
     /**
@@ -24,13 +24,13 @@ public class Inlogg extends javax.swing.JFrame {
         initComponents();
         lblFelMeddelande.setVisible(false);
     }
-    
-    public void loggaIn(String ePost, String Lösenord){
-        
+
+    public void loggaIn(String ePost, String Lösenord) {
+
     }
-    
-    public int test(){
-        int x =1;
+
+    public int test() {
+        int x = 1;
         return x;
     }
 
@@ -115,36 +115,42 @@ public class Inlogg extends javax.swing.JFrame {
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         String ePost = tfEpost.getText();
         String losen = tfLosenord.getText();
-        
-        try{
-            String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost+"'";
+
+        try {
+            String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost + "'";
             System.out.println(sqlFraga);
             String dbLosen = idb.fetchSingle(sqlFraga);
-            if(losen.equals(dbLosen)){
-                String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'"); 
-                String isAdministrator = idb.fetchSingle("SELECT aid FROM administrator WHERE aid = " + aid); 
-                String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + "LIMIT 1");
-                if(isAdministrator !=null){
-                    new MenyAdministrator(idb, epost).setVisibl(true);
+                        if (losen.equals(dbLosen)) {
+                String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'");
+                String isAdministrator = idb.fetchSingle("SELECT aid FROM administrator WHERE aid = " + aid);
+                String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + " LIMIT 1");
+
+                if (isAdministrator != null) {
+                    new MenyAdministrator(idb, ePost).setVisible(true);
                 }
-                else if(isProjektChef !=null){
-                    new MenyProjektledare(idb, epost).setVisible(true);
+                else if (isProjektChef != null) {
+                    new MenyProjektChef(idb, ePost).setVisible(true);
                 }
-                else{
-                new Meny(idb, ePost).setVisible(true);
-                this.setVisible(false);
+                else {
+                    new Meny(idb, ePost).setVisible(true);
+                }
+
+                this.dispose();
             }
-            else{
-            lblFelMeddelande.setVisible(true);  
+            else {
+                lblFelMeddelande.setVisible(true);
             }
-        } catch (InfException ex){
+
+    
+     
+        }catch (InfException ex){ 
             System.out.println(ex.getMessage());
     }//GEN-LAST:event_btnLoggaInActionPerformed
     }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]){
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -163,15 +169,14 @@ public class Inlogg extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
             }
-              
+
         });
     }
-                
-                
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoggaIn;
