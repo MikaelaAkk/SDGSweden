@@ -121,6 +121,16 @@ public class Inlogg extends javax.swing.JFrame {
             System.out.println(sqlFraga);
             String dbLosen = idb.fetchSingle(sqlFraga);
             if(losen.equals(dbLosen)){
+                String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'"); 
+                String isAdministrator = idb.fetchSingle("SELECT aid FROM administrator WHERE aid = " + aid); 
+                String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + "LIMIT 1");
+                if(isAdministrator !=null){
+                    new MenyAdmin(idb, epost).setVisibl(true);
+                }
+                else if(isProjektChef !=null){
+                    new MenyProjektledare(idb, epost).setVisible(true);
+                }
+                else{
                 new Meny(idb, ePost).setVisible(true);
                 this.setVisible(false);
             }
