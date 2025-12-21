@@ -23,20 +23,42 @@ public class MenyProjektChef extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
         initComponents();
+        
+        lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
         hamtaAid();
-
     }
+  
+ private void hamtaAid() {
+        try {
+            String sql = "SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "'";
+            String svar = idb.fetchSingle(sql);
+            if (svar != null) {
+                aid = Integer.parseInt(svar);
+            }
+        } catch (InfException e) {
+            System.out.println("Fel vid hämtning av aid: " + e.getMessage());
+        } 
+    }  
     
-    private void hamtaAid() {
+    private void visaKostnadsStatistik() {
     try {
-        String sql = "SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "'";
-        aid = Integer.parseInt(idb.fetchSingle(sql));
-    } catch (InfException e) {
-        System.out.println("Fel vid hämtning av aid: " + e.getMessage());
+        // SQL för att summera kostnaden för alla projekt där chefen är/har varit ansvarig
+        String sql = "SELECT SUM(kostnad) FROM projekt WHERE projektchef = " + aid;
+        String totalKostnad = idb.fetchSingle(sql);
+        
+        if (totalKostnad != null) {
+            System.out.println("Total kostnad för dina projekt: " + totalKostnad);
+            // Här kan du t.ex. visa resultatet i en JOptionPane eller en JLabel
+        } else {
+            System.out.println("Ingen kostnad registrerad.");
+        }
+    } catch (InfException ex) {
+        System.out.println("Fel vid hämtning av kostnad: " + ex.getMessage());
     }
-    
-    // Fortsätt på kostnad
 }
+
+  
+    
 
 
     /**
@@ -48,17 +70,52 @@ public class MenyProjektChef extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        lbRubtik = new javax.swing.JLabel();
+        lbInloggadAnvandare = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lbRubtik.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        lbRubtik.setText("Projektledarpanel");
+
+        lbInloggadAnvandare.setText("Inloggad som: epost@doman.se");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(202, Short.MAX_VALUE))
         );
 
         pack();
@@ -90,5 +147,9 @@ public class MenyProjektChef extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbInloggadAnvandare;
+    private javax.swing.JLabel lbRubtik;
     // End of variables declaration//GEN-END:variables
+
 }
