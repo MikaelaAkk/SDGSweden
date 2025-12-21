@@ -20,9 +20,9 @@ public class MenyHandläggare extends javax.swing.JFrame {
      */
     public MenyHandläggare(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
-        this.inloggadAnvandare = inloggadAnvandare;
+        
         initComponents();
-        lblInloggadAnv.setText(inloggadAnvandare);
+        inloggadAnvändare.setText("Inloggad som: " + inloggadAnvandare);
     }
 
     /**
@@ -37,10 +37,14 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblInloggadAnvandare = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lblInloggadAnv = new javax.swing.JLabel();
+        inloggadAnvändare = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblInloggadAnv.setBackground(new java.awt.Color(204, 204, 204));
+
+        inloggadAnvändare.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        inloggadAnvändare.setText("Inloggad som:  ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,17 +61,23 @@ public class MenyHandläggare extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblInloggadAnv, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(280, 280, 280))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(inloggadAnvändare, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(3, 3, 3)
+                .addComponent(inloggadAnvändare)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblInloggadAnvandare)
                 .addGap(35, 35, 35)
                 .addComponent(lblInloggadAnv, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
 
         pack();
@@ -103,6 +113,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel inloggadAnvändare;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblInloggadAnv;
     private javax.swing.JLabel lblInloggadAnvandare;
