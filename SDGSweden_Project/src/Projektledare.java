@@ -6,7 +6,9 @@
 /**
  *
  * @author elinjugas
- */
+import oru.inf.InfDB;
+import oru.inf.InfException;
+*/
 public class Projektledare extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Projektledare.class.getName());

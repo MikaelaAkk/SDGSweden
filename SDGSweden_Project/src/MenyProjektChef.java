@@ -11,6 +11,8 @@ import oru.inf.InfException;
 public class MenyProjektChef extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadEpost;
+    private int aid;
+
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyProjektChef.class.getName());
 
@@ -21,7 +23,21 @@ public class MenyProjektChef extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
         initComponents();
+        hamtaAid();
+
     }
+    
+    private void hamtaAid() {
+    try {
+        String sql = "SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "'";
+        aid = Integer.parseInt(idb.fetchSingle(sql));
+    } catch (InfException e) {
+        System.out.println("Fel vid hämtning av aid: " + e.getMessage());
+    }
+    
+    // Fortsätt på kostnad
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
