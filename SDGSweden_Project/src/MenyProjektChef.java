@@ -62,7 +62,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
  }
    private void fyllProjektValjare() {
     try {
-        cmbMinaProjekt.removeAllItems(); // Rensa ALLTID först
+        cmbMinaProjekt.removeAllItems(); 
         String sql = "SELECT titel FROM projekt WHERE projektchef = " + aid;
         java.util.ArrayList<String> projektLista = idb.fetchColumn(sql);
 
@@ -106,6 +106,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
         btnHanteraPartners = new javax.swing.JButton();
         btnAndraUppgifter = new javax.swing.JButton();
         lbInloggadAnvandare = new javax.swing.JLabel();
+        btnLoggaUt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,18 +158,23 @@ public class MenyProjektChef extends javax.swing.JFrame {
 
         lbInloggadAnvandare.setText("Inloggad som: epost@doman.se");
 
+        btnLoggaUt.setText("Logga ut");
+        btnLoggaUt.addActionListener(this::btnLoggaUtActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLoggaUt)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -181,7 +187,9 @@ public class MenyProjektChef extends javax.swing.JFrame {
                         .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addComponent(btnLoggaUt)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -192,12 +200,25 @@ public class MenyProjektChef extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbMinaProjektActionPerformed
 
     private void btnAndraUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAndraUppgifterActionPerformed
-        // TODO add your handling code here:
+        String valtProjekt = (String) cmbMinaProjekt.getSelectedItem(); 
+        if (valtProjekt != null && !valtProjekt.equals("Inga projekt hittades")) {
+        // Här skapar du nästa fönster, t.ex:
+        // new RedigeraProjekt(idb, valtProjekt).setVisible(true);
+        System.out.println("Öppnar redigering för: " + valtProjekt);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Välj ett projekt i listan först!");
+     }
+        
     }//GEN-LAST:event_btnAndraUppgifterActionPerformed
 
     private void btnHanteraPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraPartnersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHanteraPartnersActionPerformed
+
+    private void btnLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaUtActionPerformed
+     this.dispose(); // Stänger nuvarande fönster
+new Inlogg(idb).setVisible(true); // Öppnar inloggningen igen// TODO add your handling code here:
+    }//GEN-LAST:event_btnLoggaUtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,6 +249,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
     private javax.swing.JButton btnAndraUppgifter;
     private javax.swing.JButton btnHanteraPartners;
     private javax.swing.JButton btnHanteraPersonal;
+    private javax.swing.JButton btnLoggaUt;
     private javax.swing.JComboBox<String> cmbMinaProjekt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
