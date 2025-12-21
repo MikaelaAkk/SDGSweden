@@ -69,6 +69,7 @@ public class Inlogg extends javax.swing.JFrame {
         lblFelMeddelande.setForeground(new java.awt.Color(255, 51, 51));
         lblFelMeddelande.setText("Felaktig epost eller lösnord");
 
+        btnLoggaIn.setBackground(new java.awt.Color(0, 153, 255));
         btnLoggaIn.setText("Logga in");
         btnLoggaIn.addActionListener(this::btnLoggaInActionPerformed);
 
@@ -76,7 +77,7 @@ public class Inlogg extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setText("SDG SWEDEN");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo_globala_malen_horizontell-1-1600x486.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/bilder/logo_globala_malen_horizontell-1-1600x486.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
