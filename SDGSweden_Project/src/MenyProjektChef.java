@@ -12,6 +12,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadEpost;
     private int aid;
+    
 
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyProjektChef.class.getName());
@@ -26,6 +27,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
         
         lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
         hamtaAid();
+      fyllProjektValjare();
     }
   
  private void hamtaAid() {
@@ -34,6 +36,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
             String svar = idb.fetchSingle(sql);
             if (svar != null) {
                 aid = Integer.parseInt(svar);
+                System.out.println("Hittade AID: " + aid);
             }
         } catch (InfException e) {
             System.out.println("Fel vid hämtning av aid: " + e.getMessage());
@@ -55,6 +58,29 @@ public class MenyProjektChef extends javax.swing.JFrame {
     } catch (InfException ex) {
         System.out.println("Fel vid hämtning av kostnad: " + ex.getMessage());
     }
+    
+ }
+   private void fyllProjektValjare() {
+    try {
+        cmbMinaProjekt.removeAllItems(); // Rensa ALLTID först
+        String sql = "SELECT titel FROM projekt WHERE projektchef = " + aid;
+        java.util.ArrayList<String> projektLista = idb.fetchColumn(sql);
+
+        if (projektLista != null && !projektLista.isEmpty()) {
+            for (String titel : projektLista) {
+                cmbMinaProjekt.addItem(titel);
+            }
+        } else {
+            cmbMinaProjekt.addItem("Inga projekt hittades");
+            System.out.println("DEBUG: Inga projekt hittades för AID: " + aid);
+        }
+    } catch (InfException ex) {
+        System.out.println("Fel: " + ex.getMessage());
+    }
+ 
+    
+
+    
 }
 
   
@@ -69,9 +95,16 @@ public class MenyProjektChef extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         lbRubtik = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        cmbMinaProjekt = new javax.swing.JComboBox<>();
+        btnHanteraPersonal = new javax.swing.JButton();
+        btnHanteraPartners = new javax.swing.JButton();
+        btnAndraUppgifter = new javax.swing.JButton();
         lbInloggadAnvandare = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,47 +112,92 @@ public class MenyProjektChef extends javax.swing.JFrame {
         lbRubtik.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lbRubtik.setText("Projektledarpanel");
 
-        lbInloggadAnvandare.setText("Inloggad som: epost@doman.se");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Projektadministration"));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setText("Välj projekt att hantera");
+        jPanel2.add(jLabel1, new java.awt.GridBagConstraints());
+
+        cmbMinaProjekt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMinaProjekt.addActionListener(this::cmbMinaProjektActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipady = 1;
+        jPanel2.add(cmbMinaProjekt, gridBagConstraints);
+
+        btnHanteraPersonal.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
+        btnHanteraPersonal.setText("Hantera Personal");
+        jPanel2.add(btnHanteraPersonal, new java.awt.GridBagConstraints());
+
+        btnHanteraPartners.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
+        btnHanteraPartners.setText("Hantera partners");
+        btnHanteraPartners.addActionListener(this::btnHanteraPartnersActionPerformed);
+        jPanel2.add(btnHanteraPartners, new java.awt.GridBagConstraints());
+
+        btnAndraUppgifter.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
+        btnAndraUppgifter.setText("Ändra uppgifter");
+        btnAndraUppgifter.addActionListener(this::btnAndraUppgifterActionPerformed);
+        jPanel2.add(btnAndraUppgifter, new java.awt.GridBagConstraints());
+
+        lbInloggadAnvandare.setText("Inloggad som: epost@doman.se");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbInloggadAnvandare, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(149, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMinaProjektActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMinaProjektActionPerformed
+
+    private void btnAndraUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAndraUppgifterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAndraUppgifterActionPerformed
+
+    private void btnHanteraPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraPartnersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHanteraPartnersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,7 +225,13 @@ public class MenyProjektChef extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAndraUppgifter;
+    private javax.swing.JButton btnHanteraPartners;
+    private javax.swing.JButton btnHanteraPersonal;
+    private javax.swing.JComboBox<String> cmbMinaProjekt;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbInloggadAnvandare;
     private javax.swing.JLabel lbRubtik;
     // End of variables declaration//GEN-END:variables
