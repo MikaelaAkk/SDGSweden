@@ -13,7 +13,10 @@ public class MenyProjektChef extends javax.swing.JFrame {
     private String inloggadEpost;
     private int aid;
     
-
+private String fornamn;
+private String efternamn;
+private String adress;
+private String telefon;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyProjektChef.class.getName());
 
@@ -27,62 +30,40 @@ public class MenyProjektChef extends javax.swing.JFrame {
         
         lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
         hamtaAid();
-      fyllProjektValjare();
+      fyllProfilFalt();
     }
-  
- private void hamtaAid() {
-        try {
-            String sql = "SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "'";
-            String svar = idb.fetchSingle(sql);
-            if (svar != null) {
-                aid = Integer.parseInt(svar);
-                System.out.println("Hittade AID: " + aid);
-            }
-        } catch (InfException e) {
-            System.out.println("Fel vid hämtning av aid: " + e.getMessage());
-        } 
-    }  
-    
-    private void visaKostnadsStatistik() {
+    private void hamtaAid() {
     try {
-        // SQL för att summera kostnaden för alla projekt där chefen är/har varit ansvarig
-        String sql = "SELECT SUM(kostnad) FROM projekt WHERE projektchef = " + aid;
-        String totalKostnad = idb.fetchSingle(sql);
-        
-        if (totalKostnad != null) {
-            System.out.println("Total kostnad för dina projekt: " + totalKostnad);
-            // Här kan du t.ex. visa resultatet i en JOptionPane eller en JLabel
-        } else {
-            System.out.println("Ingen kostnad registrerad.");
+        // Hämtar AID för den person som har den inloggade e-posten
+        String fraga = "SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "'";
+        String svar = idb.fetchSingle(fraga);
+        if (svar != null) {
+            aid = Integer.parseInt(svar);
         }
     } catch (InfException ex) {
-        System.out.println("Fel vid hämtning av kostnad: " + ex.getMessage());
+        System.out.println("Fel vid hämtning av AID: " + ex.getMessage());
     }
-    
- }
-   private void fyllProjektValjare() {
-    try {
-        cmbMinaProjekt.removeAllItems(); 
-        String sql = "SELECT titel FROM projekt WHERE projektchef = " + aid;
-        java.util.ArrayList<String> projektLista = idb.fetchColumn(sql);
-
-        if (projektLista != null && !projektLista.isEmpty()) {
-            for (String titel : projektLista) {
-                cmbMinaProjekt.addItem(titel);
-            }
-        } else {
-            cmbMinaProjekt.addItem("Inga projekt hittades");
-            System.out.println("DEBUG: Inga projekt hittades för AID: " + aid);
-        }
-    } catch (InfException ex) {
-        System.out.println("Fel: " + ex.getMessage());
-    }
- 
-    
-
-    
 }
-
+    
+    public void fyllProfilFalt() {
+    try {
+        // Vi använder variabeln inloggadEpost (String) istället för en Label
+        String fraga = "SELECT * FROM anstalld WHERE epost = '" + inloggadEpost + "'";
+        java.util.HashMap<String, String> rad = idb.fetchRow(fraga);
+        
+        if (rad != null) {
+            txtAdress.setText(rad.get("adress"));
+            txtEpost.setText(rad.get("epost")); // Ofta satt till editable=false
+            txtTelefon.setText(rad.get("telefon"));
+            txtLosenord.setText(rad.get("losenord"));
+            
+            // lblNamn kan vara en rubrik överst i panelen
+            lblNamn.setText(rad.get("fornamn") + " " + rad.get("efternamn"));
+        }
+    } catch (InfException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte ladda profil: " + ex.getMessage());
+    }
+}
   
     
 
@@ -95,28 +76,32 @@ public class MenyProjektChef extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lbRubtik = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        cmbMinaProjekt = new javax.swing.JComboBox<>();
-        btnHanteraPersonal = new javax.swing.JButton();
-        btnHanteraPartners = new javax.swing.JButton();
-        btnAndraUppgifter = new javax.swing.JButton();
         lbInloggadAnvandare = new javax.swing.JLabel();
         btnLoggaUt = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        btnGåTillAdmin = new javax.swing.JButton();
+        btnGåTillStatistik = new javax.swing.JButton();
+        pnlMinProfil = new javax.swing.JPanel();
+        lblAdress = new javax.swing.JLabel();
+        lblTelefon = new javax.swing.JLabel();
+        lblEpost = new javax.swing.JLabel();
+        lblLosenord = new javax.swing.JLabel();
+        txtAdress = new javax.swing.JTextField();
+        txtTelefon = new javax.swing.JTextField();
+        txtEpost = new javax.swing.JTextField();
+        txtLosenord = new javax.swing.JPasswordField();
+        lblNamn = new javax.swing.JLabel();
+        btnSparaUppgifter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projektstatistik");
         setBounds(new java.awt.Rectangle(0, 10, 0, 0));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbRubtik.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        lbRubtik.setText("Projektledarpanel");
+        lbRubtik.setText("Välkommen projektchef!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,7 +109,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lbRubtik, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -135,86 +120,180 @@ public class MenyProjektChef extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Projektadministration"));
-        jPanel2.setLayout(new java.awt.GridBagLayout());
-
-        jLabel1.setText("Välj projekt att hantera");
-        jPanel2.add(jLabel1, new java.awt.GridBagConstraints());
-
-        cmbMinaProjekt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbMinaProjekt.addActionListener(this::cmbMinaProjektActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.ipady = 1;
-        jPanel2.add(cmbMinaProjekt, gridBagConstraints);
-
-        btnHanteraPersonal.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        btnHanteraPersonal.setText("Hantera Personal");
-        jPanel2.add(btnHanteraPersonal, new java.awt.GridBagConstraints());
-
-        btnHanteraPartners.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        btnHanteraPartners.setText("Hantera partners");
-        btnHanteraPartners.addActionListener(this::btnHanteraPartnersActionPerformed);
-        jPanel2.add(btnHanteraPartners, new java.awt.GridBagConstraints());
-
-        btnAndraUppgifter.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        btnAndraUppgifter.setText("Ändra uppgifter");
-        btnAndraUppgifter.addActionListener(this::btnAndraUppgifterActionPerformed);
-        jPanel2.add(btnAndraUppgifter, new java.awt.GridBagConstraints());
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 57, -1, -1));
-
         lbInloggadAnvandare.setText("Inloggad som: epost@doman.se");
-        getContentPane().add(lbInloggadAnvandare, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 6, 195, 33));
 
         btnLoggaUt.setText("Logga ut");
         btnLoggaUt.addActionListener(this::btnLoggaUtActionPerformed);
-        getContentPane().add(btnLoggaUt, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 225, -1, -1));
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Projektstatistik"));
-        jPanel3.setToolTipText("");
+        btnGåTillAdmin.setText("Projektaministration");
+        btnGåTillAdmin.addActionListener(this::btnGåTillAdminActionPerformed);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 530, Short.MAX_VALUE)
+        btnGåTillStatistik.setText("Visa Statistik");
+        btnGåTillStatistik.addActionListener(this::btnGåTillStatistikActionPerformed);
+
+        pnlMinProfil.setBorder(javax.swing.BorderFactory.createTitledBorder("Min Profil"));
+        pnlMinProfil.setToolTipText("");
+
+        lblAdress.setText("Adress:");
+
+        lblTelefon.setText("Telefon:");
+
+        lblEpost.setText("E-post:");
+
+        lblLosenord.setText("Lösenord:");
+
+        txtAdress.setText("jTextField1");
+
+        txtTelefon.setText("jTextField2");
+
+        txtEpost.setText("jTextField3");
+
+        txtLosenord.setText("jPasswordField1");
+
+        lblNamn.setText("jLabel1");
+
+        btnSparaUppgifter.setText("Spara uppgifter");
+        btnSparaUppgifter.addActionListener(this::btnSparaUppgifterActionPerformed);
+
+        javax.swing.GroupLayout pnlMinProfilLayout = new javax.swing.GroupLayout(pnlMinProfil);
+        pnlMinProfil.setLayout(pnlMinProfilLayout);
+        pnlMinProfilLayout.setHorizontalGroup(
+            pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMinProfilLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnSparaUppgifter)
+                        .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlMinProfilLayout.createSequentialGroup()
+                                .addComponent(lblLosenord)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
+                            .addGroup(pnlMinProfilLayout.createSequentialGroup()
+                                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAdress)
+                                    .addComponent(lblTelefon)
+                                    .addComponent(lblEpost))
+                                .addGap(29, 29, 29)
+                                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                                    .addComponent(txtTelefon)
+                                    .addComponent(txtEpost))))))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 46, Short.MAX_VALUE)
+        pnlMinProfilLayout.setVerticalGroup(
+            pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMinProfilLayout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(lblNamn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAdress)
+                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTelefon)
+                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEpost, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLosenord)
+                    .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSparaUppgifter))
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 540, 70));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLoggaUt))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                                    .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbInloggadAnvandare))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                                .addComponent(pnlMinProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(22, 22, 22))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(lbInloggadAnvandare)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlMinProfil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(btnLoggaUt)
+                .addGap(10, 10, 10))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cmbMinaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMinaProjektActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbMinaProjektActionPerformed
-
-    private void btnAndraUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAndraUppgifterActionPerformed
-        String valtProjekt = (String) cmbMinaProjekt.getSelectedItem(); 
-        if (valtProjekt != null && !valtProjekt.equals("Inga projekt hittades")) {
-        // Här skapar du nästa fönster, t.ex:
-        // new RedigeraProjekt(idb, valtProjekt).setVisible(true);
-        System.out.println("Öppnar redigering för: " + valtProjekt);
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Välj ett projekt i listan först!");
-     }
-        
-    }//GEN-LAST:event_btnAndraUppgifterActionPerformed
-
-    private void btnHanteraPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraPartnersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHanteraPartnersActionPerformed
 
     private void btnLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaUtActionPerformed
      this.dispose(); // Stänger nuvarande fönster
 new Inlogg(idb).setVisible(true); // Öppnar inloggningen igen// TODO add your handling code here:
     }//GEN-LAST:event_btnLoggaUtActionPerformed
+
+    private void btnGåTillAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillAdminActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGåTillAdminActionPerformed
+
+    private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGåTillStatistikActionPerformed
+
+    private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed
+try {
+        String nyAdress = txtAdress.getText().trim();
+        String nyTele = txtTelefon.getText().trim();
+        String nyttLosen = new String(txtLosenord.getPassword());
+
+        if (nyAdress.isEmpty() || nyTele.isEmpty() || nyttLosen.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Alla fält måste vara ifyllda!");
+            return;
+        }
+
+        String sql = "UPDATE anstalld SET adress = '" + nyAdress + "', telefon = '" + nyTele + "', losenord = '" + nyttLosen + "' WHERE epost = '" + inloggadEpost + "'";
+
+        idb.update(sql);
+        javax.swing.JOptionPane.showMessageDialog(this, "Dina uppgifter har uppdaterats!");
+        fyllProfilFalt(); 
+
+    } catch (InfException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Databasfel: " + ex.getMessage());
+    }
+            
+    }//GEN-LAST:event_btnSparaUppgifterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -242,18 +321,24 @@ new Inlogg(idb).setVisible(true); // Öppnar inloggningen igen// TODO add your h
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAndraUppgifter;
-    private javax.swing.JButton btnHanteraPartners;
-    private javax.swing.JButton btnHanteraPersonal;
+    private javax.swing.JButton btnGåTillAdmin;
+    private javax.swing.JButton btnGåTillStatistik;
     private javax.swing.JButton btnLoggaUt;
-    private javax.swing.JComboBox<String> cmbMinaProjekt;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnSparaUppgifter;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbInloggadAnvandare;
     private javax.swing.JLabel lbRubtik;
+    private javax.swing.JLabel lblAdress;
+    private javax.swing.JLabel lblEpost;
+    private javax.swing.JLabel lblLosenord;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblTelefon;
+    private javax.swing.JPanel pnlMinProfil;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JPasswordField txtLosenord;
+    private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
 
 }
