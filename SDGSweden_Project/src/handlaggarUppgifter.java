@@ -2,21 +2,59 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+package oru.inf;
 
+import oru.inf.InfException;
+import oru.inf.InfDB;
+import java.util.HashMap;
+import javax.swing.JOptionPane;     
 /**
  *
  * @author User
  */
 public class handlaggarUppgifter extends javax.swing.JFrame {
+    private InfDB idb;
+    private String inloggadAnvandare;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(handlaggarUppgifter.class.getName());
 
     /**
      * Creates new form handlaggarUppgifter
      */
-    public handlaggarUppgifter() {
+    public handlaggarUppgifter(InfDB idb, String inloggadAnvandare) {
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        fyllProfilFalt();
     }
+                                       
+
+    public void fyllProfilFalt() {
+        try {
+            String fraga = "SELECT * FROM anstalld WHERE epost ='" + inloggadAnvandare + "'";
+            HashMap<String, String> rad = idb.fetchRow(fraga);
+            
+            if (rad != null) {
+                txtAdress.setText(rad.get("adress"));
+                txtEpost.setText(rad.get("epost"));
+                txtTelefon.setText(rad.get("telefon"));
+                txtLosenord.setText(rad.get("losenord"));
+                
+                if (lblNamn != null) {
+                    lblNamn.setText(rad.get("fornamn") + " " + rad.get("efternamn"));
+                }
+            }
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(null, "Databasfel: " + ex.getMessage());
+        }
+    }
+                                                       
+    private javax.swing.JButton btnSpara;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JPasswordField txtLosenord;
+    private javax.swing.JTextField txtTelefon;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,47 +65,125 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtAdress = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtEpost = new javax.swing.JTextField();
+        txtTelefon = new javax.swing.JTextField();
+        txtLosenord = new javax.swing.JPasswordField();
+        btnSpara = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Dina uppgifter: ");
+
+        jLabel2.setText("Adress:");
+
+        txtAdress.setText("jTextField1");
+
+        jLabel3.setText("Epost: ");
+
+        jLabel4.setText("Telefonnummer");
+
+        jLabel5.setText("Lösenord: ");
+
+        txtEpost.setText("jTextField2");
+
+        txtTelefon.setText("jTextField3");
+
+        txtLosenord.setText("jPasswordField1");
+
+        btnSpara.setText("Spara ändringar");
+        btnSpara.addActionListener(this::btnSparaActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtTelefon)
+                            .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(txtEpost)
+                            .addComponent(txtAdress)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addComponent(btnSpara)))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(btnSpara)
+                .addGap(32, 32, 32))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
+                                         
+    try{
+        String nyAdress = txtAdress.getText();
+        String nyTel = txtTelefon.getText();
+        String nyttLosen = new String(txtLosenord.getPassword());
+        String updateFraga = "UPDATE anstalld SET "
+         + "adress = '" + nyAdress + "', "
+         + "telefon = '" + nyTel + "', "
+         + "losenord = '" + nyttLosen + "' "
+         + "WHERE epost = '" + inloggadAnvandare + "'";
+        idb.update(updateFraga);
+            JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new handlaggarUppgifter().setVisible(true));
-    }
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());    
+    }//GEN-LAST:event_btnSparaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSpara;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JPasswordField txtLosenord;
+    private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
 }

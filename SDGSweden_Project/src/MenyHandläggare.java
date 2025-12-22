@@ -38,16 +38,6 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblNamn = new javax.swing.JLabel();
         inloggadAnvändare = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        lblAdress = new javax.swing.JLabel();
-        lblEpost = new javax.swing.JLabel();
-        lblTelefonnummer = new javax.swing.JLabel();
-        txtAdress = new javax.swing.JTextField();
-        txtEpost = new javax.swing.JTextField();
-        txtTelefon = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        lblLosenord = new javax.swing.JLabel();
-        btnSpara = new javax.swing.JButton();
-        txtLosenord = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,79 +46,15 @@ public class MenyHandläggare extends javax.swing.JFrame {
         inloggadAnvändare.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inloggadAnvändare.setText("Inloggad som:  ");
 
-        lblAdress.setText("Adress");
-
-        lblEpost.setText("E-post");
-
-        lblTelefonnummer.setText("Telefon");
-
-        txtAdress.setText("jTextField1");
-
-        txtEpost.setText("jTextField2");
-
-        txtTelefon.setText("jTextField3");
-
-        jLabel1.setText("Uppgifter");
-
-        lblLosenord.setText("Lösnord");
-
-        btnSpara.setText("Spara ändringar");
-        btnSpara.addActionListener(this::btnSparaActionPerformed);
-
-        txtLosenord.setText("jPasswordField1");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblAdress)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblEpost)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtEpost))
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTelefonnummer)
-                            .addComponent(lblLosenord))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTelefon)
-                            .addComponent(txtLosenord)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnSpara)
-                        .addGap(18, 18, 18)))
-                .addContainerGap(31, Short.MAX_VALUE))
+            .addGap(0, 194, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAdress)
-                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEpost)
-                    .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTelefonnummer, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLosenord)
-                    .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSpara)
-                .addContainerGap(81, Short.MAX_VALUE))
+            .addGap(0, 264, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -159,35 +85,6 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-        // TODO add your handling code here:                                         
-    try {
-        // 1. Hämta de nya värdena som användaren skrivit i rutorna
-        String nyAdress = txtAdress.getText();
-        String nyEpost = txtEpost.getText(); // Denna bör oftast inte ändras om den är ID
-        String nyTel = txtTelefon.getText();
-        String nyttLosen = new String(txtLosenord.getPassword());
-
-        // 2. Skapa UPDATE-frågan
-        // Vi använder inloggadAnvandare i WHERE-klausulen så vi bara ändrar för RÄTT person
-        String updateFraga = "UPDATE anstalld SET "
-                + "adress = '" + nyAdress + "', "
-                + "telefon = '" + nyTel + "', "
-                + "losenord = '" + nyttLosen + "' "
-                + "WHERE epost = '" + inloggadAnvandare + "'";
-
-        // 3. Kör frågan mot databasen
-        idb.update(updateFraga);
-
-        // 4. Ge bekräftelse till användaren
-        javax.swing.JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
-
-    } catch (InfException ex) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());
-    }
-
-    }//GEN-LAST:event_btnSparaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,39 +117,11 @@ public class MenyHandläggare extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSpara;
     private javax.swing.JLabel inloggadAnvändare;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblAdress;
-    private javax.swing.JLabel lblEpost;
-    private javax.swing.JLabel lblLosenord;
     private javax.swing.JLabel lblNamn;
-    private javax.swing.JLabel lblTelefonnummer;
-    private javax.swing.JTextField txtAdress;
-    private javax.swing.JTextField txtEpost;
-    private javax.swing.JPasswordField txtLosenord;
-    private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
-public void fyllProfilFalt(){
-    try{
-        // SQL-fråga: Hämta allt om den som är inloggad
-        String fraga = "SELECT * FROM anstalld WHERE epost ='" + inloggadAnvandare + "'";
-        java.util.HashMap<String, String>rad = idb.fetchRow(fraga);
-        if (rad != null) {
-            // Vi hämtar datan från HashMap och sätter i rätt fält
-            txtAdress.setText(rad.get("adress"));
-            txtEpost.setText(rad.get("epost"));
-            txtTelefon.setText(rad.get("telefon"));
-            txtLosenord.setText(rad.get("losenord"));
-            
-            // Uppdatera även namn-labeln längst upp
-            lblNamn.setText(rad.get("fornamn") + " " + rad.get("efternamn"));
-        }
-    } catch (InfException ex) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Databasfel: " + ex.getMessage());
-    }
-}
+
 
     }
     
