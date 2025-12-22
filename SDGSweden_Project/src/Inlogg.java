@@ -142,7 +142,7 @@ public class Inlogg extends javax.swing.JFrame {
             String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost + "'";
             System.out.println(sqlFraga);
             String dbLosen = idb.fetchSingle(sqlFraga);
-                        if (losen.equals(dbLosen)) {
+                        if (dbLosen !=null &&losen.equals(dbLosen)) {
                 String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'");
                 String isAdministrator = idb.fetchSingle("SELECT aid FROM admin WHERE aid = " + aid);
                 String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + " LIMIT 1");
