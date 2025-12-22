@@ -7,7 +7,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 /**
  *
- * @author User
+ * @author Mikaela ak, Olivia Collin, Lucy Alp, Elin Jugås
  */
 public class Main {
     
