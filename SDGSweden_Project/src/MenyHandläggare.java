@@ -41,6 +41,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblInloggad = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -50,14 +52,20 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         lblInloggad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblInloggad.setText("Inloggad som:  ");
-        getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 9, 177, -1));
+        getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 177, -1));
 
         jButton2.setText("Mina projekt");
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 71, -1, -1));
 
         jButton1.setText("Mina uppgifter");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 71, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
+
+        jButton3.setText("Mina projekt");
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, -1, -1));
+
+        jButton4.setText("Logga ut");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -72,6 +80,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
     // End of variables declaration//GEN-END:variables
