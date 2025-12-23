@@ -148,7 +148,7 @@ public class Inlogg extends javax.swing.JFrame {
                 String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + " LIMIT 1");
 
                 if (isAdministrator != null) {
-                    new MenyAdministrator(idb, ePost).setVisible(true);
+                    new Administratör(idb, ePost).setVisible(true);
                 }
                 else if (isProjektChef != null) {
                     new MenyProjektChef(idb, ePost).setVisible(true);
@@ -212,4 +212,5 @@ public class Inlogg extends javax.swing.JFrame {
     private javax.swing.JTextField tfEpost;
     private javax.swing.JTextField tfLosenord;
     // End of variables declaration//GEN-END:variables
+
 }

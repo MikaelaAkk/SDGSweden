@@ -23,11 +23,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-        lblInloggad.setText("Inloggad som: " + inloggadAnvandare);
-         
+        lblInloggad.setText("Inloggad som: " + inloggadAnvandare);    
     }
-   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +36,6 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         lblNamn = new javax.swing.JLabel();
         lblInloggad = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -54,14 +50,12 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblInloggad.setText("Inloggad som:  ");
         getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 177, -1));
 
-        jButton2.setText("Mina projekt");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 71, -1, -1));
-
         jButton1.setText("Mina uppgifter");
         jButton1.addActionListener(this::jButton1ActionPerformed);
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
         jButton3.setText("Mina projekt");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, -1, -1));
 
         jButton4.setText("Logga ut");
@@ -72,14 +66,21 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        new handlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+       new Handläggareprojekt(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblInloggad;
@@ -87,7 +88,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    }
+}
     
 
 
