@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         
         try{
-            idb = new InfDB("sdgsweden", "3306", "root", "Mikaela.0009");
+            idb = new InfDB("sdgsweden", "3306", "root", "4Getmiejj");
             new Inlogg(idb).setVisible(true);
         } catch (InfException ex){
             System.out.println(ex.getMessage());
