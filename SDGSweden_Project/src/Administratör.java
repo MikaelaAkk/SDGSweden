@@ -2,21 +2,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import javax.swing.JOptionPane;
 /**
  *
  * @author lucya
  */
 public class Administratör extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Administratör.class.getName());
+    private InfDB idb;
 
     /**
      * Creates new form Administratör
      */
-    public Administratör() {
+    public Administratör(InfDB idb) {
+        this.idb = idb;
         initComponents();
     }
+    
+    private void laggTillAvdelning() {
+    try {
+        String namn = txtAvdNamn.getText();
+        String beskrivning = txtBeskrivning.getText();
+        String nyttId = idb.getAutoIncrement("avdelning", "avdid");
+
+        String fraga = "INSERT INTO avdelning (avdid, namn, beskrivning) VALUES (" + nyttId + ", '" + namn + "', '" + beskrivning + "')";
+        
+        idb.insert(fraga);
+        javax.swing.JOptionPane.showMessageDialog(null, "Avdelningen har sparats!");
+    } // Denna stänger try
+    catch (Exception ettFel) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Något gick fel!");
+    } // Denna stänger catch
+} // Denna stänger hela metoden laggTillAvdelning
+   
+    
+        
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +50,60 @@ public class Administratör extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtAvdNamn = new javax.swing.JTextField();
+        txtBeskrivning = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtAvdNamn.setText("txtAvdNamn");
+
+        txtBeskrivning.setText("txtBeskrivning");
+        txtBeskrivning.addActionListener(this::txtBeskrivningActionPerformed);
+
+        jButton1.setText("LaggTillAvdelning");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(jButton1)))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(jButton1)
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtBeskrivningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBeskrivningActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBeskrivningActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:                                          
+    laggTillAvdelning(); // Lägg till denna rad här!
+}
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -63,11 +125,16 @@ public class Administratör extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+    InfDB idb;
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Administratör().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Administratör(idb).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField txtAvdNamn;
+    private javax.swing.JTextField txtBeskrivning;
     // End of variables declaration//GEN-END:variables
-}
+
+
