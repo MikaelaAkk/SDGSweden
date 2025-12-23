@@ -7,15 +7,25 @@
  *
  * @author elinjugas
  */
+
+import oru.inf.InfDB;
+import oru.inf.IntException;
+
 public class projektledareVisaStatistik extends javax.swing.JFrame {
+    
+    private infDB idb;
+    private int aid;
+    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(projektledareVisaStatistik.class.getName());
 
+    
     /**
      * Creates new form projektledareVisaStatistik
      */
-    public projektledareVisaStatistik() {
+    public projektledareVisaStatistik(IndDB idb, int aid) {
         initComponents();
+        
     }
 
     /**
