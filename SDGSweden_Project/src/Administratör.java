@@ -12,12 +12,13 @@ import javax.swing.JOptionPane;
 public class Administratör extends javax.swing.JFrame {
     
     private InfDB idb;
+    private String ePost;
+    
+private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyAdministrator.class.getName());
 
-    /**
-     * Creates new form Administratör
-     */
-    public Administratör(InfDB idb) {
+    public Administratör(InfDB idb, String ePost) { // Denna rad är viktig!
         this.idb = idb;
+        this.ePost = ePost;
         initComponents();
     }
     
@@ -36,6 +37,28 @@ public class Administratör extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(null, "Något gick fel!");
     } // Denna stänger catch
 } // Denna stänger hela metoden laggTillAvdelning
+    
+    private void andraAvdelning() {
+    try {
+        // Hämta värden från dina textfält
+        String id = txtAvdId.getText();
+        String nyttNamn = txtAvdNamn.getText();
+        String nyBeskrivning = txtBeskrivning.getText();
+
+        // Skapa SQL-frågan för att uppdatera (UPDATE)
+        // Vi ändrar namn och beskrivning där avdid matchar det användaren skrivit in
+        String fraga = "UPDATE avdelning SET namn = '" + nyttNamn + "', beskrivning = '" + nyBeskrivning + "' WHERE avdid = " + id;
+        
+        // Kör uppdateringen mot databasen
+        idb.update(fraga);
+        
+        javax.swing.JOptionPane.showMessageDialog(null, "Avdelningen har uppdaterats!");
+    } 
+    catch (Exception ettFel) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Kunde inte uppdatera avdelningen!");
+        System.out.println(ettFel.getMessage());
+    } // Denna stänger catch
+} // Denna stänger hela metoden andraAvdelning
    
     
         
@@ -53,6 +76,7 @@ public class Administratör extends javax.swing.JFrame {
         txtAvdNamn = new javax.swing.JTextField();
         txtBeskrivning = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        txtAvdId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,6 +87,8 @@ public class Administratör extends javax.swing.JFrame {
 
         jButton1.setText("LaggTillAvdelning");
         jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        txtAvdId.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,9 +102,12 @@ public class Administratör extends javax.swing.JFrame {
                             .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
+                        .addGap(147, 147, 147)
+                        .addComponent(txtAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
                         .addComponent(jButton1)))
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,9 +116,11 @@ public class Administratör extends javax.swing.JFrame {
                 .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(32, 32, 32)
                 .addComponent(jButton1)
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(txtAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,7 +133,7 @@ public class Administratör extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:                                          
     laggTillAvdelning(); // Lägg till denna rad här!
-}
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -130,10 +161,13 @@ public class Administratör extends javax.swing.JFrame {
         //java.awt.EventQueue.invokeLater(() -> new Administratör(null).setVisible(true));
     }
 
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JTextField txtAvdId;
     private javax.swing.JTextField txtAvdNamn;
     private javax.swing.JTextField txtBeskrivning;
     // End of variables declaration//GEN-END:variables
-
+}
 
