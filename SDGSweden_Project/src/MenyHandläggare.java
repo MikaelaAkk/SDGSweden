@@ -36,7 +36,6 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         lblNamn = new javax.swing.JLabel();
         lblInloggad = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -50,9 +49,6 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblInloggad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblInloggad.setText("Inloggad som:  ");
         getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 177, -1));
-
-        jButton2.setText("Mina projekt");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 71, -1, -1));
 
         jButton1.setText("Mina uppgifter");
         jButton1.addActionListener(this::jButton1ActionPerformed);
@@ -80,11 +76,11 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblInloggad;
@@ -92,7 +88,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    }
+}
     
 
 

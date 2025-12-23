@@ -12,14 +12,49 @@ public class Handläggareprojekt extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Handläggareprojekt.class.getName());
     private InfDB idb;
+    private String inloggadAnvandare;
     /**
      * Creates new form Handläggareprojekt
      */
-    public Handläggareprojekt(InfDB idb) {
+    public Handläggareprojekt(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        hamtaMinaProjekt();
+    
+
+ 
+
     }
-  
+  private void hamtaMinaProjekt() {
+    try {
+        // Vi hämtar projektnamn, status och kostnad för de projekt där användaren är chef
+        // Vi använder en sub-query för att hitta rätt AID via e-posten
+        String fraga = "SELECT projektnamn, status, kostnad FROM projekt " +
+                       "WHERE projektchef = (SELECT aid FROM anstalld WHERE epost = '" + inloggadAnvandare + "')";
+
+        // fetchRows hämtar FLERA rader (en lista med HashMaps)
+        java.util.ArrayList<java.util.HashMap<String, String>> projektLista = idb.fetchRows(fraga);
+
+        if (projektLista != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Mina ledda projekt:\n");
+            sb.append("------------------------------------------\n");
+
+            for (java.util.HashMap<String, String> rad : projektLista) {
+                sb.append("Namn: ").append(rad.get("projektnamn")).append("\n");
+                sb.append("Status: ").append(rad.get("status")).append("\n");
+                sb.append("Budget: ").append(rad.get("kostnad")).append(" kr\n");
+                sb.append("------------------------------------------\n");
+            }
+            txtProjektLista.setText(sb.toString());
+        } else {
+            txtProjektLista.setText("Du står inte som chef för några projekt just nu.");
+        }
+    } catch (InfException ex) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Fel vid hämtning av projekt: " + ex.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,7 +127,7 @@ public class Handläggareprojekt extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Handläggareprojekt(null).setVisible(true));
+        //(ava.awt.EventQueue.invokeLater(() -> new Handläggareprojekt(null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
