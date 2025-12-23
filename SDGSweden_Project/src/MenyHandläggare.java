@@ -23,11 +23,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-        lblInloggad.setText("Inloggad som: " + inloggadAnvandare);
-         
+        lblInloggad.setText("Inloggad som: " + inloggadAnvandare);    
     }
-   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
