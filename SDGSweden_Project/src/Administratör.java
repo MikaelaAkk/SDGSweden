@@ -122,13 +122,12 @@ public class Administratör extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            //logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-    InfDB idb;
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Administratör(idb).setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new Administratör(null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
