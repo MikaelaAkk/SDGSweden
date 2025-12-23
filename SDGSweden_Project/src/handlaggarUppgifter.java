@@ -47,12 +47,9 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
         }
     }
                                                        
-    private javax.swing.JButton btnSpara;
+   
     private javax.swing.JLabel lblNamn;
-    private javax.swing.JTextField txtAdress;
-    private javax.swing.JTextField txtEpost;
-    private javax.swing.JPasswordField txtLosenord;
-    private javax.swing.JTextField txtTelefon;
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -114,14 +111,13 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTelefon)
-                            .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(txtEpost)
-                            .addComponent(txtAdress)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(btnSpara)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSpara)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtTelefon)
+                                .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                .addComponent(txtEpost)
+                                .addComponent(txtAdress)))))
                 .addContainerGap(83, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -145,17 +141,16 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(btnSpara)
-                .addGap(32, 32, 32))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-                                         
-    try{
+      try{
         String nyAdress = txtAdress.getText();
         String nyTel = txtTelefon.getText();
         String nyttLosen = new String(txtLosenord.getPassword());
@@ -169,6 +164,7 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
 
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());    
+    }  
     }//GEN-LAST:event_btnSparaActionPerformed
 
 
@@ -184,4 +180,4 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtLosenord;
     private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
-}
+  }
