@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import oru.inf.InfDB;
+import oru.inf.InfException;
 /**
  *
  * @author oliviacollin
@@ -10,13 +11,15 @@
 public class Handläggareprojekt extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Handläggareprojekt.class.getName());
-
+    private InfDB idb;
     /**
      * Creates new form Handläggareprojekt
      */
-    public Handläggareprojekt() {
+    public Handläggareprojekt(InfDB idb) {
+        this.idb = idb;
         initComponents();
     }
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,17 +30,41 @@ public class Handläggareprojekt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtProjektLista = new javax.swing.JTextArea();
+        btnTillbaka = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtProjektLista.setEditable(false);
+        txtProjektLista.setColumns(20);
+        txtProjektLista.setRows(5);
+        jScrollPane1.setViewportView(txtProjektLista);
+
+        btnTillbaka.setText("jButton1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(btnTillbaka))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(btnTillbaka)
+                .addGap(46, 46, 46))
         );
 
         pack();
@@ -65,9 +92,12 @@ public class Handläggareprojekt extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Handläggareprojekt().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Handläggareprojekt(null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTillbaka;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea txtProjektLista;
     // End of variables declaration//GEN-END:variables
 }

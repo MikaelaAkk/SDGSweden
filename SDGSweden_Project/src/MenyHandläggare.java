@@ -59,6 +59,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
         jButton3.setText("Mina projekt");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, -1, -1));
 
         jButton4.setText("Logga ut");
@@ -71,6 +72,12 @@ public class MenyHandläggare extends javax.swing.JFrame {
        new handlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+       new Handläggareprojekt(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     
