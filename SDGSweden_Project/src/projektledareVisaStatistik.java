@@ -29,51 +29,63 @@ public class projektledareVisaStatistik extends javax.swing.JFrame {
         initComponents(); // Initierar GUI-komponenter
         this.setLocationRelativeTo(null); // Centrerar fönstret
         initieraDashboard(); // Fyller dashboard med data
+        getContentPane().add(pnlCenter, java.awt.BorderLayout.CENTER);
+        this.revalidate();
+    this.repaint();
     }
     
     private void initieraDashboard() {
-        try {
-            // 1. hämta totala kostnaden för projektledarens projekt
-            String total = idb.fetchSingle("SELECT SUM(kostnad) FROM projekt WHERE projektchef = " + aid);
-            lvlTotalKostnad.setFont(new java.awt.Font("Arial", 1, 24));
-            lvlTotalKostnad.setText(total != null ? total + " SEK" : "0 SEK");
+    try {
+        // 1. Hämta total kostnad
+        String total = idb.fetchSingle("SELECT SUM(kostnad) FROM projekt WHERE projektchef = " + aid);
+        lvlTotalKostnad.setFont(new java.awt.Font("Arial", 1, 24));
+        lvlTotalKostnad.setText(total != null ? total + " SEK" : "0 SEK");
 
-            // 2. Hämta länderna till textarian
-            String sqlLand = "SELECT land.namn, SUM(projekt.kostnad) FROM projekt " +
-                             "JOIN land ON projekt.land = land.lid " +
-                             "WHERE projektchef = " + aid + " GROUP BY land.namn";
-            // Här kan du lägga till logik för att fylla jTable1 senare
-
-            // 3. Fyll Partner-listan till Kort 3
-            String sqlPartners = "SELECT DISTINCT partner.namn FROM partner " +
-                                 "JOIN projekt_partner ON partner.pID = projekt_partner.partnerID " +
-                                 "JOIN projekt ON projekt_partner.pID = projekt.pid " +
-                                 "WHERE projekt.projektchef = " + aid;
-            ArrayList<String> partners = idb.fetchColumn(sqlPartners);
-            if (partners != null) {
-                DefaultListModel<String> model = new DefaultListModel<>();
-                for (String p : partners) model.addElement(p);
-                listPartners.setModel(model);
-            }
-
-            // 4. Hämta länder till Kort 4
-            String sqlLander = "SELECT DISTINCT land.namn FROM land " +
-                               "JOIN projekt ON land.lid = projekt.land " +
-                               "WHERE projektchef = " + aid;
-            ArrayList<String> lander = idb.fetchColumn(sqlLander);
-            if (lander != null) {
-                jTextArea1.setText(String.join(", ", lander));
-            }
-
-        } catch (InfException e) {
-            System.out.println("DB Fel: " + e.getMessage());
-        }
-    }
-    
-    private void initComponents() {
-        // Initiering av paneler och layout
+        // 2. Fyll Tabellen (Statistik per land)
+        String sqlLand = "SELECT land.namn, SUM(projekt.kostnad) AS total_land FROM projekt " +
+                         "JOIN land ON projekt.land = land.lid " +
+                         "WHERE projektchef = " + aid + " GROUP BY land.namn";
         
+        ArrayList<java.util.HashMap<String, String>> landStatistik = idb.fetchRows(sqlLand);
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        tableModel.setRowCount(0); // Rensa gamla rader
+
+        if (landStatistik != null) {
+            for (java.util.HashMap<String, String> rad : landStatistik) {
+                tableModel.addRow(new Object[]{rad.get("namn"), rad.get("total_land")});
+            }
+        }
+
+        // 3. Fyll Partner-listan
+        String sqlPartners = "SELECT DISTINCT partner.namn FROM partner " +
+                             "JOIN projekt_partner ON partner.pID = projekt_partner.partnerID " +
+                             "JOIN projekt ON projekt_partner.pID = projekt.pid " +
+                             "WHERE projekt.projektchef = " + aid;
+        
+        ArrayList<String> partners = idb.fetchColumn(sqlPartners);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        if (partners != null) {
+            for (String p : partners) {
+                listModel.addElement(p);
+            }
+        }
+        listPartners.setModel(listModel);
+
+        // 4. Hämta länder till textrutan
+        String sqlLander = "SELECT DISTINCT land.namn FROM land " +
+                           "JOIN projekt ON land.lid = projekt.land " +
+                           "WHERE projektchef = " + aid;
+        ArrayList<String> lander = idb.fetchColumn(sqlLander);
+        if (lander != null) {
+            jTextArea1.setText(String.join(", ", lander));
+        }
+
+    } catch (InfException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Fel vid hämtning av statistik: " + e.getMessage());
     }
+     
+  
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -264,9 +276,9 @@ public class projektledareVisaStatistik extends javax.swing.JFrame {
      * @param args the command line arguments
      */
    
-    }
+    
         public static void main(String args[]) {
-        // Lämnas tom, körs från inloggningssidan
+        
         
     }
     
