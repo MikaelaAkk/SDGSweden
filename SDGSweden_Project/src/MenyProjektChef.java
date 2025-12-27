@@ -278,7 +278,10 @@ private String telefon;
     }//GEN-LAST:event_btnLoggaUtActionPerformed
 
     private void btnGåTillAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillAdminActionPerformed
-        // TODO add your handling code here:
+    ProjektchefProjektAdministration adminFonster = new ProjektchefProjektAdministration(idb, aid);
+    adminFonster.setVisible(true);
+    adminFonster.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_btnGåTillAdminActionPerformed
 
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
@@ -329,10 +332,24 @@ try {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
-        /* Create and display the form */
-       
-    }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                
+            }
+        }); 
+    } 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGåTillAdmin;
