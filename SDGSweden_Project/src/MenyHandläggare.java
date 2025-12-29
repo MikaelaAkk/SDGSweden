@@ -41,6 +41,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         hallbarhetsmål = new javax.swing.JButton();
         personal = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -50,25 +51,30 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         lblInloggad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblInloggad.setText("Inloggad som:  ");
-        getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 177, -1));
+        getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 340, -1));
 
         jButton1.setText("Mina uppgifter");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 120, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
 
         jButton3.setText("Mina projekt");
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 110, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 190, -1));
 
         jButton4.setText("Logga ut");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, -1));
 
         hallbarhetsmål.setText("Hållbarhetsmålen");
         hallbarhetsmål.addActionListener(this::hallbarhetsmålActionPerformed);
-        getContentPane().add(hallbarhetsmål, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+        getContentPane().add(hallbarhetsmål, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 190, -1));
 
         personal.setText("Personal");
-        getContentPane().add(personal, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 110, -1));
+        getContentPane().add(personal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 190, -1));
+
+        jButton2.setText("Sammarbets Partners");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 190, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -89,6 +95,15 @@ public class MenyHandläggare extends javax.swing.JFrame {
       this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        new Inlogg(idb).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
 
     
@@ -96,6 +111,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton hallbarhetsmål;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblInloggad;
