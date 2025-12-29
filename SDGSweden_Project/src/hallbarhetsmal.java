@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
-import oru.inf.InfException;
+
 /**
  *
  * @author User
@@ -13,7 +15,8 @@ public class hallbarhetsmal extends javax.swing.JFrame {
     private String inloggadAnvandare;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
-
+private ArrayList<String>malLista = new ArrayList<>();
+private DefaultListModel<String>listModel = new DefaultListModel<>();
     /**
      * Creates new form hallbarhetsmal
      */
@@ -21,7 +24,30 @@ public class hallbarhetsmal extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        
+        malLista.add("1. Ingen fattigdom - Avskaffa fattigdom i alla dess former överallt.");
+        malLista.add("2. Ingen hunger – Utrota hunger, uppnå trygg livsmedelsförsörjning och förbättrad nutrition. ");
+        malLista.add("3. God hälsa och välbefinnande – Säkerställa hälsa och främja välbefinnande för alla i alla åldrar.");
+    malLista.add("4. God utbildning för alla – Säkerställa inkluderande och likvärdig utbildning av god kvalitet.");
+    malLista.add("5. Jämställdhet – Uppnå jämställdhet och stärka alla kvinnors och flickors egenmakt.");
+    malLista.add("6. Rent vatten och sanitet – Säkerställa tillgång till rent vatten och sanitet för alla.");
+    malLista.add("7. Hållbar energi för alla – Säkerställa tillgång till prisvärd, pålitlig och hållbar energi.");
+    malLista.add("8. Anständiga arbetsvillkor och ekonomisk tillväxt – Främja hållbar ekonomisk tillväxt och goda arbetsvillkor.");
+    malLista.add("9. Hållbar industri, innovationer och infrastruktur – Bygga motståndskraftig infrastruktur och främja innovation.");
+    malLista.add("10. Minskad ojämlikhet – Minska ojämlikhet inom och mellan länder.");
+    malLista.add("11. Hållbara städer och samhällen – Göra städer och bosättningar inkluderande, säkra och hållbara.");
+    malLista.add("12. Hållbar konsumtion och produktion – Säkerställa hållbara konsumtions- och produktionsmönster.");
+    malLista.add("13. Bekämpa klimatförändringarna – Vidta omedelbara åtgärder mot klimatförändringar och dess konsekvenser.");
+    malLista.add("14. Hav och marina resurser – Bevara och nyttja haven och marina resurser på ett hållbart sätt.");
+    malLista.add("15. Ekosystem och biologisk mångfald – Skydda ekosystem, skogar och biologisk mångfald.");
+    malLista.add("16. Fredliga och inkluderande samhällen – Främja fred, rättvisa och starka institutioner.");
+    malLista.add("17. Genomförande och globalt partnerskap – Stärka samarbetet för att nå alla hållbarhetsmålen.");
+    for(String mal : malLista){
+        listModel.addElement(mal);
+         }
+    jList1.setModel(listModel);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,29 +58,56 @@ public class hallbarhetsmal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\Desktop\\karta-globala-malen-logo-och-ikoner.jpg")); // NOI18N
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jButton1.setText("Tillbaka");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo_globala_malen_horizontell-1-1600x486.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 205, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(0, 76, Short.MAX_VALUE))
+                .addGap(78, 78, 78)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+     this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,10 +131,19 @@ public class hallbarhetsmal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new hallbarhetsmal().setVisible(true));
+      //  java.awt.EventQueue.invokeLater(() -> new hallbarhetsmal().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-}
+
+    }
+    
+
+
+
+
