@@ -39,6 +39,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        hallbarhetsmål = new javax.swing.JButton();
+        personal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -52,14 +54,21 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         jButton1.setText("Mina uppgifter");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 120, -1));
 
         jButton3.setText("Mina projekt");
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, -1, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 110, -1));
 
         jButton4.setText("Logga ut");
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+
+        hallbarhetsmål.setText("Hållbarhetsmålen");
+        hallbarhetsmål.addActionListener(this::hallbarhetsmålActionPerformed);
+        getContentPane().add(hallbarhetsmål, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+
+        personal.setText("Personal");
+        getContentPane().add(personal, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 110, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -75,16 +84,23 @@ public class MenyHandläggare extends javax.swing.JFrame {
        this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
+      new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
+      this.setVisible(false);
+    }//GEN-LAST:event_hallbarhetsmålActionPerformed
+
 
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton hallbarhetsmål;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
+    private javax.swing.JButton personal;
     // End of variables declaration//GEN-END:variables
 
 
