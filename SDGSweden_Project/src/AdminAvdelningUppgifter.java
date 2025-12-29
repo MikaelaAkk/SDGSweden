@@ -2,22 +2,107 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import javax.swing.JOptionPane;
+import oru.inf.InfDB;
+import java.util.ArrayList;
+import java.util.HashMap;
 /**
  *
  * @author lucya
  */
 public class AdminAvdelningUppgifter extends javax.swing.JFrame {
-    
+    private InfDB idb;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAvdelningUppgifter.class.getName());
 
     /**
      * Creates new form AdminAvdelningUppgifter
      */
-    public AdminAvdelningUppgifter() {
+ public AdminAvdelningUppgifter(InfDB idb) { 
+        this.idb = idb;
         initComponents();
+        fyllComboBox();
+ }
+
+private void fyllComboBox() {
+    try {
+        // Rensa listan först så vi inte får dubbletter om metoden anropas igen
+        cbAvdelningar.removeAllItems();
+        
+        String fraga = "SELECT namn FROM avdelning";
+        ArrayList<String> allaAvdelningar = idb.fetchColumn(fraga);
+
+        if (allaAvdelningar != null) {
+            for (String namn : allaAvdelningar) {
+                cbAvdelningar.addItem(namn);
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Kunde inte ladda avdelningar: " + e.getMessage());
+    }
+}
+
+private void andraAvdelning() {
+    // 1. Hämta data från textfälten
+    String namn = txtNamn.getText();
+    String beskrivning = txtBeskrivning.getText();
+    String adress = txtAdress.getText();
+    String epost = txtEpost.getText();
+    String telefon = txtTelefon.getText();
+    String stad = txtStad.getText();
+    String chef = txtChef.getText();
+
+    // 2. Enkel validering (kontrollera att namn inte är tomt, då det oftast behövs för WHERE-klausulen)
+    if (namn.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vänligen ange namnet på avdelningen du vill ändra.");
+        return;
     }
 
+    try {
+        // 3. Skapa SQL-frågan. 
+        // OBS: Se till att kolumnnamnen matchar exakt de du har i din databastabell.
+        // Jag antar här att tabellen heter 'avdelning' och att man identifierar raden via 'namn'.
+        String fraga = "UPDATE avdelning SET "
+                + "beskrivning = '" + beskrivning + "', "
+                + "adress = '" + adress + "', "
+                + "epost = '" + epost + "', "
+                + "telefon = '" + telefon + "', "
+                + "stad = '" + stad + "', "
+                + "chef = '" + chef + "' "
+                + "WHERE namn = '" + namn + "'";
+
+        // 4. Kör frågan i databasen
+        idb.update(fraga);
+
+        // 5. Bekräfta för användaren
+        JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
+
+    } catch (Exception ettUndantag) {
+        // Om något går fel (t.ex. SQL-fel) visas ett felmeddelande
+        JOptionPane.showMessageDialog(this, "Något gick fel vid lagring: " + ettUndantag.getMessage());
+    }
+}
+    private void cmbAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    try {
+        String valtNamn = cbAvdelningar.getSelectedItem().toString();
+        String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
+        
+        HashMap<String, String> rad = idb.fetchRow(fraga);
+        
+        if (rad != null) {
+            // Fyll alla textfält med data från databasen
+            txtNamn.setText(rad.get("namn"));
+            txtBeskrivning.setText(rad.get("beskrivning"));
+            txtAdress.setText(rad.get("adress"));
+            txtEpost.setText(rad.get("epost"));
+            txtTelefon.setText(rad.get("telefon"));
+            txtStad.setText(rad.get("stad"));
+            txtChef.setText(rad.get("chef"));
+        }
+    } catch (Exception e) {
+        System.out.println("Fel vid hämtning: " + e.getMessage());
+    }
+}   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,47 +112,231 @@ public class AdminAvdelningUppgifter extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        jLabel6 = new javax.swing.JLabel();
+        btnSparaAvdelning = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtNamn = new javax.swing.JTextField();
+        txtBeskrivning = new javax.swing.JTextField();
+        txtAdress = new javax.swing.JTextField();
+        txtEpost = new javax.swing.JTextField();
+        txtTelefon = new javax.swing.JTextField();
+        txtStad = new javax.swing.JTextField();
+        txtChef = new javax.swing.JTextField();
+        cbAvdelningar = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel6.setText("Redigera Avdelningsuppgifter");
+
+        btnSparaAvdelning.setText("Spara");
+        btnSparaAvdelning.addActionListener(this::btnSparaAvdelningActionPerformed);
+
+        jLabel1.setText("Namn");
+
+        jLabel2.setText("Beskrivning");
+
+        jLabel3.setText("Adress");
+
+        jLabel4.setText("E-post");
+
+        jLabel5.setText("Telefon");
+
+        jLabel7.setText("Stad");
+
+        jLabel8.setText("Chef");
+
+        txtNamn.addActionListener(this::txtNamnActionPerformed);
+
+        cbAvdelningar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbAvdelningar.addActionListener(this::cbAvdelningarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSparaAvdelning))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(240, 240, 240)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 267, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel5))
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtTelefon)
+                                    .addComponent(txtNamn)
+                                    .addComponent(txtAdress)
+                                    .addComponent(txtEpost)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel8))
+                                        .addGap(66, 66, 66)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtStad)
+                                            .addComponent(txtChef)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(cbAvdelningar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addGap(8, 8, 8)
+                .addComponent(cbAvdelningar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel2)
+                                .addGap(16, 16, 16)))
+                        .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtEpost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtStad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtChef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addComponent(btnSparaAvdelning)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSparaAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaAvdelningActionPerformed
+        // TODO add your handling code here:
+        andraAvdelning();
+    }//GEN-LAST:event_btnSparaAvdelningActionPerformed
+
+    private void txtNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNamnActionPerformed
+
+    private void cbAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAvdelningarActionPerformed
+        // TODO add your handling code here:
+    try {
+        String valtNamn = cbAvdelningar.getSelectedItem().toString();
+        String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
+        
+        HashMap<String, String> rad = idb.fetchRow(fraga);
+        
+        if (rad != null) {
+            // Här sätter vi texten i fälten baserat på databasens kolumnnamn
+            txtNamn.setText(rad.get("namn"));
+            txtBeskrivning.setText(rad.get("beskrivning"));
+            txtAdress.setText(rad.get("adress"));
+            txtEpost.setText(rad.get("epost"));
+            txtTelefon.setText(rad.get("telefon"));
+            txtStad.setText(rad.get("stad"));
+            txtChef.setText(rad.get("chef"));
+        }
+    } catch (Exception e) {
+        // Vi loggar tyst eller visar ett meddelande om något går fel
+        System.out.println("Hämtningsfel: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_cbAvdelningarActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+   /**public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        //try {
+          // for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            //    if ("Nimbus".equals(info.getName())) {
+              //      javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                //    break;
+               // }
+            //}
+        //} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+          //  logger.log(java.util.logging.Level.SEVERE, null, ex);
+        //}
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AdminAvdelningUppgifter().setVisible(true));
-    }
+       //java.awt.EventQueue.invokeLater(() -> new AdminAvdelningUppgifter().setVisible(true));
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSparaAvdelning;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JComboBox<String> cbAvdelningar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtBeskrivning;
+    private javax.swing.JTextField txtChef;
+    private javax.swing.JTextField txtEpost;
+    private javax.swing.JTextField txtNamn;
+    private javax.swing.JTextField txtStad;
+    private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
 }

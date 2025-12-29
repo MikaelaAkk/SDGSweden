@@ -24,8 +24,8 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
     
     private void laggTillAvdelning() {
     try {
-        String namn = txtAvdNamn.getText();
-        String beskrivning = txtBeskrivning.getText();
+        String namn = btnAvdId.getText();
+        String beskrivning = btnPartner.getText();
         String nyttId = idb.getAutoIncrement("avdelning", "avdid");
 
         String fraga = "INSERT INTO avdelning (avdid, namn, beskrivning) VALUES (" + nyttId + ", '" + namn + "', '" + beskrivning + "')";
@@ -38,27 +38,23 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
     } // Denna stänger catch
 } // Denna stänger hela metoden laggTillAvdelning
     
-    private void andraAvdelning() {
+private void andraAvdelning() {
     try {
-        // Hämta värden från dina textfält
-        String id = txtAvdId.getText();
-        String nyttNamn = txtAvdNamn.getText();
-        String nyBeskrivning = txtBeskrivning.getText();
+        String nyttNamn = btnAvdId.getText();
+        String nyBeskrivning = btnPartner.getText();
+        
+        // Du måste definiera 'id' här! Exempelvis från ett textfält:
+        String id = btnAvdId.getText(); 
 
-        // Skapa SQL-frågan för att uppdatera (UPDATE)
-        // Vi ändrar namn och beskrivning där avdid matchar det användaren skrivit in
         String fraga = "UPDATE avdelning SET namn = '" + nyttNamn + "', beskrivning = '" + nyBeskrivning + "' WHERE avdid = " + id;
         
-        // Kör uppdateringen mot databasen
         idb.update(fraga);
-        
-        javax.swing.JOptionPane.showMessageDialog(null, "Avdelningen har uppdaterats!");
+        JOptionPane.showMessageDialog(null, "Avdelningen har uppdaterats!");
     } 
     catch (Exception ettFel) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Kunde inte uppdatera avdelningen!");
-        System.out.println(ettFel.getMessage());
-    } // Denna stänger catch
-} // Denna stänger hela metoden andraAvdelning
+        JOptionPane.showMessageDialog(null, "Kunde inte uppdatera!");
+    }
+}
    
     
         
@@ -73,68 +69,71 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtAvdNamn = new javax.swing.JTextField();
-        txtBeskrivning = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        txtAvdId = new javax.swing.JTextField();
+        btnLand = new javax.swing.JButton();
+        btnAvdId = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnPartner = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtAvdNamn.setText("txtAvdNamn");
+        btnLand.setText("Land");
+        btnLand.addActionListener(this::btnLandActionPerformed);
 
-        txtBeskrivning.setText("txtBeskrivning");
-        txtBeskrivning.addActionListener(this::txtBeskrivningActionPerformed);
+        btnAvdId.setText("Avdelning");
+        btnAvdId.addActionListener(this::btnAvdIdActionPerformed);
 
-        jButton1.setText("LaggTillAvdelning");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jLabel1.setText("Redigera uppgifter");
 
-        txtAvdId.setText("jTextField1");
+        btnPartner.setText("Partner");
+        btnPartner.addActionListener(this::btnPartnerActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(txtAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(jButton1)))
-                .addContainerGap(158, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 158, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnLand, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(141, 141, 141))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(txtAvdNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jButton1)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addComponent(btnAvdId)
+                .addGap(18, 18, 18)
+                .addComponent(btnPartner)
+                .addGap(18, 18, 18)
+                .addComponent(btnLand)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtBeskrivningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBeskrivningActionPerformed
+    private void btnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLandActionPerformed
+        new AdminLandUppgifter(idb).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLandActionPerformed
+
+    private void btnAvdIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtBeskrivningActionPerformed
+        new AdminAvdelningUppgifter(idb).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAvdIdActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:                                          
-    laggTillAvdelning(); // Lägg till denna rad här!
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnerActionPerformed
+        // TODO add your handling code here:
+        new AdminPartnerUppgifter(idb).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPartnerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,10 +163,10 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTextField txtAvdId;
-    private javax.swing.JTextField txtAvdNamn;
-    private javax.swing.JTextField txtBeskrivning;
+    private javax.swing.JButton btnAvdId;
+    private javax.swing.JButton btnLand;
+    private javax.swing.JButton btnPartner;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
 
