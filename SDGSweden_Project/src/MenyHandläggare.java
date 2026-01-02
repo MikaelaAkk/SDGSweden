@@ -92,7 +92,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-       new Handläggareprojekt(idb, inloggadAnvandare).setVisible(true);
+       new HandläggareProjekt(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
