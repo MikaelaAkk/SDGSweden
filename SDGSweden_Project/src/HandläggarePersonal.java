@@ -21,8 +21,34 @@ public class HandläggarePersonal extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        listaPersonalPaMinAvd();
     }
-
+    public void listaPersonalPaMinAvd(){
+        try{
+            String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
+           if(avdId != null){
+               String fraga = "SELECT namn FROM anstalld WHERE avdelning = " + avdId;
+               java.util.ArrayList<String>namnLista = idb.fetchColumn(fraga);
+               
+               if(namnLista != null){
+                   javax.swing.DefaultListModel<String>lista = new javax.swing.DefaultListModel<>();
+                   
+                   for(String namn : namnLista){
+                       lista.addElement(namn);
+                       
+                   }
+                   personalLista.setModel(lista);
+                   }
+               }
+     
+           } catch(InfException felMeddelande){
+               System.out.println("Det har uppstått ett fel!" + felMeddelande.getMessage());
+            
+            
+        }
+    
+        
+    }      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,24 +58,63 @@ public class HandläggarePersonal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        personalLista = new javax.swing.JList<>();
+        tillbakaTillMeny = new javax.swing.JButton();
+        titel = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        personalLista.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(personalLista);
+
+        tillbakaTillMeny.setText("Tillbaka");
+        tillbakaTillMeny.addActionListener(this::tillbakaTillMenyActionPerformed);
+
+        titel.setText("Personal på din avdelning:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tillbakaTillMeny)
+                    .addComponent(titel))
+                .addContainerGap(255, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titel)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addComponent(tillbakaTillMeny)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tillbakaTillMenyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaTillMenyActionPerformed
+       new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_tillbakaTillMenyActionPerformed
+
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> personalLista;
+    private javax.swing.JButton tillbakaTillMeny;
+    private javax.swing.JLabel titel;
     // End of variables declaration//GEN-END:variables
 }
