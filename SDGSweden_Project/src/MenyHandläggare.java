@@ -119,7 +119,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private void personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalActionPerformed
        new HandläggarePersonal(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
-    }
+    
     
     }//GEN-LAST:event_personalActionPerformed
 
