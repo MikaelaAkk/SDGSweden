@@ -29,7 +29,7 @@ public class Handläggareprojekt extends javax.swing.JFrame {
   private void hamtaMinaProjekt() {
     try {
         // Vi hämtar projektnamn, status och kostnad för de projekt där användaren är chef
-        // Vi använder en sub-query för att hitta rätt AID via e-posten
+        // Vi använder sql för att hitta rätt AID via e-posten
         String fraga = "SELECT projektnamn, status, kostnad FROM projekt " +
                        "WHERE projektchef = (SELECT aid FROM anstalld WHERE epost = '" + inloggadAnvandare + "')";
 
@@ -95,8 +95,8 @@ public class Handläggareprojekt extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(btnTillbaka)
                 .addGap(46, 46, 46))
