@@ -47,9 +47,9 @@ public class Handläggareprojekt extends javax.swing.JFrame {
                 sb.append("Budget: ").append(rad.get("kostnad")).append(" kr\n");
                 sb.append("------------------------------------------\n");
             }
-            txtProjektLista.setText(sb.toString());
+            txtMinaProjekt.setText(sb.toString());
         } else {
-            txtProjektLista.setText("Du står inte som chef för några projekt just nu.");
+            txtMinaProjekt.setText("Du står inte som chef för några projekt just nu.");
         }
     } catch (InfException ex) {
         javax.swing.JOptionPane.showMessageDialog(null, "Fel vid hämtning av projekt: " + ex.getMessage());
@@ -66,15 +66,15 @@ public class Handläggareprojekt extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtProjektLista = new javax.swing.JTextArea();
+        txtMinaProjekt = new javax.swing.JTextArea();
         btnTillbaka = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtProjektLista.setEditable(false);
-        txtProjektLista.setColumns(20);
-        txtProjektLista.setRows(5);
-        jScrollPane1.setViewportView(txtProjektLista);
+        txtMinaProjekt.setEditable(false);
+        txtMinaProjekt.setColumns(20);
+        txtMinaProjekt.setRows(5);
+        jScrollPane1.setViewportView(txtMinaProjekt);
 
         btnTillbaka.setText("jButton1");
 
@@ -133,6 +133,6 @@ public class Handläggareprojekt extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtProjektLista;
+    private javax.swing.JTextArea txtMinaProjekt;
     // End of variables declaration//GEN-END:variables
 }

@@ -42,6 +42,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
         hallbarhetsmål = new javax.swing.JButton();
         personal = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -76,6 +77,10 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 190, -1));
 
+        jButton5.setText("Avdelnings projekt");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 190, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -104,6 +109,12 @@ public class MenyHandläggare extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        new HandlaggareAvdProjekt(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
 
     
@@ -114,6 +125,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JButton personal;
