@@ -30,7 +30,7 @@ public class HandläggarePersonal extends javax.swing.JFrame {
                String fraga = "SELECT namn FROM anstalld WHERE avdelning = " + avdId;
                java.util.ArrayList<String>namnLista = idb.fetchColumn(fraga);
                
-               if(personalLista != null){
+               if(namnLista != null){
                    javax.swing.DefaultListModel<String>lista = new javax.swing.DefaultListModel<>();
                    
                    for(String namn : namnLista){
