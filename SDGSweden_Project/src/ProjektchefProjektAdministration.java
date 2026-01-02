@@ -19,6 +19,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefProjektAdministration.class.getName());
 private InfDB idDB;
 private int aid;
+private String projektnamn;
     /**
      * Creates new form ProjektchefAdministration
      */
@@ -27,8 +28,10 @@ private int aid;
     this.idDB = idb;
     this.aid = aid;
     initComponents();
+    this.projektnamn = projektnamn; 
+
     
-    fyllProjektLista("SELECT projektnamn FROM projekt");
+    fyllProjektLista("SELECT projektnamn FROM projekt WHERE projektchef = " + aid);
     
     }
 
@@ -99,14 +102,14 @@ private int aid;
             .addGroup(pnlLabelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(lblProjektadministration)
-                .addContainerGap(17521, Short.MAX_VALUE))
+                .addContainerGap(32502, Short.MAX_VALUE))
         );
         pnlLabelLayout.setVerticalGroup(
             pnlLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLabelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(lblProjektadministration)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlLabel, java.awt.BorderLayout.NORTH);
@@ -176,19 +179,6 @@ private int aid;
             .addGroup(pnlVansterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlVansterLayout.createSequentialGroup()
-                        .addComponent(lblBeskrivning)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblStartDatumInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnSeKostnadsstatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVansterLayout.createSequentialGroup()
-                        .addComponent(lblSlutdatum)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblSlutDatumInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRedigeraProjektUppgifter))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVansterLayout.createSequentialGroup()
                         .addComponent(lblStatusRubrik)
                         .addGap(43, 43, 43)
@@ -226,12 +216,27 @@ private int aid;
                                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnFiltreraPaStatus)
                                     .addComponent(btnFiltreraProjekt))))
-                        .addGap(0, 11, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlVansterLayout.createSequentialGroup()
+                        .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlVansterLayout.createSequentialGroup()
+                                .addComponent(lblBeskrivning)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblStartDatumInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(40, 40, 40)
+                                .addComponent(btnSeKostnadsstatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVansterLayout.createSequentialGroup()
+                                .addComponent(lblSlutdatum)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblSlutDatumInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRedigeraProjektUppgifter)))
+                        .addContainerGap())))
         );
         pnlVansterLayout.setVerticalGroup(
             pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlVansterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSokProjekt)
                     .addComponent(lblSokProjektFran)
@@ -244,15 +249,15 @@ private int aid;
                     .addComponent(lblFiltreraPåStatus)
                     .addComponent(cbStatusFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFiltreraPaStatus))
-                .addGap(31, 31, 31)
+                .addGap(28, 28, 28)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cbProjektVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStatusRubrik)
                     .addComponent(lblStatusInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBudgetRubrik)
                     .addComponent(lblBudgetInfo))
@@ -282,13 +287,16 @@ private int aid;
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(35, 35, 35)
                 .addComponent(pnlVanster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17314, Short.MAX_VALUE))
+                .addContainerGap(32672, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlVanster, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlVanster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pnlMain.add(jPanel2);
@@ -297,6 +305,49 @@ private int aid;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+   
+    private void btnFiltreraPaStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraPaStatusActionPerformed
+        String status = cbStatusFilter.getSelectedItem().toString();
+        String fraga;
+        if (status.equals("Visa alla")) {
+            fraga = "SELECT projektnamn FROM projekt";
+        } else {
+            fraga = "SELECT projektnamn FROM projekt WHERE status = '" + status + "'";
+        }
+        fyllProjektLista(fraga);
+    }//GEN-LAST:event_btnFiltreraPaStatusActionPerformed
+
+    private void btnFiltreraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraProjektActionPerformed
+        String start = jTextField1.getText();
+        String slut = jTextField2.getText();
+        String fraga = "SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'";
+        fyllProjektLista(fraga);
+
+    }//GEN-LAST:event_btnFiltreraProjektActionPerformed
+
+    private void btnRedigeraProjektUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraProjektUppgifterActionPerformed
+     String valtProjekt = cbProjektVal.getSelectedItem().toString();
+     new ProjektchefRedigeraProjekt(idDB, valtProjekt).setVisible(true);
+    }//GEN-LAST:event_btnRedigeraProjektUppgifterActionPerformed
+
+    private void cbProjektValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProjektValActionPerformed
+        if (cbProjektVal.getSelectedItem() != null) {
+            try {
+                String valtProjekt = cbProjektVal.getSelectedItem().toString();
+                var rad = idDB.fetchRow("SELECT * FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
+
+                lblStatusInfo.setText(rad.get("status"));
+                lblBudgetInfo.setText(rad.get("kostnad"));
+                lblStartDatumInfo.setText(rad.get("startdatum"));
+                lblSlutDatumInfo.setText(rad.get("slutdatum"));
+                lblBeskrivningInfo.setText(rad.get("beskrivning"));
+            } catch (Exception e) {
+                System.out.println("Kunde inte hämta info: " + e.getMessage());
+            }
+        }
+
+    }//GEN-LAST:event_cbProjektValActionPerformed
 
 private void fyllProjektLista(String sqlFraga) {
     try {
@@ -315,47 +366,6 @@ private void fyllProjektLista(String sqlFraga) {
     }
 }
     
-    private void btnRedigeraProjektUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraProjektUppgifterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRedigeraProjektUppgifterActionPerformed
-
-    private void btnFiltreraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraProjektActionPerformed
-  String start = jTextField1.getText();
-    String slut = jTextField2.getText();
-    String fraga = "SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'";
-    fyllProjektLista(fraga);
-    
-    }//GEN-LAST:event_btnFiltreraProjektActionPerformed
-
-    private void btnFiltreraPaStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraPaStatusActionPerformed
-        String status = cbStatusFilter.getSelectedItem().toString();
-    String fraga;
-    if (status.equals("Visa alla")) {
-        fraga = "SELECT projektnamn FROM projekt";
-    } else {
-        fraga = "SELECT projektnamn FROM projekt WHERE status = '" + status + "'";
-    }
-    fyllProjektLista(fraga);
-    }//GEN-LAST:event_btnFiltreraPaStatusActionPerformed
-
-    private void cbProjektValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProjektValActionPerformed
-        if (cbProjektVal.getSelectedItem() != null) {
-    try {
-        String valtProjekt = cbProjektVal.getSelectedItem().toString();
-        var rad = idDB.fetchRow("SELECT * FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
-        
-        lblStatusInfo.setText(rad.get("status"));
-        lblBudgetInfo.setText(rad.get("kostnad"));
-        lblStartDatumInfo.setText(rad.get("startdatum"));
-        lblSlutDatumInfo.setText(rad.get("slutdatum"));
-        lblBeskrivningInfo.setText(rad.get("beskrivning"));
-    } catch (Exception e) {
-        System.out.println("Kunde inte hämta info: " + e.getMessage());
-    } 
-        }
-    
-    }//GEN-LAST:event_cbProjektValActionPerformed
-
     /**
      * @param args the command line arguments
      */
