@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,14 +14,55 @@
 public class HandlaggareAvdProjekt extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandlaggareAvdProjekt.class.getName());
-
+    private InfDB idb;
+    private String inloggadAnvandare;
     /**
      * Creates new form HandlaggareAvdProjekt
      */
-    public HandlaggareAvdProjekt() {
+    public HandlaggareAvdProjekt(InfDB idb, String inloggadAnvandare) {
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
+private void uppdateraProjektLista() {
+    try {
+        // Kontrollera att något faktiskt är valt
+        if (cbStatus.getSelectedItem() == null) {
+            return;
+        }
+        
+        String valdStatus = cbStatus.getSelectedItem().toString();
+        
+        // Matchar exakt det första alternativet i din ComboBox
+        if (valdStatus.equals("Välj status")) {
+            return;
+        }
 
+        // 1. Hämta avdelnings-ID för den inloggade
+        String avdelningIdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
+        String avdelningId = idb.fetchSingle(avdelningIdFraga);
+
+        // 2. Hämta projekt baserat på status och avdelning
+        String fraga = "SELECT projektnamn FROM projekt " +
+                       "WHERE status = '" + valdStatus + "' " +
+                       "AND projektledare IN (SELECT aid FROM anstalld WHERE avdelning = " + avdelningId + ")";
+
+        ArrayList<String> projekt = idb.fetchColumn(fraga);
+
+        // 3. Rensa och fyll jTextArea1
+        jTextArea1.setText(""); 
+        if (projekt != null && !projekt.isEmpty()) {
+            for (String namn : projekt) {
+                jTextArea1.append(namn + "\n");
+            }
+        } else {
+            jTextArea1.setText("Inga projekt hittades med status: " + valdStatus);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +72,66 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblProjektAvd = new javax.swing.JLabel();
+        cbStatus = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        btnTillbaka = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblProjektAvd.setText("Projekt på min avdelning");
+
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj status", "Pågående", "Uppehåll", "Avslutat" }));
+        cbStatus.addActionListener(this::cbStatusActionPerformed);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        btnTillbaka.setText("Tillbaka till menyn");
+        btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnTillbaka)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProjektAvd))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(lblProjektAvd)
+                .addGap(18, 18, 18)
+                .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTillbaka)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+      uppdateraProjektLista();
+
+    }//GEN-LAST:event_cbStatusActionPerformed
+
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        // TODO add your handling code here:
+    new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+    this.dispose(); // Stänger ner detta fönster
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -69,5 +159,10 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTillbaka;
+    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lblProjektAvd;
     // End of variables declaration//GEN-END:variables
 }
