@@ -286,7 +286,7 @@ private String telefon;
 
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
     
-        new projektledareVisaStatistik(idb, aid).setVisible(true);
+      //  new projektledareVisaStatistik(idb, aid).setVisible(true);
     }//GEN-LAST:event_btnGåTillStatistikActionPerformed
 
     private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed
