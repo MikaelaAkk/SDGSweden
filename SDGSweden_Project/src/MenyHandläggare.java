@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import oru.inf.InfDB;
-import oru.inf.InfException;
+import oru.inf.InfException; 
 /**
  *
  * @author oliviacollin
@@ -71,6 +71,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
         getContentPane().add(hallbarhetsmål, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 190, -1));
 
         personal.setText("Personal");
+        personal.addActionListener(this::personalActionPerformed);
         getContentPane().add(personal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 190, -1));
 
         jButton2.setText("Sammarbets Partners");
@@ -114,6 +115,13 @@ public class MenyHandläggare extends javax.swing.JFrame {
         new HandlaggareAvdProjekt(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalActionPerformed
+       new HandläggarePersonal(idb, inloggadAnvandare).setVisible(true);
+       this.setVisible(false);
+    }
+    
+    }//GEN-LAST:event_personalActionPerformed
 
 
 
