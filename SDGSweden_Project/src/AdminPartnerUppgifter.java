@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import oru.inf.InfDB; 
+import javax.swing.JOptionPane;
 /**
  *
  * @author lucya
@@ -47,6 +48,7 @@ public class AdminPartnerUppgifter extends javax.swing.JFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Ändra uppgifter");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Ta bort uppgifter");
         jButton3.addActionListener(this::jButton3ActionPerformed);
@@ -125,34 +127,60 @@ public class AdminPartnerUppgifter extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    try {
-        // Vi hämtar värdena från de fält användaren skrivit i
-        String id = jTextField1.getText();
-        String namn = jTextField2.getText();
-        String stad = jTextField3.getText();
+       try {
+        String id = jTextField1.getText(); //
+        String namn = jTextField2.getText(); //
+        String stad = jTextField3.getText(); //
 
-        // Vi skapar SQL-frågan för att lägga till i tabellen 'partner'
-        String fraga = "INSERT INTO partner (pid, namn, stad) VALUES (" + id + ", '" + namn + "', '" + stad + "')";
+        String fraga = "INSERT INTO partner (pid, namn, stad) VALUES (" + id + ", '" + namn + "', '" + stad + "')"; //
+        idb.insert(fraga); //
         
-        // Kör frågan mot databasen
-        idb.insert(fraga);
-        
-        // Visa bekräftelse
-        javax.swing.JOptionPane.showMessageDialog(null, "Partnern har lagts till!");
+        javax.swing.JOptionPane.showMessageDialog(null, "Partnern har lagts till!"); //
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Ett fel uppstod: " + e.getMessage());
+        javax.swing.JOptionPane.showMessageDialog(null, "Fel: " + e.getMessage()); //
     }
-}
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        try {
+        String id = jTextField1.getText();
+        
+        // SQL för att ta bort partnern
+        String fraga = "DELETE FROM partner WHERE pid = " + id;
+        idb.delete(fraga);
+        
+        JOptionPane.showMessageDialog(null, "Partnern har tagits bort!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Kunde inte ta bort partnern. Kontrollera ID.");
+    }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtNamnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNamnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+      
+    try {
+        String id = jTextField1.getText();
+        String namn = jTextField2.getText();
+        String stad = jTextField3.getText();
+
+        // SQL för att uppdatera namn och stad för det angivna ID:t
+        String fraga = "UPDATE partner SET namn = '" + namn + "', stad = '" + stad + "' WHERE pid = " + id;
+        idb.update(fraga);
+        
+        JOptionPane.showMessageDialog(null, "Uppgifterna har uppdaterats!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Kunde inte uppdatera partnern.");
+    }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
