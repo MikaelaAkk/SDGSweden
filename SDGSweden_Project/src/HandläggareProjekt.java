@@ -3,21 +3,61 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import oru.inf.InfDB;
+import oru.inf.InfException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author oliviacollin
  */
 public class HandläggareProjekt extends javax.swing.JFrame {
+    private InfDB idb;
+    private String inloggadAnvandare; // Sparar e-postadressen
+    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandläggareProjekt.class.getName());
 
     /**
      * Creates new form HandläggareProjekt
      */
-    public HandläggareProjekt() {
+    public HandläggareProjekt(InfDB idb, String inloggadAnvandare) {
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        hamtaMinaProjekt(); // Anropar hämtningen direkt vid start
     }
 
+        private void hamtaMinaProjekt() {
+    try {
+        // SQL-fråga: Hämtar projekt där den inloggade är projektchef
+        String fraga = "SELECT projektnamn, status, kostnad FROM projekt " +
+                       "WHERE projektchef = (SELECT aid FROM anstalld WHERE epost = '" + inloggadAnvandare + "')";
+
+        // Hämtar listan med rader från databasen
+        ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(fraga);
+
+        if (projektLista != null && !projektLista.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Mina ledda projekt:\n");
+            sb.append("==========================================\n");
+
+            for (HashMap<String, String> rad : projektLista) {
+                sb.append("NAMN: ").append(rad.get("projektnamn")).append("\n");
+                sb.append("Status: ").append(rad.get("status")).append("\n");
+                sb.append("Budget: ").append(rad.get("kostnad")).append(" kr\n");
+                sb.append("------------------------------------------\n");
+            }
+            txtMinaProjekt.setText(sb.toString());
+        } else {
+            txtMinaProjekt.setText("Du står inte som projektchef för några projekt just nu.");
+        }
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + ex.getMessage());
+    }
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,47 +67,62 @@ public class HandläggareProjekt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtMinaProjekt = new javax.swing.JTextArea();
+        btnTillbaka = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtMinaProjekt.setColumns(20);
+        txtMinaProjekt.setRows(5);
+        jScrollPane1.setViewportView(txtMinaProjekt);
+
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(btnTillbaka)))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnTillbaka)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        // TODO add your handling code here:
+        // 1. Skapa en ny instans av huvudmenyn och skicka med idb och användaren
+    new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+    
+    // 2. Stäng ner det nuvarande fönstret (HandläggareProjekt)
+    this.dispose();
+    }//GEN-LAST:event_btnTillbakaActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new HandläggareProjekt().setVisible(true));
-    }
-
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTillbaka;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea txtMinaProjekt;
     // End of variables declaration//GEN-END:variables
 }
