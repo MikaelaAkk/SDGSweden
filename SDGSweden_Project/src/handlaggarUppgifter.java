@@ -70,6 +70,7 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
         txtTelefon = new javax.swing.JTextField();
         txtLosenord = new javax.swing.JPasswordField();
         btnSpara = new javax.swing.JButton();
+        tillbakaKnapp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,6 +95,9 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
         btnSpara.setText("Spara ändringar");
         btnSpara.addActionListener(this::btnSparaActionPerformed);
 
+        tillbakaKnapp.setText("Tillbaka");
+        tillbakaKnapp.addActionListener(this::tillbakaKnappActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,8 +121,11 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
                                 .addComponent(txtTelefon)
                                 .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                                 .addComponent(txtEpost)
-                                .addComponent(txtAdress)))))
-                .addContainerGap(83, Short.MAX_VALUE))
+                                .addComponent(txtAdress))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(tillbakaKnapp)))
+                .addContainerGap(253, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +150,9 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
                     .addComponent(txtLosenord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addComponent(btnSpara)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addComponent(tillbakaKnapp)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -167,6 +176,11 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     }  
     }//GEN-LAST:event_btnSparaActionPerformed
 
+    private void tillbakaKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaKnappActionPerformed
+      new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_tillbakaKnappActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSpara;
@@ -175,6 +189,7 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton tillbakaKnapp;
     private javax.swing.JTextField txtAdress;
     private javax.swing.JTextField txtEpost;
     private javax.swing.JPasswordField txtLosenord;

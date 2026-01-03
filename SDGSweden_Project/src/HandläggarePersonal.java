@@ -27,7 +27,7 @@ public class HandläggarePersonal extends javax.swing.JFrame {
         try{
             String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
            if(avdId != null){
-               String fraga = "SELECT namn FROM anstalld WHERE avdelning = " + avdId;
+               String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = " + "'" + avdId + "'";
                java.util.ArrayList<String>namnLista = idb.fetchColumn(fraga);
                
                if(namnLista != null){
@@ -65,11 +65,6 @@ public class HandläggarePersonal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        personalLista.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(personalLista);
 
         tillbakaTillMeny.setText("Tillbaka");
@@ -84,10 +79,13 @@ public class HandläggarePersonal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tillbakaTillMeny)
-                    .addComponent(titel))
-                .addContainerGap(255, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tillbakaTillMeny)
+                            .addComponent(titel))
+                        .addGap(0, 419, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,8 +93,8 @@ public class HandläggarePersonal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(titel)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(tillbakaTillMeny)
                 .addContainerGap())
         );
