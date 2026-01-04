@@ -24,43 +24,75 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
+    
 private void uppdateraProjektLista() {
     try {
-        // Kontrollera att något faktiskt är valt
-        if (cbStatus.getSelectedItem() == null) {
+        // 1. Kontrollera inloggad användare
+        if (inloggadAnvandare == null || inloggadAnvandare.isEmpty()) {
             return;
         }
+
+        // 2. Hämta avdelnings-ID för den inloggade
+        String avdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
+        String avdelningId = idb.fetchSingle(avdFraga);
         
+        if (avdelningId == null) {
+            jTextArea1.setText("Kunde inte hitta din avdelning.");
+            return;
+        }
+
+        // 3. Hämta alla anställda (aid) på den avdelningen
+        String anstalldaFraga = "SELECT aid FROM anstalld WHERE avdelning = '" + avdelningId + "'";
+        ArrayList<String> allaAid = idb.fetchColumn(anstalldaFraga);
+
+        if (allaAid == null || allaAid.isEmpty()) {
+            jTextArea1.setText("Inga anställda hittades på din avdelning.");
+            return;
+        }
+
+        // 4. Formatera ID-listan med fnuttar: ('3','31','32'...)
+        ArrayList<String> formateradeAid = new ArrayList<>();
+        for (String aid : allaAid) {
+            if (aid != null) {
+                formateradeAid.add("'" + aid.trim() + "'");
+            }
+        }
+        String aidLista = String.join(",", formateradeAid);
+
+        // 5. Hämta vald status och hantera Å-problemet
+        if (cbStatus.getSelectedItem() == null) return;
         String valdStatus = cbStatus.getSelectedItem().toString();
-        
-        // Matchar exakt det första alternativet i din ComboBox
         if (valdStatus.equals("Välj status")) {
+            jTextArea1.setText("");
             return;
         }
 
-        // 1. Hämta avdelnings-ID för den inloggade
-        String avdelningIdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
-        String avdelningId = idb.fetchSingle(avdelningIdFraga);
+        String statusFilter = valdStatus;
+        if (valdStatus.equalsIgnoreCase("Pågående")) {
+            statusFilter = "P%g%ende";
+        }
 
-        // 2. Hämta projekt baserat på status och avdelning
+        // 6. Slutgiltig SQL - Nu med 'projektchef'
         String fraga = "SELECT projektnamn FROM projekt " +
-                       "WHERE status = '" + valdStatus + "' " +
-                       "AND projektledare IN (SELECT aid FROM anstalld WHERE avdelning = " + avdelningId + ")";
+                       "WHERE status LIKE '" + statusFilter + "' " +
+                       "AND projektchef IN (" + aidLista + ")";
 
+        System.out.println("DEBUG - Kör SQL: " + fraga);
         ArrayList<String> projekt = idb.fetchColumn(fraga);
 
-        // 3. Rensa och fyll jTextArea1
+        // 7. Visa resultatet
         jTextArea1.setText(""); 
         if (projekt != null && !projekt.isEmpty()) {
             for (String namn : projekt) {
                 jTextArea1.append(namn + "\n");
             }
         } else {
-            jTextArea1.setText("Inga projekt hittades med status: " + valdStatus);
+            jTextArea1.setText("Inga projekt hittades för " + valdStatus + " på din avdelning.");
         }
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Fel vid filtrering: " + e.getMessage());
+        System.out.println("FEL: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Ett fel uppstod: " + e.getMessage());
     }
 }
     /**
@@ -82,7 +114,7 @@ private void uppdateraProjektLista() {
 
         lblProjektAvd.setText("Projekt på min avdelning");
 
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj status", "Pågående", "Uppehåll", "Avslutat" }));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj status", "Pågående", "Planerat", "Avslutat" }));
         cbStatus.addActionListener(this::cbStatusActionPerformed);
 
         jTextArea1.setColumns(20);
