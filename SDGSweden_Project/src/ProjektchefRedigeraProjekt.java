@@ -35,7 +35,7 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
        
        
        this.setLocationRelativeTo(null);
-       
+       fyllProjektData();
      jLabel1.setText("REDIGERA: " + projektnamn.toUpperCase());   
      
         
@@ -298,8 +298,8 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvbrytActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-       new ProjektchefProjektAdministration(idDB, aid).setVisible(true);
-       this.dispose();
+       new ProjektchefProjektAdministration(idDB, aid, "").setVisible(true); 
+    this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**

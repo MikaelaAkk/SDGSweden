@@ -150,6 +150,7 @@ private String epost;
         btnRedigeraProjektUppgifter.addActionListener(this::btnRedigeraProjektUppgifterActionPerformed);
 
         btnSeKostnadsstatistik.setText("Se statistik");
+        btnSeKostnadsstatistik.addActionListener(this::btnSeKostnadsstatistikActionPerformed);
 
         lblSokProjekt.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         lblSokProjekt.setText("Sök projekt (datum):");
@@ -365,6 +366,15 @@ private String epost;
       new MenyProjektChef(idDB, epost).setVisible(true);
       this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
+
+    private void btnSeKostnadsstatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKostnadsstatistikActionPerformed
+     new ProjektchefProjektStatistik(idDB, aid).setVisible(true);
+  
+        ProjektchefProjektStatistik statistikFonster = new ProjektchefProjektStatistik(idDB, aid);
+    statistikFonster.setLocationRelativeTo(null);
+    statistikFonster.setVisible(true);
+    
+    }//GEN-LAST:event_btnSeKostnadsstatistikActionPerformed
 
 private void fyllProjektLista(String sqlFraga) {
     try {
