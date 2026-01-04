@@ -3,13 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
+
+import oru.inf.InfDB;
+import oru.inf.InfException; 
 /**
+
  *
  * @author oliviacollin
  */
@@ -18,6 +23,7 @@ public class HandläggareProjekt extends javax.swing.JFrame {
     private String inloggadAnvandare; // Sparar e-postadressen
     
     
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandläggareProjekt.class.getName());
 
     /**
