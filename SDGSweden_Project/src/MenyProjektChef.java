@@ -170,7 +170,7 @@ private String telefon;
                             .addGroup(pnlMinProfilLayout.createSequentialGroup()
                                 .addComponent(lblLosenord)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
+                                .addComponent(txtLosenord, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                             .addGroup(pnlMinProfilLayout.createSequentialGroup()
                                 .addGroup(pnlMinProfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblAdress)
@@ -226,8 +226,8 @@ private String telefon;
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                                    .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbInloggadAnvandare))
                     .addGroup(layout.createSequentialGroup()
@@ -259,7 +259,7 @@ private String telefon;
                         .addGap(28, 28, 28)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
@@ -278,10 +278,12 @@ private String telefon;
     }//GEN-LAST:event_btnLoggaUtActionPerformed
 
     private void btnGåTillAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillAdminActionPerformed
-    ProjektchefProjektAdministration adminFonster = new ProjektchefProjektAdministration(idb, aid);
-    adminFonster.setVisible(true);
+    ProjektchefProjektAdministration adminFonster = new ProjektchefProjektAdministration(idb, aid, inloggadEpost);
     adminFonster.setLocationRelativeTo(null);
-
+    adminFonster.setVisible(true);
+    
+     this.dispose();
+    
     }//GEN-LAST:event_btnGåTillAdminActionPerformed
 
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
