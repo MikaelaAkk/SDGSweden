@@ -44,8 +44,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnGåTillAdmin" pref="152" max="32767" attributes="0"/>
-                                  <Component id="btnGåTillStatistik" max="32767" attributes="0"/>
+                                  <Component id="btnGåTillAdmin" max="32767" attributes="0"/>
+                                  <Component id="btnGåTillStatistik" pref="152" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -91,7 +91,7 @@
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="92" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btnGåTillAdmin" min="-2" pref="46" max="-2" attributes="0"/>
+                      <Component id="btnGåTillAdmin" min="-2" pref="34" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnGåTillStatistik" min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>

@@ -17,17 +17,52 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     
     private InfDB idDB;
     private String projektnamn;
+    private String valtProjekt;
+    private int aid;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefRedigeraProjekt.class.getName());
 
+    
     /**
      * Creates new form ProjektchefRedigeraProjekt
      */
     public ProjektchefRedigeraProjekt(InfDB idDB, String projektnamn) {
+        
         this.idDB = idDB;
         this.projektnamn = projektnamn;
+        this.aid = aid;
+       
         initComponents();
+       
+       
+       this.setLocationRelativeTo(null);
+       
+     jLabel1.setText("REDIGERA: " + projektnamn.toUpperCase());   
+     
+        
     }
     
+    private void fyllProjektData() {
+    try {
+       
+        String sql = "SELECT * FROM projekt WHERE projektnamn = '" + projektnamn + "'";
+        HashMap<String, String> projektData = idDB.fetchRow(sql);
+
+        if (projektData != null) {
+          
+            txtNamn.setText(projektData.get("projektnamn"));
+            txtBeskrivning.setText(projektData.get("beskrivning"));
+            txtBudget.setText(projektData.get("kostnad"));
+            txtStartdatum.setText(projektData.get("startdatum"));
+            txtSlutdatum.setText(projektData.get("slutdatum"));
+            txtStatus.setText(projektData.get("status"));
+            
+            jLabel1.setText("Redigera projekt: " + projektnamn);
+            
+        }
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(null, "Kunde inte hämta projektdata!");
+    }
+}
 
     
 
@@ -45,8 +80,21 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
         pnlMain = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        lblStatus = new javax.swing.JLabel();
+        txtStatus = new javax.swing.JTextField();
+        lblBudget = new javax.swing.JLabel();
+        lblStartdatum = new javax.swing.JLabel();
+        lblSlutdatum = new javax.swing.JLabel();
+        lblBeskrivning = new javax.swing.JLabel();
+        txtBudget = new javax.swing.JTextField();
+        txtStartdatum = new javax.swing.JTextField();
+        txtSlutdatum = new javax.swing.JTextField();
+        txtBeskrivning = new javax.swing.JTextField();
+        btnAvbryt = new javax.swing.JButton();
+        btnSparaÄndringar = new javax.swing.JButton();
+        lblNamn = new javax.swing.JLabel();
+        txtNamn = new javax.swing.JTextField();
+        btnTillbaka = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,7 +104,7 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 591, Short.MAX_VALUE)
+            .addGap(0, 726, Short.MAX_VALUE)
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -69,14 +117,33 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Redigera projektuppgifter");
+        jLabel1.setText("Redigera projektuppgifter: [Namn]");
         jLabel1.setToolTipText("");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        jLabel2.setText("jLabel2");
+        lblStatus.setText("Status:");
 
-        jTextField1.setText("jTextField1");
+        txtStatus.addActionListener(this::txtStatusActionPerformed);
+
+        lblBudget.setText("Budget:");
+
+        lblStartdatum.setText("Startdatum:");
+
+        lblSlutdatum.setText("Slutdatum: ");
+
+        lblBeskrivning.setText("Beskrivning:");
+
+        btnAvbryt.setText("Avbryt");
+        btnAvbryt.addActionListener(this::btnAvbrytActionPerformed);
+
+        btnSparaÄndringar.setText("Spara Ändringar");
+        btnSparaÄndringar.addActionListener(this::btnSparaÄndringarActionPerformed);
+
+        lblNamn.setText("Namn:");
+
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -84,19 +151,71 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(85, 85, 85)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblBeskrivning)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                        .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblSlutdatum)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtSlutdatum, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblStartdatum)
+                        .addGap(50, 50, 50)
+                        .addComponent(txtStartdatum))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblBudget)
+                        .addGap(72, 72, 72)
+                        .addComponent(txtBudget))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblStatus)
+                            .addComponent(lblNamn))
+                        .addGap(76, 76, 76)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtStatus)
+                            .addComponent(txtNamn)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnTillbaka)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAvbryt)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSparaÄndringar)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(254, Short.MAX_VALUE))
+                    .addComponent(lblNamn)
+                    .addComponent(txtNamn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStatus, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBudget, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtBudget, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStartdatum, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtStartdatum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSlutdatum, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtSlutdatum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBeskrivning)
+                    .addComponent(txtBeskrivning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTillbaka)
+                    .addComponent(btnAvbryt)
+                    .addComponent(btnSparaÄndringar)))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -105,12 +224,12 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67))
+                .addGap(76, 76, 76))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,13 +238,69 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaÄndringarActionPerformed
+    String nyttNamn = txtNamn.getText();
+    String nyBudgetStr = txtBudget.getText();
+    String nyBeskrivning = txtBeskrivning.getText();
+    String start = txtStartdatum.getText();
+    String slut = txtSlutdatum.getText();
+    String status = txtStatus.getText();   
+        
+    if (nyttNamn.isEmpty() || nyBudgetStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Namn och budget måste fyllas i!");
+        return;
+    }
+    
+    double budgetSiffra;
+    try {
+        budgetSiffra = Double.parseDouble(nyBudgetStr);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Budgeten måste vara ett tal (t.ex. 5000 eller 5000.50)");
+        return; 
+    }
+    
+       try {
+      
+           String sql = "UPDATE projekt SET " +
+        "projektnamn = '" + nyttNamn + "', " +
+        "beskrivning = '" + nyBeskrivning + "', " +
+        "startdatum = '" + start + "', " +
+        "slutdatum = '" + slut + "', " +
+        "kostnad = " + budgetSiffra + ", " +
+        "status = '" + status + "' " +
+        "WHERE projektnamn = '" + this.projektnamn + "'";
+        
+        idDB.update(sql);
+        JOptionPane.showMessageDialog(this, "Projektet har uppdaterats!");
+        this.dispose(); 
+        this.projektnamn = nyttNamn;
+        
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Kunde inte spara: " + e.getMessage());
+    
+       }
+    }//GEN-LAST:event_btnSparaÄndringarActionPerformed
+
+    private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
+        
+    }//GEN-LAST:event_txtStatusActionPerformed
+
+    private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnAvbrytActionPerformed
+
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+       new ProjektchefProjektAdministration(idDB, aid).setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,11 +309,24 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAvbryt;
+    private javax.swing.JButton btnSparaÄndringar;
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblBeskrivning;
+    private javax.swing.JLabel lblBudget;
+    private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblSlutdatum;
+    private javax.swing.JLabel lblStartdatum;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JTextField txtBeskrivning;
+    private javax.swing.JTextField txtBudget;
+    private javax.swing.JTextField txtNamn;
+    private javax.swing.JTextField txtSlutdatum;
+    private javax.swing.JTextField txtStartdatum;
+    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }
