@@ -29,47 +29,39 @@ public class SökProjektDatum extends javax.swing.JFrame {
         jTextField2.setText("");
     }
     // Metoden som kontrollerar att datumet är rätt skrivet
-    private boolean valideraDatum(String datum) {
-        try {
-            LocalDate.parse(datum);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private void sokProjekt() {
-        String start = txtStart.getText().trim();
-        String slut = jTextField2.getText().trim(); // Matchar designen nu
-
-        if (!valideraDatum(start) || !valideraDatum(slut)) {
-            JOptionPane.showMessageDialog(this, "Ange datum som YYYY-MM-DD (t.ex. 2023-01-01)");
-            return;
-        }
-
-        try {
-            String avdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
-            String avdId = idb.fetchSingle(avdFraga);
-
-            String fraga = "SELECT projektnamn, startdatum FROM projekt " +
-                           "WHERE startdatum BETWEEN '" + start + "' AND '" + slut + "' " +
-                           "AND status = 'Pågående' " +
-                           "AND projektchef IN (SELECT aid FROM anstalld WHERE avdelning = " + avdId + ")";
-
-            ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(fraga);
+private void sokProjekt() {
+        // Vi anropar Valideringsklass2 eftersom det är där vi sparade metoden
+        if (Valideringsklass2.arGiltigtDatum(txtStart) && Valideringsklass2.arGiltigtDatum(jTextField2)) {
             
-            jTextArea1.setText("Aktiva projekt på avdelning " + avdId + ":\n"); // Matchar designen
-            jTextArea1.append("------------------------------------------\n");
+            String start = txtStart.getText().trim();
+            String slut = jTextField2.getText().trim();
 
-            if (projektLista != null && !projektLista.isEmpty()) {
-                for (HashMap<String, String> rad : projektLista) {
-                    jTextArea1.append(rad.get("projektnamn") + " | Start: " + rad.get("startdatum") + "\n");
+            try {
+                // 1. Hämta avdelnings-ID för den inloggade
+                String avdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
+                String avdId = idb.fetchSingle(avdFraga);
+
+                // 2. SQL-fråga för att hitta projekt inom intervallet för rätt avdelning
+                String fraga = "SELECT projektnamn, startdatum FROM projekt " +
+                               "WHERE startdatum BETWEEN '" + start + "' AND '" + slut + "' " +
+                               "AND status = 'Pågående' " +
+                               "AND projektchef IN (SELECT aid FROM anstalld WHERE avdelning = " + avdId + ")";
+
+                ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(fraga);
+                
+                jTextArea1.setText("Aktiva projekt på avdelning " + avdId + ":\n");
+                jTextArea1.append("------------------------------------------\n");
+
+                if (projektLista != null && !projektLista.isEmpty()) {
+                    for (HashMap<String, String> rad : projektLista) {
+                        jTextArea1.append(rad.get("projektnamn") + " | Start: " + rad.get("startdatum") + "\n");
+                    }
+                } else {
+                    jTextArea1.append("Inga aktiva projekt hittades för denna period.");
                 }
-            } else {
-                jTextArea1.append("Inga aktiva projekt hittades för denna period.");
+            } catch (InfException e) {
+                JOptionPane.showMessageDialog(this, "Databasfel: " + e.getMessage());
             }
-        } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Databasfel: " + e.getMessage());
         }
     }
     /**
