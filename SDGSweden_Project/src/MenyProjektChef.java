@@ -129,7 +129,7 @@ private String telefon;
         btnGåTillAdmin.setText("Projektaministration");
         btnGåTillAdmin.addActionListener(this::btnGåTillAdminActionPerformed);
 
-        btnGåTillStatistik.setText("Visa Statistik");
+        btnGåTillStatistik.setText("Visa projektstatistik");
         btnGåTillStatistik.addActionListener(this::btnGåTillStatistikActionPerformed);
 
         pnlMinProfil.setBorder(javax.swing.BorderFactory.createTitledBorder("Min Profil"));
@@ -288,8 +288,10 @@ private String telefon;
     }//GEN-LAST:event_btnGåTillAdminActionPerformed
 
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
-    
-      //  new projektledareVisaStatistik(idb, aid).setVisible(true);
+    ProjektchefProjektStatistik statistikFonster = new ProjektchefProjektStatistik(idb, aid);
+    statistikFonster.setLocationRelativeTo(null); // Centrera
+    statistikFonster.setVisible(true);
+      
     }//GEN-LAST:event_btnGåTillStatistikActionPerformed
 
     private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed

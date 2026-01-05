@@ -66,7 +66,6 @@ private String epost;
         lblSlutDatumInfo = new javax.swing.JLabel();
         lblBeskrivningInfo = new javax.swing.JLabel();
         btnRedigeraProjektUppgifter = new javax.swing.JButton();
-        btnSeKostnadsstatistik = new javax.swing.JButton();
         lblSokProjekt = new javax.swing.JLabel();
         lblSokProjektFran = new javax.swing.JLabel();
         lblSokProjektTill = new javax.swing.JLabel();
@@ -149,9 +148,6 @@ private String epost;
         btnRedigeraProjektUppgifter.setText("Ändra projektuppgifter");
         btnRedigeraProjektUppgifter.addActionListener(this::btnRedigeraProjektUppgifterActionPerformed);
 
-        btnSeKostnadsstatistik.setText("Se statistik");
-        btnSeKostnadsstatistik.addActionListener(this::btnSeKostnadsstatistikActionPerformed);
-
         lblSokProjekt.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         lblSokProjekt.setText("Sök projekt (datum):");
 
@@ -200,8 +196,7 @@ private String epost;
                                 .addComponent(lblBeskrivning)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblStartDatumInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(40, 40, 40)
-                                .addComponent(btnSeKostnadsstatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(200, 200, 200))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVansterLayout.createSequentialGroup()
                                 .addComponent(lblSlutdatum)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -282,9 +277,7 @@ private String epost;
                             .addComponent(btnRedigeraProjektUppgifter)
                             .addComponent(lblSlutdatum)
                             .addComponent(lblSlutDatumInfo))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSeKostnadsstatistik)
-                        .addGap(12, 12, 12))
+                        .addGap(53, 53, 53))
                     .addGroup(pnlVansterLayout.createSequentialGroup()
                         .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblBeskrivning)
@@ -367,15 +360,6 @@ private String epost;
       this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
-    private void btnSeKostnadsstatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeKostnadsstatistikActionPerformed
-     new ProjektchefProjektStatistik(idDB, aid).setVisible(true);
-  
-        ProjektchefProjektStatistik statistikFonster = new ProjektchefProjektStatistik(idDB, aid);
-    statistikFonster.setLocationRelativeTo(null);
-    statistikFonster.setVisible(true);
-    
-    }//GEN-LAST:event_btnSeKostnadsstatistikActionPerformed
-
 private void fyllProjektLista(String sqlFraga) {
     try {
         cbProjektVal.removeAllItems();
@@ -402,7 +386,6 @@ private void fyllProjektLista(String sqlFraga) {
     private javax.swing.JButton btnFiltreraPaStatus;
     private javax.swing.JButton btnFiltreraProjekt;
     private javax.swing.JButton btnRedigeraProjektUppgifter;
-    private javax.swing.JButton btnSeKostnadsstatistik;
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> cbProjektVal;
     private javax.swing.JComboBox<String> cbStatusFilter;

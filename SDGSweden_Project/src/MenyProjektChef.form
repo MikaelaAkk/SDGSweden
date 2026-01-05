@@ -161,7 +161,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnG&#xe5;TillStatistik">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Visa Statistik"/>
+        <Property name="text" type="java.lang.String" value="Visa projektstatistik"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnG&#xe5;TillStatistikActionPerformed"/>
