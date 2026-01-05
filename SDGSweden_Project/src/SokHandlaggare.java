@@ -26,14 +26,27 @@ public class SokHandlaggare extends javax.swing.JFrame {
 public void sokHandlaggare(){
     String sokInfo = sokRuta.getText();
     try {
-        String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = ' " + inloggadAnvandare + "'");
+        String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
     String sql = "SELECT namn, epost, telefonnummer FROM anstalld " + "WHERE avdelning = " + avdId + " " + 
-            "AND (namn LIKE '%" + sokInfo + "%' OR epost LIKE'&" + sokInfo + "%')";
+            "AND (namn LIKE '%" + sokInfo + "%' OR epost LIKE'%" + sokInfo + "%')";
     ArrayList<HashMap<String, String>>infoResultat = idb.fetchRows(sql);
-    info(infoResultat);
+    visaInfo(infoResultat);
     }catch (InfException ex){
         System.out.println("Söknings Fel: " + ex.getMessage());
     }
+}
+public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
+    info.setText("");
+    if(handlaggarInfo == null || handlaggarInfo.isEmpty()){
+       info.append("Det finns inga handläggare på din avdelning som matchar din sökning");
+        return; 
+    } 
+       
+    for(HashMap<String, String> rader : handlaggarInfo){
+        info.append("Namn: " + rader.get("namn"));
+        info.append("E-post: " + rader.get("epost"));
+        info.append("Telefonnummer: " + rader.get("telefonnummer"));
+}
 }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,11 +59,17 @@ public void sokHandlaggare(){
 
         sokKnapp = new javax.swing.JButton();
         sokRuta = new javax.swing.JTextField();
-        info = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        info = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         sokKnapp.setText("Sök");
+        sokKnapp.addActionListener(this::sokKnappActionPerformed);
+
+        info.setColumns(20);
+        info.setRows(5);
+        jScrollPane1.setViewportView(info);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,9 +84,9 @@ public void sokHandlaggare(){
                         .addGap(150, 150, 150)
                         .addComponent(sokKnapp))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(75, Short.MAX_VALUE))
+                        .addGap(69, 69, 69)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,13 +95,22 @@ public void sokHandlaggare(){
                 .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(sokKnapp)
-                .addGap(45, 45, 45)
-                .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void sokKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokKnappActionPerformed
+     if (Valideringsklass2.ifylltTxtFalt(sokRuta)){
+         sokHandlaggare();
+     }
+     else { 
+         info.setText("Vänligen fyll i namn eller epost på den handläggare du söker efter. ");
+     }
+    }//GEN-LAST:event_sokKnappActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,7 +138,8 @@ public void sokHandlaggare(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane info;
+    private javax.swing.JTextArea info;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton sokKnapp;
     private javax.swing.JTextField sokRuta;
     // End of variables declaration//GEN-END:variables
