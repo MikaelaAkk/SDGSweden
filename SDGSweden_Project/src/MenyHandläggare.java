@@ -20,11 +20,15 @@ public class MenyHandläggare extends javax.swing.JFrame {
      */
 
     public MenyHandläggare(InfDB idb, String inloggadAnvandare) {
-        initComponents();
-        this.idb = idb;
-        this.inloggadAnvandare = inloggadAnvandare;
-        lblInloggad.setText("Inloggad som: " + inloggadAnvandare);    
-    }
+    // Sätt variablerna först
+    this.idb = idb;
+    this.inloggadAnvandare = inloggadAnvandare;
+    
+    initComponents();
+    
+    // Uppdatera etiketten
+    lblInloggad.setText("Inloggad som: " + inloggadAnvandare);    
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,6 +47,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
         personal = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -64,7 +70,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         jButton4.setText("Logga ut");
         jButton4.addActionListener(this::jButton4ActionPerformed);
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, -1, -1));
 
         hallbarhetsmål.setText("Hållbarhetsmålen");
         hallbarhetsmål.addActionListener(this::hallbarhetsmålActionPerformed);
@@ -81,6 +87,14 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton5.setText("Avdelnings projekt");
         jButton5.addActionListener(this::jButton5ActionPerformed);
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 190, -1));
+
+        jButton6.setText("Sök projekt");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 190, -1));
+
+        jButton7.setText("Sök handläggare");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 190, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -107,7 +121,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    new HandlaggarePartner(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -123,6 +138,18 @@ public class MenyHandläggare extends javax.swing.JFrame {
     
     }//GEN-LAST:event_personalActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        // Öppnar det nya fönstret och skickar med databasen och användaren
+    new SökProjektDatum(idb, inloggadAnvandare).setVisible(true);
+    this.dispose(); // Stänger menyn
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+      new SokHandlaggare(idb, inloggadAnvandare).setVisible(true);
+      this.setVisible(false);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
 
 
     
@@ -134,6 +161,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JButton personal;

@@ -24,7 +24,7 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
-    
+     
 private void uppdateraProjektLista() {
     try {
         // 1. Kontrollera inloggad användare
