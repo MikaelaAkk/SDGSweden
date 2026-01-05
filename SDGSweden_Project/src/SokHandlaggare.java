@@ -4,6 +4,8 @@
  */
 import oru.inf.InfDB;
 import oru.inf.InfException; 
+import java.util.ArrayList;
+import java.util.HashMap;
 /**
  *
  * @author User
@@ -21,7 +23,18 @@ public class SokHandlaggare extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
-
+public void sokHandlaggare(){
+    String sokInfo = sokRuta.getText();
+    try {
+        String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = ' " + inloggadAnvandare + "'");
+    String sql = "SELECT namn, epost, telefonnummer FROM anstalld " + "WHERE avdelning = " + avdId + " " + 
+            "AND (namn LIKE '%" + sokInfo + "%' OR epost LIKE'&" + sokInfo + "%')";
+    ArrayList<HashMap<String, String>>infoResultat = idb.fetchRows(sql);
+    info(infoResultat);
+    }catch (InfException ex){
+        System.out.println("Söknings Fel: " + ex.getMessage());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
