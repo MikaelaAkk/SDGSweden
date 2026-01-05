@@ -27,8 +27,8 @@ public void sokHandlaggare(){
     String sokInfo = sokRuta.getText();
     try {
         String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
-    String sql = "SELECT namn, epost, telefonnummer FROM anstalld " + "WHERE avdelning = " + avdId + " " + 
-            "AND (namn LIKE '%" + sokInfo + "%' OR epost LIKE'%" + sokInfo + "%')";
+    String sql = "SELECT fornamn, efternamn, epost, telefon FROM anstalld " + "WHERE avdelning = " + avdId + " " + 
+            "AND (fornamn LIKE '%" + sokInfo + "%' OR epost LIKE '%" + sokInfo + "%')";
     ArrayList<HashMap<String, String>>infoResultat = idb.fetchRows(sql);
     visaInfo(infoResultat);
     }catch (InfException ex){
@@ -43,9 +43,10 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
     } 
        
     for(HashMap<String, String> rader : handlaggarInfo){
-        info.append("Namn: " + rader.get("namn"));
-        info.append("E-post: " + rader.get("epost"));
-        info.append("Telefonnummer: " + rader.get("telefonnummer"));
+        info.append("Namn: " + rader.get("fornamn") + "\n");
+        info.append("Efternamn: " + rader.get("efternamn") + "\n");
+        info.append("E-post: " + rader.get("epost") + "\n");
+        info.append("Telefonnummer: " + rader.get("telefon")+ "\n");
 }
 }
     /**
@@ -61,6 +62,7 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
         sokRuta = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         info = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +73,8 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
         info.setRows(5);
         jScrollPane1.setViewportView(info);
 
+        jLabel1.setText("Sök efter handläggare på din avdelning här!");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,24 +82,32 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(150, 150, 150)
+                                .addComponent(sokKnapp))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(99, 99, 99)
+                                .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 80, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(sokKnapp))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
+                .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sokKnapp)
-                .addGap(42, 42, 42)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -139,6 +151,7 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea info;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton sokKnapp;
     private javax.swing.JTextField sokRuta;

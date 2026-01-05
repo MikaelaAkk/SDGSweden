@@ -68,6 +68,14 @@ public class Valideringsklass2 {
             return false;
         }
     }
+    public static boolean ifylltTxtFalt(javax.swing.JTextField faltAttTesta){
+        boolean resultat = true;
+        if (faltAttTesta.getText().trim().isEmpty()){
+            resultat = false;
+            
+        }
+        return resultat; 
+    }
 }
 
     // Variables declaration - do not modify                     
