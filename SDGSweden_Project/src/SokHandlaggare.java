@@ -63,6 +63,7 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
         jScrollPane1 = new javax.swing.JScrollPane();
         info = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +75,9 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
         jScrollPane1.setViewportView(info);
 
         jLabel1.setText("Sök efter handläggare på din avdelning här!");
+
+        jButton1.setText("Tillbaka");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,11 +96,15 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(83, 83, 83)
                                 .addComponent(jLabel1)))
-                        .addGap(0, 80, Short.MAX_VALUE))
+                        .addGap(0, 79, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +117,9 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
                 .addComponent(sokKnapp)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
@@ -123,6 +133,11 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
          info.setText("Vänligen fyll i namn eller epost på den handläggare du söker efter. ");
      }
     }//GEN-LAST:event_sokKnappActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+      this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,6 +166,7 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea info;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton sokKnapp;
