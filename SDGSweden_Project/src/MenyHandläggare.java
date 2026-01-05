@@ -48,6 +48,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -69,7 +70,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         jButton4.setText("Logga ut");
         jButton4.addActionListener(this::jButton4ActionPerformed);
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, -1, -1));
 
         hallbarhetsmål.setText("Hållbarhetsmålen");
         hallbarhetsmål.addActionListener(this::hallbarhetsmålActionPerformed);
@@ -90,6 +91,10 @@ public class MenyHandläggare extends javax.swing.JFrame {
         jButton6.setText("Sök projekt");
         jButton6.addActionListener(this::jButton6ActionPerformed);
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 190, -1));
+
+        jButton7.setText("Sök handläggare");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
+        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 190, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -140,6 +145,11 @@ public class MenyHandläggare extends javax.swing.JFrame {
     this.dispose(); // Stänger menyn
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+      new SokHandlaggare(idb, inloggadAnvandare).setVisible(true);
+      this.setVisible(false);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
 
 
     
@@ -152,6 +162,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
     private javax.swing.JButton personal;

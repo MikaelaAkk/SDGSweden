@@ -136,67 +136,18 @@ public class Inlogg extends javax.swing.JFrame {
     private void btnLoggaInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaInActionPerformed
         String ePost = tfEpost.getText();
         String losen = tfLosenord.getText();
-
-        try {
-            String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost + "'";
-            System.out.println(sqlFraga);
-            String dbLosen = idb.fetchSingle(sqlFraga);
-                        if (dbLosen !=null &&losen.equals(dbLosen)) {
-                String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'");
-                String isAdministrator = idb.fetchSingle("SELECT aid FROM admin WHERE aid = " + aid);
-                String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + " LIMIT 1");
-
-                if (isAdministrator != null) {
-                    new Administratör(idb, ePost).setVisible(true);
-                }
-                else if (isProjektChef != null) {
-                    new MenyProjektChef(idb, ePost).setVisible(true);
-                }
-                else {
-                    new MenyHandläggare(idb, ePost).setVisible(true);
-                }
-
-                this.dispose();
-            }
-            else {
-                lblFelMeddelande.setVisible(true);
-            }
-
-    
-     
-        }catch (InfException ex){ 
-            System.out.println(ex.getMessage());
+        Valideringsklass2.kontrolleraInlogg(idb, ePost, losen, this, lblFelMeddelande);
     }//GEN-LAST:event_btnLoggaInActionPerformed
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
 
+ 
+    
+         public void run() {
+         new Inlogg(idb).setVisible(true);
             }
 
-        });
-    }
+        
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

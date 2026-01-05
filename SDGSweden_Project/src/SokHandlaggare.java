@@ -2,19 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import oru.inf.InfDB;
+import oru.inf.InfException; 
 /**
  *
  * @author User
  */
-public class valideringsKlass extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(valideringsKlass.class.getName());
+public class SokHandlaggare extends javax.swing.JFrame {
+    private InfDB idb;
+    private String inloggadAnvandare;
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SokHandlaggare.class.getName());
 
     /**
-     * Creates new form valideringsKlass
+     * Creates new form SokHandlaggare
      */
-    public valideringsKlass() {
+    public SokHandlaggare(InfDB idb, String inloggadAnvandare) {
+        this.idb = idb;
+        this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
 
@@ -27,17 +31,41 @@ public class valideringsKlass extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        sokKnapp = new javax.swing.JButton();
+        sokRuta = new javax.swing.JTextField();
+        info = new javax.swing.JScrollPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        sokKnapp.setText("Sök");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(sokKnapp))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(sokRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(sokKnapp)
+                .addGap(45, 45, 45)
+                .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         pack();
@@ -65,9 +93,12 @@ public class valideringsKlass extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new valideringsKlass().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new SokHandlaggare().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane info;
+    private javax.swing.JButton sokKnapp;
+    private javax.swing.JTextField sokRuta;
     // End of variables declaration//GEN-END:variables
 }
