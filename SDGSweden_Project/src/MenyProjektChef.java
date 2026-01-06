@@ -98,6 +98,9 @@ private String telefon;
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btnVisaMal = new javax.swing.JButton();
+        btnVisaPersonal = new javax.swing.JButton();
+        btnHanteraHandlaggare = new javax.swing.JButton();
+        btnVisaStatistik = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projektstatistik");
@@ -220,6 +223,15 @@ private String telefon;
         btnVisaMal.setText("Hållbarhetsmålen");
         btnVisaMal.addActionListener(this::btnVisaMalActionPerformed);
 
+        btnVisaPersonal.setText("Avdelningspersonal");
+        btnVisaPersonal.addActionListener(this::btnVisaPersonalActionPerformed);
+
+        btnHanteraHandlaggare.setText("Hantera handläggare");
+        btnHanteraHandlaggare.addActionListener(this::btnHanteraHandlaggareActionPerformed);
+
+        btnVisaStatistik.setText("Se statistik per land");
+        btnVisaStatistik.addActionListener(this::btnVisaStatistikActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -234,11 +246,14 @@ private String telefon;
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnVisaMal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnVisaStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnHanteraHandlaggare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnVisaPersonal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnVisaMal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbInloggadAnvandare))
                     .addGroup(layout.createSequentialGroup()
@@ -262,10 +277,9 @@ private String telefon;
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(lbInloggadAnvandare)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlMinProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGåTillAdmin)
@@ -275,8 +289,16 @@ private String telefon;
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVisaMal)
-                        .addGap(55, 55, 55)))
-                .addGap(27, 27, 27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVisaPersonal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHanteraHandlaggare)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVisaStatistik)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(pnlMinProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)))
                 .addComponent(btnLoggaUt)
                 .addGap(10, 10, 10))
         );
@@ -303,6 +325,7 @@ private String telefon;
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
     ProjektchefProjektStatistik statistikFonster = new ProjektchefProjektStatistik(idb, aid, inloggadEpost);
     statistikFonster.setLocationRelativeTo(null);
+   
     this.dispose();
       
     }//GEN-LAST:event_btnGåTillStatistikActionPerformed
@@ -345,6 +368,28 @@ try {
     malFonster.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_btnVisaMalActionPerformed
+
+    private void btnVisaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaPersonalActionPerformed
+    ProjektchefPersonal personalFonster = new ProjektchefPersonal(idb, inloggadEpost);
+    personalFonster.setLocationRelativeTo(null);
+    personalFonster.setVisible(true);
+    this.dispose();
+    
+    }//GEN-LAST:event_btnVisaPersonalActionPerformed
+
+    private void btnHanteraHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraHandlaggareActionPerformed
+     ProjektchefHandläggare handlaggareFonster = new ProjektchefHandläggare(idb, inloggadEpost);
+     handlaggareFonster.setLocationRelativeTo(null);
+     handlaggareFonster.setVisible(true);
+     this.dispose();
+    }//GEN-LAST:event_btnHanteraHandlaggareActionPerformed
+
+    private void btnVisaStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaStatistikActionPerformed
+   ProjektchefStatistikLand statistikLand = new ProjektchefStatistikLand(idb, inloggadEpost);
+   statistikLand.setLocationRelativeTo(null);
+   statistikLand.setVisible(true);
+     this.dispose();
+    }//GEN-LAST:event_btnVisaStatistikActionPerformed
 
                                             
     
@@ -392,9 +437,12 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGåTillAdmin;
     private javax.swing.JButton btnGåTillStatistik;
+    private javax.swing.JButton btnHanteraHandlaggare;
     private javax.swing.JButton btnLoggaUt;
     private javax.swing.JButton btnSparaUppgifter;
     private javax.swing.JButton btnVisaMal;
+    private javax.swing.JButton btnVisaPersonal;
+    private javax.swing.JButton btnVisaStatistik;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -64,6 +64,7 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
         titel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 153, 242));
 
         jScrollPane1.setViewportView(personalLista);
 
@@ -103,8 +104,8 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tillbakaTillMenyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaTillMenyActionPerformed
-       new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-       this.setVisible(false);
+    new MenyProjektChef(idb, inloggadAnvandare).setVisible(true);
+    this.dispose();  
     }//GEN-LAST:event_tillbakaTillMenyActionPerformed
 
   
