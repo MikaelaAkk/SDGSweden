@@ -21,6 +21,7 @@ private InfDB idDB;
 private int aid;
 private String projektnamn;
 private String epost;
+private String InloggadEpost;
     /**
      * Creates new form ProjektchefAdministration
      */
@@ -30,6 +31,7 @@ private String epost;
     this.aid = aid;
     this.epost = epost;
     initComponents();
+    this.InloggadEpost = InloggadEpost;
     
 
     

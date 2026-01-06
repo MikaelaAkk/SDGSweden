@@ -118,7 +118,7 @@ private void hamtaMinaPartners() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
     new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

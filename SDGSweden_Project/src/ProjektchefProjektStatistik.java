@@ -33,9 +33,9 @@ private String inloggadEpost;
        this.idDB = idb;
     this.aid = aid;
     this.inloggadEpost = epost;
-    
-    laddaTabell();
+   
     laddaStatistikKort();
+    laddaTabell();
     
     }
     
@@ -53,26 +53,32 @@ private String inloggadEpost;
         }
     }
 
-    
-    private void laddaTabell() {
+  private void laddaTabell() {
         try {
-            String valdStatus = cbStatusFilter.getSelectedItem().toString();
-            String sql = "SELECT projektnamn, status, kostnad FROM projekt";
+            // Säkerhetskoll så att vi inte får NullPointerException om inget är valt i ComboBoxen
+            Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
+            if (valdStatusObjekt == null) return;
             
+            String valdStatus = valdStatusObjekt.toString();
+            
+            // ÄNDRA HÄR: Kontrollera om kolumnerna heter Projektnamn, Status, Kostnad (stora bokstäver är vanliga)
+            String sql = "SELECT projektnamn, status, kostnad FROM projekt";
+
             if (!valdStatus.equals("Alla")) {
                 sql += " WHERE status = '" + valdStatus + "'";
             }
 
             ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
             DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
-            model.setRowCount(0); 
+            model.setRowCount(0); // Rensar tabellen innan vi fyller den
 
             if (rader != null) {
                 for (HashMap<String, String> rad : rader) {
                     Object[] tabellRad = {
+                        // ÄNDRA HÄR: Nycklarna i rad.get() måste vara EXAKT som kolumnnamnen i SELECT-frågan ovan
                         rad.get("projektnamn"),
                         rad.get("status"),
-                        rad.get("kostnad") + " kr"
+                        rad.get("kostnad") != null ? rad.get("kostnad") + " kr" : "0 kr"
                     };
                     model.addRow(tabellRad);
                 }
@@ -80,7 +86,8 @@ private String inloggadEpost;
         } catch (InfException ex) {
             System.out.println("Kunde inte ladda tabellen: " + ex.getMessage());
         }
-    }
+    }  
+    
    
     
 
@@ -128,7 +135,7 @@ private String inloggadEpost;
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(51, 153, 255));
         setPreferredSize(new java.awt.Dimension(700, 500));
 
