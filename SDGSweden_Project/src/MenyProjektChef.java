@@ -363,10 +363,9 @@ try {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnVisaMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMalActionPerformed
-     hallbarhetsmal malFonster = new hallbarhetsmal(idb, inloggadEpost);
-    malFonster.setLocationRelativeTo(null);
+       hallbarhetsmal malFonster = new hallbarhetsmal(idb, inloggadEpost);
+    malFonster.setLocationRelativeTo(this);
     malFonster.setVisible(true);
-    this.dispose();
     }//GEN-LAST:event_btnVisaMalActionPerformed
 
     private void btnVisaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaPersonalActionPerformed
@@ -385,10 +384,7 @@ try {
     }//GEN-LAST:event_btnHanteraHandlaggareActionPerformed
 
     private void btnVisaStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaStatistikActionPerformed
-   ProjektchefStatistikLand statistikLand = new ProjektchefStatistikLand(idb, inloggadEpost);
-   statistikLand.setLocationRelativeTo(null);
-   statistikLand.setVisible(true);
-     this.dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnVisaStatistikActionPerformed
 
                                             

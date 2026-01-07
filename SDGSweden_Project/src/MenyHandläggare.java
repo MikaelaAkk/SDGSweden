@@ -24,6 +24,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     this.idb = idb;
     this.inloggadAnvandare = inloggadAnvandare;
     
+    
     initComponents();
     
     // Uppdatera etiketten
@@ -111,8 +112,8 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
-      new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
-      this.setVisible(false);
+    new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
+this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

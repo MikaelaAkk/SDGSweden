@@ -14,6 +14,7 @@ public class hallbarhetsmal extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
     
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
 private ArrayList<String>malLista = new ArrayList<>();
 private DefaultListModel<String>listModel = new DefaultListModel<>();
@@ -63,7 +64,7 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -105,8 +106,7 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-     this.setVisible(false);
+     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
