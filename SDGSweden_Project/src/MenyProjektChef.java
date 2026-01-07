@@ -8,11 +8,13 @@ import oru.inf.InfException;
  *
  * @author User
  */
+//Klass för projektchefen huvudmeny
 public class MenyProjektChef extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadEpost;
     private int aid;
-    
+   
+    // Instansvariabler för databasanslutning och inloggning
 private String fornamn;
 private String efternamn;
 private String adress;
@@ -28,10 +30,12 @@ private String telefon;
         this.inloggadEpost = inloggadEpost;
         initComponents();
         
+        //Hmptar data från databasen och informationstext
         lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
         hamtaAid();
       fyllProfilFalt();
     }
+    // Hämtar ansätllnings-ID baserat på e-post
     private void hamtaAid() {
     try {
         // Hämtar AID för den person som har den inloggade e-posten
@@ -44,7 +48,7 @@ private String telefon;
         System.out.println("Fel vid hämtning av AID: " + ex.getMessage());
     }
 }
-    
+    //Hämtar all information om den inloggade från tabellen anställd och placerar det i textfälten.
     public void fyllProfilFalt() {
     try {
         // Vi använder variabeln inloggadEpost (String) istället för en Label
@@ -53,11 +57,11 @@ private String telefon;
         
         if (rad != null) {
             txtAdress.setText(rad.get("adress"));
-            txtEpost.setText(rad.get("epost")); // Ofta satt till editable=false
+            txtEpost.setText(rad.get("epost")); 
             txtTelefon.setText(rad.get("telefon"));
             txtLosenord.setText(rad.get("losenord"));
             
-            // lblNamn kan vara en rubrik överst i panelen
+            // Förnamn och efternamn till labeln
             lblNamn.setText(rad.get("fornamn") + " " + rad.get("efternamn"));
         }
     } catch (InfException ex) {
@@ -306,13 +310,16 @@ private String telefon;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Loggar ut användaren genom att stänga nuvarande fönster och öppnar inloggningen. 
     private void btnLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaUtActionPerformed
      this.dispose(); 
     Inlogg fonster = new Inlogg(idb);
-    fonster.setLocationRelativeTo(null); // Detta centrerar fönstret på skärmen
+    fonster.setLocationRelativeTo(null); 
     fonster.setVisible(true);
     }//GEN-LAST:event_btnLoggaUtActionPerformed
 
+    //Kommer till fönsret för projektadministration.
+    //Skickar med aid så att fönstret vet vilken chef som är inloggad.
     private void btnGåTillAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillAdminActionPerformed
     ProjektchefProjektAdministration adminFonster = new ProjektchefProjektAdministration(idb, aid, inloggadEpost);
     adminFonster.setLocationRelativeTo(null);
@@ -321,7 +328,7 @@ private String telefon;
      this.dispose();
     
     }//GEN-LAST:event_btnGåTillAdminActionPerformed
-
+//Kommer till fönstret för projektstatistik. 
     private void btnGåTillStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGåTillStatistikActionPerformed
     ProjektchefProjektStatistik statistikFonster = new ProjektchefProjektStatistik(idb, aid, inloggadEpost);
     statistikFonster.setLocationRelativeTo(null);
@@ -330,22 +337,24 @@ private String telefon;
       
     }//GEN-LAST:event_btnGåTillStatistikActionPerformed
 
+    //Hämtar värden från textfältet och uppdaterar med de nya uppgifterna
     private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed
 try {
+    //Hämtar text och tar bort eventuella mellansalag i början/Slutet
         String nyAdress = txtAdress.getText().trim();
         String nyTele = txtTelefon.getText().trim();
         String nyttLosen = new String(txtLosenord.getPassword());
-
+// validering
         if (nyAdress.isEmpty() || nyTele.isEmpty() || nyttLosen.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Alla fält måste vara ifyllda!");
             return;
         }
-
+// SQL fråga för att uppdatera progilen
         String sql = "UPDATE anstalld SET adress = '" + nyAdress + "', telefon = '" + nyTele + "', losenord = '" + nyttLosen + "' WHERE epost = '" + inloggadEpost + "'";
 
         idb.update(sql);
         javax.swing.JOptionPane.showMessageDialog(this, "Dina uppgifter har uppdaterats!");
-        fyllProfilFalt(); 
+        fyllProfilFalt(); // uååaderar fälte fr att visa de sparade ändringarna
 
     } catch (InfException ex) {
         javax.swing.JOptionPane.showMessageDialog(this, "Databasfel: " + ex.getMessage());
@@ -353,6 +362,7 @@ try {
             
     }//GEN-LAST:event_btnSparaUppgifterActionPerformed
 
+    //öppnar fönstret för partnerhantering
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
        ProjektchefPartneradministration partnerFonster = new ProjektchefPartneradministration(idb, inloggadEpost);
@@ -361,13 +371,13 @@ try {
     this.dispose();
     
     }//GEN-LAST:event_jButton1ActionPerformed
-
+// Öppnar fönstret fr Hållbarhetsmålen
     private void btnVisaMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMalActionPerformed
        hallbarhetsmal malFonster = new hallbarhetsmal(idb, inloggadEpost);
     malFonster.setLocationRelativeTo(this);
     malFonster.setVisible(true);
     }//GEN-LAST:event_btnVisaMalActionPerformed
-
+// Öppnar personalöversikten för projektchefen
     private void btnVisaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaPersonalActionPerformed
     ProjektchefPersonal personalFonster = new ProjektchefPersonal(idb, inloggadEpost);
     personalFonster.setLocationRelativeTo(null);
@@ -375,7 +385,7 @@ try {
     this.dispose();
     
     }//GEN-LAST:event_btnVisaPersonalActionPerformed
-
+//Öppnar hantering av handläggare
     private void btnHanteraHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraHandlaggareActionPerformed
      ProjektchefHandläggare handlaggareFonster = new ProjektchefHandläggare(idb, inloggadEpost);
      handlaggareFonster.setLocationRelativeTo(null);

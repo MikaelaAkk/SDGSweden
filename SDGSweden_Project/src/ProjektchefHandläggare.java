@@ -16,9 +16,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 public class ProjektchefHandläggare extends javax.swing.JFrame {
-    private InfDB idb;
-    private String inloggadEpost;
-    private String valdAnstalldAid;
+    private InfDB idb; //databaskopplingen
+    private String inloggadEpost; //Sparar e-post för den som är inloggad
+    private String valdAnstalldAid; //Sparar ID på den handläggare man sökt fram
    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefHandläggare.class.getName());
@@ -31,13 +31,14 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
         
-        txtSok.setText("");
-        fyllMinaProjektCombo();
+        txtSok.setText(""); //Rensar sökfältet vid start
+        fyllMinaProjektCombo(); // Fyller menyn med projekt som användaren är chef för
     }
-    
+    //Fyller comboboxen med projektnamn där den inloggade är projektchef
     private void fyllMinaProjektCombo() {
         try {
             cbMinaProjekt.removeAllItems();
+            //Hämtar projektnamn genom att söka på aid via den inloggades e-post
             String fraga = "SELECT projektnamn FROM projekt WHERE projektchef = "
                          + "(SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "')";
             ArrayList<String> projekt = idb.fetchColumn(fraga);
@@ -51,9 +52,11 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         }
     }
     
+    //Uppdaterar Jlist med de projekt som den sökta handläggaren jobbar i 
     private void uppdateraProjektLista() {
         try {
             DefaultListModel<String> model = new DefaultListModel<>();
+            // Joinar projekt och ans_proj för att se vilka projekt ett specifikt AID är kopplat till
             String fraga = "SELECT projektnamn FROM projekt "
                     + "JOIN ans_proj ON projekt.pid = ans_proj.pid "
                     + "WHERE ans_proj.aid = " + valdAnstalldAid;
@@ -76,7 +79,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
  private void utforSokning() {
      txtResultat.setText("");
     try {
-        String sokText = txtSok.getText().trim();
+        String sokText = txtSok.getText().trim(); //rensar tidigare sökresultat
         
         // Vi hämtar även aid här för att kunna använda det till projekt-knapparna
         String sql = "SELECT a.aid, a.fornamn, a.efternamn, a.epost, avd.namn FROM anstalld a " +
@@ -93,7 +96,8 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
             // Vi tar den första personen som hittas och sätter som "vald"
             HashMap<String, String> person = resultat.get(0);
             valdAnstalldAid = person.get("aid"); 
-
+           
+           // Loopar igenom reslutaten och skriver ut info i textarean
             for (HashMap<String, String> rad : resultat) {
                 txtResultat.append("Namn: " + rad.get("fornamn") + " " + rad.get("efternamn") + "\n");
                 txtResultat.append("E-post: " + rad.get("epost") + "\n");
@@ -312,13 +316,14 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Knapp: Lägg till den framsökta handläggaren i valt projekt
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
     try {
            
             if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
-                
+                // Hämta projektets ID baserat på namnet i comboboxen
                 
                 String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
                 idb.insert(insertSql);

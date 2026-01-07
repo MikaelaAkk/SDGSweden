@@ -101,7 +101,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
 
             if (rader != null) {
                 for (HashMap<String, String> rad : rader) {
-                    // InfDB returnerar oftast nycklar i gemener
+                    
                     model.addRow(new Object[]{
                         rad.get("projektnamn"),  
                         rad.get("status"),      
@@ -459,7 +459,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
     }//GEN-LAST:event_btmSparaActionPerformed
 
     private void lstPartnersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPartnersValueChanged
-      if (!evt.getValueIsAdjusting()) { // Körs bara när man klickat färdigt
+      if (!evt.getValueIsAdjusting()) { 
         String valtNamn = lstPartners.getSelectedValue();
         if (valtNamn != null) {
             fyllPartnerUppgifter(valtNamn);
@@ -482,7 +482,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
     }//GEN-LAST:event_lstPartnersValueChanged
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new MenyProjektChef(idb, epost).setVisible(true);
+    new MenyProjektChef(idb, inloggadEpost).setVisible(true);
     this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 

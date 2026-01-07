@@ -371,7 +371,7 @@ private void fyllProjektLista(String sqlFraga) {
                 cbProjektVal.addItem(rad.get("projektnamn"));
             }
             if (cbProjektVal.getItemCount() > 0) {
-                cbProjektVal.setSelectedIndex(0); // Väljer första projektet i den nya listan
+                cbProjektVal.setSelectedIndex(0); 
             }
         }
     } catch (Exception e) {

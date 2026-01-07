@@ -51,9 +51,9 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
   private void visaLandStatistik() {
     try {
         String valtLand = (String) cbLand.getSelectedItem();
-        txtStatistik.setText(""); // Rensa gammal text
+        txtStatistik.setText(""); 
 
-        // SQL: Hämtar projekt och kostnad för valt land
+        
         String sql = "SELECT p.projektnamn, p.kostnad FROM projekt p " +
                      "JOIN land l ON p.land = l.lid " +
                      "WHERE l.namn = '" + valtLand + "'";

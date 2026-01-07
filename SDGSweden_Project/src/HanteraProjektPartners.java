@@ -213,7 +213,7 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
             String pId = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
             String partnerId = idb.fetchSingle("SELECT pid FROM partner WHERE namn = '" + valdPartner + "'");
 
-            // Notera: Inga enkla citattecken runt siffror (PID)
+           
             idb.insert("INSERT INTO projekt_partner (pid, partner_pid) VALUES (" + pId + ", " + partnerId + ")");
             JOptionPane.showMessageDialog(this, valdPartner + " har lagts till i " + valtProjekt);
 
