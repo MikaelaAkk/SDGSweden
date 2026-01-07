@@ -99,7 +99,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_minaUppgifterActionPerformed
 
     private void minaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaProjektActionPerformed
-       
+
        new HandlaggareProjekt(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_minaProjektActionPerformed

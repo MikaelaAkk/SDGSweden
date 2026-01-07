@@ -6,10 +6,7 @@ import oru.inf.InfDB;
 import oru.inf.InfException; 
 import java.util.ArrayList;
 import java.util.HashMap;
-/**
- *
- * @author User
- */
+
 public class SokHandlaggare extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
