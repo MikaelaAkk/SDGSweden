@@ -373,7 +373,7 @@ try {
     }//GEN-LAST:event_jButton1ActionPerformed
 // Öppnar fönstret fr Hållbarhetsmålen
     private void btnVisaMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMalActionPerformed
-       hallbarhetsmal malFonster = new hallbarhetsmal(idb, inloggadEpost);
+       Hallbarhetsmal malFonster = new Hallbarhetsmal(idb, inloggadEpost);
     malFonster.setLocationRelativeTo(this);
     malFonster.setVisible(true);
     }//GEN-LAST:event_btnVisaMalActionPerformed
