@@ -13,6 +13,7 @@ import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class ProjektchefHandläggare extends javax.swing.JFrame {
     private InfDB idb;
@@ -37,8 +38,8 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     private void fyllMinaProjektCombo() {
         try {
             cbMinaProjekt.removeAllItems();
-            String fraga = "SELECT projektnamn FROM projekt WHERE projektansvarig = "
-                    + "(SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "')";
+            String fraga = "SELECT projektnamn FROM projekt WHERE projektchef = "
+                         + "(SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "')";
             ArrayList<String> projekt = idb.fetchColumn(fraga);
             if (projekt != null) {
                 for (String p : projekt) {
@@ -100,7 +101,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 txtResultat.append("--------------------------------------\n");
             }
             
-            // Uppdatera listan med personens projekt direkt vid sökning
+            
             uppdateraProjektLista();
         }
     } catch (InfException ex) {
@@ -252,21 +253,18 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                     .addComponent(btnTillbaka)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addGap(41, 41, 41)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel3))
-                            .addComponent(btnLaggTill))
+                            .addComponent(btnLaggTill)
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(btnTaBort)))))
+                                .addComponent(btnTaBort))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -279,7 +277,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
@@ -315,21 +313,26 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-     try {
+    try {
+           
             if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
                 
+                
                 String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
                 idb.insert(insertSql);
                 
-                javax.swing.JOptionPane.showMessageDialog(this, "Handläggare tillagd!");
-                uppdateraProjektLista();
+                JOptionPane.showMessageDialog(this, "Handläggare tillagd i projektet!");
+                uppdateraProjektLista(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Sök fram en handläggare först och välj ett projekt.");
             }
         } catch (InfException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Personen är redan med i projektet.");
-        }
+           
+            JOptionPane.showMessageDialog(this, "Kunde inte lägga till: " + ex.getMessage());
     
+        }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed

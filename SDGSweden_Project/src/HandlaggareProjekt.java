@@ -18,18 +18,18 @@ import oru.inf.InfException;
  *
  * @author oliviacollin
  */
-public class HandläggareProjekt extends javax.swing.JFrame {
+public class HandlaggareProjekt extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare; // Sparar e-postadressen
     
     
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandläggareProjekt.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandlaggareProjekt.class.getName());
 
     /**
      * Creates new form HandläggareProjekt
      */
-    public HandläggareProjekt(InfDB idb, String inloggadAnvandare) {
+    public HandlaggareProjekt(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();

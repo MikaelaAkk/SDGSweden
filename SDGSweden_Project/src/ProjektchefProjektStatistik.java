@@ -13,6 +13,7 @@ import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class ProjektchefProjektStatistik extends javax.swing.JFrame {
 private InfDB idDB;
@@ -45,23 +46,30 @@ private String inloggadEpost;
             String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
             String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
 
+           
             lblAntalVarde.setText(antal != null ? antal : "0");
             lblSummaVarde.setText(summa != null ? summa + " kr" : "0 kr");
             lblSnittVarde.setText(snitt != null ? snitt + " kr" : "0 kr");
+      if (snitt != null) {
+                double snittDubbel = Double.parseDouble(snitt);
+                lblSnittVarde.setText(String.format("%.2f", snittDubbel) + " kr");
+            } else {
+                lblSnittVarde.setText("0 kr");
+            }
         } catch (InfException ex) {
-            System.out.println("Fel vid KPI: " + ex.getMessage());
+            System.out.println("Fel vid hämtning av statistik: " + ex.getMessage());
         }
     }
 
   private void laddaTabell() {
         try {
-            // Säkerhetskoll så att vi inte får NullPointerException om inget är valt i ComboBoxen
+           
             Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
             if (valdStatusObjekt == null) return;
             
             String valdStatus = valdStatusObjekt.toString();
             
-            // ÄNDRA HÄR: Kontrollera om kolumnerna heter Projektnamn, Status, Kostnad (stora bokstäver är vanliga)
+           
             String sql = "SELECT projektnamn, status, kostnad FROM projekt";
 
             if (!valdStatus.equals("Alla")) {
@@ -70,12 +78,12 @@ private String inloggadEpost;
 
             ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
             DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
-            model.setRowCount(0); // Rensar tabellen innan vi fyller den
+            model.setRowCount(0); 
 
             if (rader != null) {
                 for (HashMap<String, String> rad : rader) {
                     Object[] tabellRad = {
-                        // ÄNDRA HÄR: Nycklarna i rad.get() måste vara EXAKT som kolumnnamnen i SELECT-frågan ovan
+                     
                         rad.get("projektnamn"),
                         rad.get("status"),
                         rad.get("kostnad") != null ? rad.get("kostnad") + " kr" : "0 kr"
@@ -337,9 +345,8 @@ private String inloggadEpost;
     }//GEN-LAST:event_cbStatusFilterActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
+        new MenyProjektChef(idDB, inloggadEpost).setVisible(true);
         this.dispose();
-        
-       new MenyProjektChef(idDB, inloggadEpost).setVisible(true); 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
