@@ -45,6 +45,7 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
         jLabel1 = new javax.swing.JLabel();
         btnPartner = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        btnLoggaUt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,22 +63,30 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Välkommen Administratör");
 
+        btnLoggaUt.setText("Logga ut");
+        btnLoggaUt.addActionListener(this::btnLoggaUtActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(btnAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLand, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(96, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(83, 83, 83))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(btnAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLand, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(btnLoggaUt)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,7 +101,9 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
                 .addComponent(btnPartner)
                 .addGap(18, 18, 18)
                 .addComponent(btnLand)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(btnLoggaUt)
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -117,6 +128,21 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
         new AdminPartnerUppgifter(idb).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPartnerActionPerformed
+
+    private void btnLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaUtActionPerformed
+        // TODO add your handling code here:
+                                                
+        
+        // Vi skickar med 'idb' så att inloggningssidan har tillgång till databasen
+        new Inlogg(idb).setVisible(true);
+        
+        // Stänger ner det nuvarande administratörsfönstret
+        this.dispose();
+        
+        // Visar en liten bekräftelse
+        JOptionPane.showMessageDialog(null, "Du har nu loggats ut.");
+    
+    }//GEN-LAST:event_btnLoggaUtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +175,7 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvdId;
     private javax.swing.JButton btnLand;
+    private javax.swing.JButton btnLoggaUt;
     private javax.swing.JButton btnPartner;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
