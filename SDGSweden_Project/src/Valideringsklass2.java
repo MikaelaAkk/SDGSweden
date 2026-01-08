@@ -111,7 +111,27 @@ public class Valideringsklass2 {
     }
 }
 
+// Kontrollerar om ett textfält är tomt
+public static boolean faltHarVarde(JTextField ettFalt) {
+    if (ettFalt.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Fältet får inte vara tomt.");
+        ettFalt.requestFocus(); // Sätter markören i det tomma fältet
+        return false;
+    }
+    return true;
+}
 
+// Kontrollerar om telefonnumret följer ett enkelt mönster (endast siffror, bindestreck eller mellanslag)
+public static boolean arGiltigtTelefonnummer(JTextField ettFalt) {
+    String tel = ettFalt.getText().trim();
+    // Regex: Tillåter siffror, mellanslag och bindestreck, 5-20 tecken långt
+    if (!tel.matches("^[0-9\\s-]{5,20}$")) {
+        JOptionPane.showMessageDialog(null, "Ange ett giltigt telefonnummer (endast siffror, bindestreck eller mellanslag).");
+        ettFalt.requestFocus();
+        return false;
+    }
+    return true;
+}
 
     // Variables declaration - do not modify                     
     // End of variables declaration                   
