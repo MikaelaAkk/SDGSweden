@@ -4,7 +4,8 @@
  */
 
 /**
- *
+ * Klass för att hantera handläggare i projekt. 
+ * Man kan söka och ta bort kopling av personal i projekt
  * @author elinjugas
  */
 import oru.inf.InfDB;
@@ -30,6 +31,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
 
+        // Initiering av gränssnitt
         txtSok.setText(""); //Rensar sökfältet vid start
         fyllMinaProjektCombo(); // Fyller menyn med projekt som användaren är chef för
     }
@@ -74,39 +76,38 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     }
 
     private void utforSokning() {
-        txtResultat.setText("");
-        try {
-            String sokText = txtSok.getText().trim(); //rensar tidigare sökresultat
+       txtResultat.setText("");
+        // Validera att sökfältet inte är tomt och följer enkla teckenregler (Krav: RegEx)
+        if (!Valideringsklass2.textfaltHarVarde(txtSok, "sökfältet") || !Valideringsklass2.isSafeSearch(txtSok)) {
+            return;
+        }
 
-            // Vi hämtar även aid här för att kunna använda det till projekt-knapparna
+        try {
+            String sokText = txtSok.getText().trim();
             String sql = "SELECT a.aid, a.fornamn, a.efternamn, a.epost, avd.namn FROM anstalld a "
-                    + "JOIN avdelning avd ON a.avdelning = avd.avdid "
-                    + "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
+                       + "JOIN avdelning avd ON a.avdelning = avd.avdid "
+                       + "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
 
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(sql);
-            txtResultat.setText("");
 
             if (resultat == null || resultat.isEmpty()) {
-                txtResultat.append("Ingen handläggare hittades.");
-                valdAnstalldAid = null; // Nollställ om ingen hittas
+                txtResultat.append("Ingen handläggare hittades med det namnet/eposten.");
+                valdAnstalldAid = null;
             } else {
-                // Vi tar den första personen som hittas och sätter som "vald"
                 HashMap<String, String> person = resultat.get(0);
                 valdAnstalldAid = person.get("aid");
 
-                // Loopar igenom reslutaten och skriver ut info i textarean
                 for (HashMap<String, String> rad : resultat) {
                     txtResultat.append("Namn: " + rad.get("fornamn") + " " + rad.get("efternamn") + "\n");
                     txtResultat.append("E-post: " + rad.get("epost") + "\n");
                     txtResultat.append("Avdelning: " + rad.get("namn") + "\n");
                     txtResultat.append("--------------------------------------\n");
                 }
-
                 uppdateraProjektLista();
             }
         } catch (InfException ex) {
-            txtResultat.setText("Ett fel uppstod: " + ex.getMessage());
-        }
+            JOptionPane.showMessageDialog(this, "Sökningen misslyckades: " + ex.getMessage());
+        } 
     }
 
     /**
@@ -307,46 +308,58 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
         try {
 
-            if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
+            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare") && 
+                Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
+                
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
-                // Hämta projektets ID baserat på namnet i comboboxen
 
-                String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
-                idb.insert(insertSql);
-
-                JOptionPane.showMessageDialog(this, "Handläggare tillagd i projektet!");
-                uppdateraProjektLista();
-            } else {
-                JOptionPane.showMessageDialog(this, "Sök fram en handläggare först och välj ett projekt.");
+                // Krav: Validera ID med RegEx innan INSERT
+                if (Valideringsklass2.arGiltigtId(pid) && Valideringsklass2.arGiltigtId(valdAnstalldAid)) {
+                    String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
+                    idb.insert(insertSql);
+                    JOptionPane.showMessageDialog(this, "Handläggare tillagd i projektet!");
+                    uppdateraProjektLista();
+                }
             }
         } catch (InfException ex) {
-
-            JOptionPane.showMessageDialog(this, "Kunde inte lägga till: " + ex.getMessage());
-
+            // Krav: Inmatningsfel/Datafel ska inte krascha applikationen
+            if (ex.getMessage().contains("Duplicate")) {
+                JOptionPane.showMessageDialog(this, "Handläggaren är redan med i detta projekt.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod: " + ex.getMessage());
+            }
         }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-        try {
-            if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
+     try {
+            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare") && 
+                Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
+                
                 String valtProjektNamn = (String) cbMinaProjekt.getSelectedItem();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjektNamn + "'");
 
-                String deleteSql = "DELETE FROM ans_proj WHERE pid = " + pid + " AND aid = " + valdAnstalldAid;
-                idb.delete(deleteSql);
-
-                javax.swing.JOptionPane.showMessageDialog(this, "Personen borttagen från ditt projekt.");
-                uppdateraProjektLista();
-            }
+                // Bekräftelse innan borttagning för bättre UX
+                int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort handläggaren från projektet?", "Bekräfta", JOptionPane.YES_NO_OPTION);
+                
+                if (svar == JOptionPane.YES_OPTION && Valideringsklass2.arGiltigtId(pid)) {
+                    String deleteSql = "DELETE FROM ans_proj WHERE pid = " + pid + " AND aid = " + valdAnstalldAid;
+                    idb.delete(deleteSql);
+                    JOptionPane.showMessageDialog(this, "Handläggaren har tagits bort från projektet.");
+                    uppdateraProjektLista();
+                }   
+         }
         } catch (InfException ex) {
-            System.out.println("Kunde inte ta bort: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Ett fel uppstod vid borttagning: " + ex.getMessage());
         }
-
+       
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
-        utforSokning();
+        if (Valideringsklass2.textfaltHarVarde(txtSok, "sökfältet")) {
+            utforSokning();
+        }
     }//GEN-LAST:event_btnSokActionPerformed
 
     private void jLabel2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel2KeyReleased

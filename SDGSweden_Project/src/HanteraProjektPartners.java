@@ -4,7 +4,8 @@
  */
 
 /**
- *
+ * Klassen ansvarar för att hantera kopplingen mellan projekt och partners
+ * Projektchefen kan se sina egna projekt  och koppla/ta bort partners
  * @author elinjugas
  */
 import oru.inf.InfDB;
@@ -16,7 +17,7 @@ import javax.swing.JOptionPane;
 public class HanteraProjektPartners extends javax.swing.JFrame {
 
     private InfDB idb;
-    private String inloggadAnvandare;
+    private String inloggadAnvandare; //Lagrar epost
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HanteraProjektPartners.class.getName());
 
@@ -27,30 +28,38 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-
+//Fyller listor direkt vid start för att ge användaren överblick över projekt och partners
         fyllMinaProjekt();
         fyllAllaPartners();
     }
 
     private void fyllMinaProjekt() {
-        try {
-            DefaultListModel<String> model = new DefaultListModel<>();
-            String fraga = "SELECT projektnamn FROM projekt "
-                    + "JOIN anstalld ON projekt.projektchef = anstalld.aid "
-                    + "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
+        // Hämtar projekt från databasen där användaren är projektchef.
+        //Så att chefen bara kan ändra i sina egna projekt
+       try {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        
+        // Join för att filtrera projekt baserat på inloggade e-post
+        String fraga = "SELECT projektnamn FROM projekt "
+                + "JOIN anstalld ON projekt.projektchef = anstalld.aid "
+                + "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
 
-            ArrayList<String> projekt = idb.fetchColumn(fraga);
-            if (projekt != null) {
-                for (String p : projekt) {
-                    model.addElement(p);
-                }
+        ArrayList<String> projekt = idb.fetchColumn(fraga);
+        if (projekt != null) {
+            for (String p : projekt) {
+                model.addElement(p);
             }
-            lstMinaProjekt.setModel(model);
-        } catch (InfException ex) {
-            System.out.println("Fel vid hämtning av projekt: " + ex.getMessage());
         }
+        lstMinaProjekt.setModel(model);
+    } catch (InfException ex) {
+        // Felmeddelande vid databasproblem
+        JOptionPane.showMessageDialog(this, "Kunde inte hämta dina projekt. Kontrollera databasanslutningen.");
+    }
     }
 
+    /**
+     * Hämtar alla tillgängliga partners för att kunna erbjuda dem som alternativ i gränssnittet.
+     */
     private void fyllAllaPartners() {
         try {
             DefaultListModel<String> model = new DefaultListModel<>();
@@ -201,24 +210,33 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKopplaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKopplaActionPerformed
+    // 1. Validera att användaren valt något i listorna
+    if (Valideringsklass2.listidArValt(lstMinaProjekt.getSelectedValue(), "projekt") &&
+        Valideringsklass2.listidArValt(lstAllaPartners.getSelectedValue(), "partner")) {
+        
         try {
             String valtProjekt = lstMinaProjekt.getSelectedValue();
             String valdPartner = lstAllaPartners.getSelectedValue();
 
-            if (valtProjekt == null || valdPartner == null) {
-                JOptionPane.showMessageDialog(this, "Markera både ett projekt och en partner!");
-                return;
-            }
-
+            // Hämta ID:n
             String pId = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
             String partnerId = idb.fetchSingle("SELECT pid FROM partner WHERE namn = '" + valdPartner + "'");
 
-            idb.insert("INSERT INTO projekt_partner (pid, partner_pid) VALUES (" + pId + ", " + partnerId + ")");
-            JOptionPane.showMessageDialog(this, valdPartner + " har lagts till i " + valtProjekt);
+            // Säkerhetskontroll som validerar ID
+            if (Valideringsklass2.arGiltigtId(pId) && Valideringsklass2.arGiltigtId(partnerId)) {
+                idb.insert("INSERT INTO projekt_partner (pid, partner_pid) VALUES (" + pId + ", " + partnerId + ")");
+                JOptionPane.showMessageDialog(this, valdPartner + " har lagts till i " + valtProjekt);
+            }
 
         } catch (InfException ex) {
-            JOptionPane.showMessageDialog(this, "De är redan kopplade eller ett fel uppstod: " + ex.getMessage());
-        }
+            //För att säkerhetställa så inga dubletter sker vid koppling
+            if (ex.getMessage().contains("Duplicate")) {
+                JOptionPane.showMessageDialog(this, "Partnern är redan kopplad till detta projekt.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod: " + ex.getMessage());
+            }
+        }  
+    }
 
     }//GEN-LAST:event_btnKopplaActionPerformed
 
@@ -228,26 +246,31 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
+    // För att ta bort en koppling mellan projekt och partners
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-        try {
-            String valtProjekt = lstMinaProjekt.getSelectedValue();
-            String valdPartner = lstAllaPartners.getSelectedValue();
+       // Validerar att användaren faktiskt valt något i båda listorna
+        if (Valideringsklass2.listidArValt(lstMinaProjekt.getSelectedValue(), "projekt") &&
+            Valideringsklass2.listidArValt(lstAllaPartners.getSelectedValue(), "partner")) {
+            
+            try {
+                String valtProjekt = lstMinaProjekt.getSelectedValue();
+                String valdPartner = lstAllaPartners.getSelectedValue();
 
-            if (valtProjekt == null || valdPartner == null) {
-                JOptionPane.showMessageDialog(this, "Välj både ett projekt och den partner du vill ta bort!");
-                return;
+                // Hämtar unika ID:n från databasen baserat på namnen
+                String pId = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
+                String partnerId = idb.fetchSingle("SELECT pid FROM partner WHERE namn = '" + valdPartner + "'");
+
+                // Validerar att ID:n existerar och är korrekt formaterade 
+                if (Valideringsklass2.arGiltigtId(pId) && Valideringsklass2.arGiltigtId(partnerId)) {
+                    idb.delete("DELETE FROM projekt_partner WHERE pid = " + pId + " AND partner_pid = " + partnerId);
+                    JOptionPane.showMessageDialog(this, "Kopplingen mellan " + valtProjekt + " och " + valdPartner + " är nu borttagen.");
+                }
+
+            } catch (InfException ex) {
+                // Fångar upp databasfel så att applikationen inte kraschar
+                JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod vid borttagning: " + ex.getMessage());
             }
-
-            String pId = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
-            String partnerId = idb.fetchSingle("SELECT pid FROM partner WHERE namn = '" + valdPartner + "'");
-
-            idb.delete("DELETE FROM projekt_partner WHERE pid = " + pId + " AND partner_pid = " + partnerId);
-            JOptionPane.showMessageDialog(this, "Kopplingen är nu borttagen.");
-
-        } catch (InfException ex) {
-            JOptionPane.showMessageDialog(this, "Kunde inte ta bort kopplingen: " + ex.getMessage());
         }
-
 
     }//GEN-LAST:event_btnTaBortActionPerformed
 

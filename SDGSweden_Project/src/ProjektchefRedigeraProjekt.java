@@ -240,46 +240,49 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaÄndringarActionPerformed
-        String nyttNamn = txtNamn.getText();
-        String nyBudgetStr = txtBudget.getText();
-        String nyBeskrivning = txtBeskrivning.getText();
-        String start = txtStartdatum.getText();
-        String slut = txtSlutdatum.getText();
-        String status = txtStatus.getText();
-
-        if (nyttNamn.isEmpty() || nyBudgetStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Namn och budget måste fyllas i!");
-            return;
+       // 1. Validera alla fält steg för steg (Krav: Validering & Säkerhet)
+    if (Valideringsklass2.faltHarVarde(txtNamn, "Namn") &&
+        Valideringsklass2.arGiltigDecimal(txtBudget, "Budget") &&
+        Valideringsklass2.arGiltigtDatum(txtStartdatum) &&
+        Valideringsklass2.arGiltigtDatum(txtSlutdatum) &&
+        Valideringsklass2.arGiltigStatus(txtStatus)) {
+        
+        // 2. Extra logisk kontroll: Slutdatum får inte vara före startdatum
+        if (!Valideringsklass2.arGiltigtDatumIntervall(txtStartdatum, txtSlutdatum)) {
+            return; 
         }
 
-        double budgetSiffra;
-        try {
-            budgetSiffra = Double.parseDouble(nyBudgetStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Budgeten måste vara ett tal (t.ex. 5000 eller 5000.50)");
-            return;
-        }
+        // 3. Om alla kontroller går igenom, hämta värdena
+        String nyttNamn = txtNamn.getText().trim();
+        String nyBudget = txtBudget.getText().trim().replace(',', '.');
+        String nyBeskrivning = txtBeskrivning.getText().trim();
+        String start = txtStartdatum.getText().trim();
+        String slut = txtSlutdatum.getText().trim();
+        String status = txtStatus.getText().trim();
 
         try {
-
+            // Krav: SQL-frågan ska vara korrekt formaterad
             String sql = "UPDATE projekt SET "
                     + "projektnamn = '" + nyttNamn + "', "
                     + "beskrivning = '" + nyBeskrivning + "', "
                     + "startdatum = '" + start + "', "
                     + "slutdatum = '" + slut + "', "
-                    + "kostnad = " + budgetSiffra + ", "
+                    + "kostnad = " + nyBudget + ", "
                     + "status = '" + status + "' "
                     + "WHERE projektnamn = '" + this.projektnamn + "'";
 
             idDB.update(sql);
             JOptionPane.showMessageDialog(this, "Projektet har uppdaterats!");
-            this.dispose();
-            this.projektnamn = nyttNamn;
-
+            
+            // Uppdatera lokalt namn om det ändrades
+            this.projektnamn = nyttNamn; 
+            this.dispose(); // Stäng fönstret efter lyckad ändring
+            
         } catch (InfException e) {
-            JOptionPane.showMessageDialog(this, "Kunde inte spara: " + e.getMessage());
-
+            JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod vid sparande.");
+            logger.log(java.util.logging.Level.SEVERE, null, e);
         }
+    } 
     }//GEN-LAST:event_btnSparaÄndringarActionPerformed
 
     private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed

@@ -319,20 +319,25 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFiltreraPaStatusActionPerformed
 
     private void btnFiltreraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraProjektActionPerformed
-        String start = jTextField1.getText();
-        String slut = jTextField2.getText();
-        String fraga = "SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'";
-        fyllProjektLista(fraga);
+        // Kontrollera att fälten är ifyllda och har rätt datumformat (RegEx i Valideringsklassen)
+    if (Valideringsklass2.arGiltigtDatum(jTextField1) && Valideringsklass2.arGiltigtDatum(jTextField2)) {
+        // 2. Kolla logik (Start före Slut)
+        if (Valideringsklass2.arGiltigtDatumIntervall(jTextField1, jTextField2)) {
+            String start = jTextField1.getText().trim();
+            String slut = jTextField2.getText().trim();
+            fyllProjektLista("SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'");
+        }
+    }
 
     }//GEN-LAST:event_btnFiltreraProjektActionPerformed
 
     private void btnRedigeraProjektUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraProjektUppgifterActionPerformed
-        if (cbProjektVal.getSelectedItem() != null) {
-
-        }
+        // Hindra NullPointerException om listan är tom
+    if (Valideringsklass2.comboHarValtVarde(cbProjektVal, "projekt")) {
         String valtProjekt = cbProjektVal.getSelectedItem().toString();
         new ProjektchefRedigeraProjekt(idDB, valtProjekt).setVisible(true);
         this.dispose();
+    }
     }//GEN-LAST:event_btnRedigeraProjektUppgifterActionPerformed
 
     private void cbProjektValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProjektValActionPerformed
@@ -359,20 +364,24 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void fyllProjektLista(String sqlFraga) {
-        try {
-            cbProjektVal.removeAllItems();
-            var rader = idDB.fetchRows(sqlFraga);
-            if (rader != null) {
-                for (var rad : rader) {
-                    cbProjektVal.addItem(rad.get("projektnamn"));
-                }
-                if (cbProjektVal.getItemCount() > 0) {
-                    cbProjektVal.setSelectedIndex(0);
-                }
+      try {
+        cbProjektVal.removeAllItems();
+        ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sqlFraga);
+        
+        if (rader != null && !rader.isEmpty()) {
+            for (var rad : rader) {
+                cbProjektVal.addItem(rad.get("projektnamn"));
             }
-        } catch (Exception e) {
-            System.out.println("Fel: " + e.getMessage());
+        } else {
+            // Krav: Hjälp användaren förstå varför listan är tom
+            javax.swing.JOptionPane.showMessageDialog(this, "Inga projekt hittades för det valda filtret.");
         }
+    } catch (InfException e) {
+        // Krav: Programmet får ej krascha, visa felet grafiskt
+        javax.swing.JOptionPane.showMessageDialog(this, "Ett databasfel uppstod: " + e.getMessage());
+        logger.log(java.util.logging.Level.SEVERE, null, e);
+    }
+      
     }
 
     /**

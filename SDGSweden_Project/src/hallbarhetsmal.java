@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 
-public class Hallbarhetsmal extends javax.swing.JFrame {
+public class hallbarhetsmal extends javax.swing.JFrame {
 
     private InfDB idb;
     private String inloggadAnvandare;
     private javax.swing.JFrame previousFrame;
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Hallbarhetsmal.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
     private ArrayList<String> malLista = new ArrayList<>();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
 
     /**
      * öppnar listan med hållbarhetsmål direkt i konstruktorn så att listan kommer upp direkt. 
      */
-    public Hallbarhetsmal(InfDB idb, String inloggadAnvandare, javax.swing.JFrame previousFrame) {
+    public hallbarhetsmal(InfDB idb, String inloggadAnvandare, javax.swing.JFrame previousFrame) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();

@@ -49,40 +49,62 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
     }
 
     private void visaLandStatistik() {
+      if (!Valideringsklass2.comboHarValtVarde(cbLand, "land")) {
+            return;
+        }
+
         try {
             String valtLand = (String) cbLand.getSelectedItem();
             txtStatistik.setText("");
 
+            // SQL-frågan (Se till att den matchar din databasstruktur)
             String sql = "SELECT p.projektnamn, p.kostnad FROM projekt p "
                     + "JOIN land l ON p.land = l.lid "
                     + "WHERE l.namn = '" + valtLand + "'";
 
             java.util.ArrayList<java.util.HashMap<String, String>> resultat = idb.fetchRows(sql);
 
-            txtStatistik.append("KOSTNADSRAPPORT: " + valtLand.toUpperCase() + "\n");
-            txtStatistik.append("==========================================\n");
-            txtStatistik.append(String.format("%-25s %-15s\n", "Projekt", "Kostnad"));
-            txtStatistik.append("------------------------------------------\n");
+            // Ickefunktionellt krav: Feedback till användaren om data saknas
+            if (resultat == null || resultat.isEmpty()) {
+                txtStatistik.setText("Inga projekt hittades för " + valtLand + ".");
+                return;
+            }
+
+            // Formatering för läsbarhet (Användarvänlighet)
+            StringBuilder rapport = new StringBuilder();
+            rapport.append("KOSTNADSRAPPORT: ").append(valtLand.toUpperCase()).append("\n");
+            rapport.append("==========================================\n");
+            rapport.append(String.format("%-25s %-15s\n", "Projekt", "Kostnad"));
+            rapport.append("------------------------------------------\n");
 
             double totalSumma = 0;
 
-            if (resultat != null && !resultat.isEmpty()) {
-                for (java.util.HashMap<String, String> rad : resultat) {
-                    String namn = rad.get("projektnamn");
-                    double kostnad = Double.parseDouble(rad.get("kostnad"));
-                    totalSumma += kostnad;
-
-                    txtStatistik.append(String.format("%-25s %,.0f kr\n", namn, kostnad));
-                }
-                txtStatistik.append("------------------------------------------\n");
-                txtStatistik.append(String.format("%-25s %,.0f kr\n", "TOTAL SUMMA:", totalSumma));
-            } else {
-                txtStatistik.append("Inga projekt hittades för detta land.");
+            for (java.util.HashMap<String, String> rad : resultat) {
+                String namn = rad.get("projektnamn");
+                // Säkerställ att kostnad inte är null i DB
+                String kostnadStr = rad.get("kostnad");
+                double kostnad = (kostnadStr != null) ? Double.parseDouble(kostnadStr) : 0;
+                
+                totalSumma += kostnad;
+                rapport.append(String.format("%-25s %,.0f kr\n", namn, kostnad));
             }
 
+            rapport.append("------------------------------------------\n");
+            rapport.append(String.format("%-25s %,.0f kr\n", "TOTAL SUMMA:", totalSumma));
+            
+            txtStatistik.setText(rapport.toString());
+
+        } catch (InfException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Databasfel: " + ex.getMessage());
         } catch (Exception ex) {
-            txtStatistik.setText("Ett fel uppstod: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Ett oväntat fel uppstod.");
         }
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // Ickefunktionellt krav: Resurshantering (stäng fönster)
+        new MenyProjektChef(idb, inloggadEpost).setVisible(true);
+        this.dispose();  
     }
 
     /**
@@ -102,7 +124,7 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
         cbLand = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         btnVisaStatistik = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnTillbaka = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(53, 152, 242));
@@ -144,8 +166,8 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
         btnVisaStatistik.setText("Visa statistik");
         btnVisaStatistik.addActionListener(this::btnVisaStatistikActionPerformed);
 
-        jButton1.setText("Tillbaka");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnTillbaka.setText("Tillbaka");
+        btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,7 +191,7 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
                 .addContainerGap(97, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnTillbaka)
                 .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
@@ -189,7 +211,7 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
-                .addComponent(jButton1)
+                .addComponent(btnTillbaka)
                 .addGap(22, 22, 22))
         );
 
@@ -200,15 +222,16 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
         visaLandStatistik();
     }//GEN-LAST:event_btnVisaStatistikActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idb, inloggadEpost).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_btnTillbakaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTillbaka;
     private javax.swing.JButton btnVisaStatistik;
     private javax.swing.JComboBox<String> cbLand;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

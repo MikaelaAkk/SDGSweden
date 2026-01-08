@@ -39,58 +39,56 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
 
     private void laddaStatistikKort() {
         try {
-            String antal = idDB.fetchSingle("SELECT count(*) FROM projekt");
-            String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
-            String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
+        String antal = idDB.fetchSingle("SELECT count(*) FROM projekt");
+        String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
+        String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
 
-            lblAntalVarde.setText(antal != null ? antal : "0");
-            lblSummaVarde.setText(summa != null ? summa + " kr" : "0 kr");
-            lblSnittVarde.setText(snitt != null ? snitt + " kr" : "0 kr");
-            if (snitt != null) {
-                double snittDubbel = Double.parseDouble(snitt);
-                lblSnittVarde.setText(String.format("%.2f", snittDubbel) + " kr");
-            } else {
-                lblSnittVarde.setText("0 kr");
-            }
-        } catch (InfException ex) {
-            System.out.println("Fel vid hämtning av statistik: " + ex.getMessage());
-        }
+        // Använd valideringsklassen för konsekvent formatering
+        lblAntalVarde.setText(antal != null ? antal : "0");
+        lblSummaVarde.setText(Valideringsklass2.formateraValuta(summa));
+        lblSnittVarde.setText(Valideringsklass2.formateraValuta(snitt));
+        
+    } catch (InfException ex) {
+        // Krav: Visa felmeddelanden grafiskt
+        JOptionPane.showMessageDialog(this, "Kunde inte hämta statistik: " + ex.getMessage());
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+}
 
     private void laddaTabell() {
-        try {
-
-            Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
-            if (valdStatusObjekt == null) {
-                return;
-            }
-
-            String valdStatus = valdStatusObjekt.toString();
-
-            String sql = "SELECT projektnamn, status, kostnad FROM projekt";
-
-            if (!valdStatus.equals("Alla")) {
-                sql += " WHERE status = '" + valdStatus + "'";
-            }
-
-            ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
-            DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
-            model.setRowCount(0);
-
-            if (rader != null) {
-                for (HashMap<String, String> rad : rader) {
-                    Object[] tabellRad = {
-                        rad.get("projektnamn"),
-                        rad.get("status"),
-                        rad.get("kostnad") != null ? rad.get("kostnad") + " kr" : "0 kr"
-                    };
-                    model.addRow(tabellRad);
-                }
-            }
-        } catch (InfException ex) {
-            System.out.println("Kunde inte ladda tabellen: " + ex.getMessage());
+        
+    try {
+        Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
+        if (!Valideringsklass2.comboValt(valdStatusObjekt, "status")) {
+            return;
         }
+
+        String valdStatus = valdStatusObjekt.toString();
+        String sql = "SELECT projektnamn, status, kostnad FROM projekt";
+
+        if (!valdStatus.equals("Alla")) {
+            sql += " WHERE status = '" + valdStatus + "'";
+        }
+
+        ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
+        DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
+        model.setRowCount(0);
+
+        // Krav: Informera användaren om data saknas för filtret
+        if (Valideringsklass2.kontrolleraHittadData(rader, "Inga projekt matchar valt filter.")) {
+            for (HashMap<String, String> rad : rader) {
+                Object[] tabellRad = {
+                    rad.get("projektnamn"),
+                    rad.get("status"),
+                    Valideringsklass2.formateraValuta(rad.get("kostnad"))
+                };
+                model.addRow(tabellRad);
+            }
+        }
+    } catch (InfException ex) {
+        JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod när tabellen skulle laddas.");
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

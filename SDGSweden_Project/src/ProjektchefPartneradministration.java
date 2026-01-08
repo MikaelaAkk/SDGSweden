@@ -426,30 +426,58 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEpostActionPerformed
 
     private void btmSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSparaActionPerformed
-        try {
-            String nyttNamn = txtNamn.getText();
-            String epost = txtEpost.getText();
-            String tel = txtTelefon.getText();
-            String kontakt = txtKontakt.getText();
-            String adress = txtAdress.getText();
-            String bransch = txtBransch.getText();
+     //  Validera att en partner är vald i listan
+    if (!Valideringsklass2.idArSatt(nuvarandePartnerNamn, "partner")) {
+        return;
+    }
 
-            String sql = "UPDATE partner SET "
-                    + "namn='" + nyttNamn + "', "
-                    + "kontaktepost='" + epost + "', "
-                    + "telefon='" + tel + "', "
-                    + "kontaktperson='" + kontakt + "', "
-                    + "adress='" + adress + "', "
-                    + "branch='" + bransch + "' "
-                    + "WHERE namn='" + nuvarandePartnerNamn + "'";
+    // 2. Kontrollera att obligatoriska fält är ifyllda
+    if (!Valideringsklass2.textfaltHarVarde(txtNamn, "namn") ||
+        !Valideringsklass2.textfaltHarVarde(txtEpost, "e-post") ||
+        !Valideringsklass2.textfaltHarVarde(txtTelefon, "telefon") ||
+        !Valideringsklass2.textfaltHarVarde(txtKontakt, "kontaktperson")) {
+        return;
+    }
 
-            idb.update(sql);
-            javax.swing.JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
-            fyllPartnerLista();
-            nuvarandePartnerNamn = nyttNamn;
-        } catch (InfException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte spara: " + ex.getMessage());
-        }
+    // Validera format med Regular Expressions (RegEx)
+    if (!Valideringsklass2.arGiltigText(txtNamn, "namn") ||
+        !Valideringsklass2.arGiltigEpost(txtEpost) ||
+        !Valideringsklass2.arGiltigtTelefonnummer(txtTelefon) ||
+        !Valideringsklass2.arGiltigText(txtKontakt, "kontaktperson")) {
+        return;
+    }
+
+    // Om valideringen passerar, uppdatera databasen
+    try {
+        String nyttNamn = txtNamn.getText().trim();
+        String epost = txtEpost.getText().trim();
+        String tel = txtTelefon.getText().trim();
+        String kontakt = txtKontakt.getText().trim();
+        String adress = txtAdress.getText().trim();
+        String bransch = txtBransch.getText().trim();
+
+        String sql = "UPDATE partner SET "
+                + "namn='" + nyttNamn + "', "
+                + "kontaktepost='" + epost + "', "
+                + "telefon='" + tel + "', "
+                + "kontaktperson='" + kontakt + "', "
+                + "adress='" + adress + "', "
+                + "branch='" + bransch + "' "
+                + "WHERE namn='" + nuvarandePartnerNamn + "'";
+
+        idb.update(sql);
+        
+        // Bekräftelse till användaren (Krav: Användarhjälp)
+        javax.swing.JOptionPane.showMessageDialog(this, "Ändringarna har sparats!");
+        
+        // Uppdatera GUI
+        fyllPartnerLista();
+        nuvarandePartnerNamn = nyttNamn;
+        
+    } catch (InfException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Ett fel uppstod vid sparande: " + ex.getMessage());
+    }
+    
     }//GEN-LAST:event_btmSparaActionPerformed
 
     private void lstPartnersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPartnersValueChanged

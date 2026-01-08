@@ -27,27 +27,35 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
     }
 
     public void listaPersonalPaMinAvd() {
-        try {
-            String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
-            if (avdId != null) {
-                String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = " + "'" + avdId + "'";
-                java.util.ArrayList<String> namnLista = idb.fetchColumn(fraga);
+     // Validera inmatning/tillstånd innan körning (Krav: All inmatning ska kontrolleras)
+    if (!Valideringsklass2.idArSatt(inloggadAnvandare, "användare")) {
+        return;
+    }
 
-                if (namnLista != null) {
-                    javax.swing.DefaultListModel<String> lista = new javax.swing.DefaultListModel<>();
+    try {
+        // Hämta avdelnings-ID
+        String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
+        
+        if (avdId != null) {
+            String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = '" + avdId + "'";
+            java.util.ArrayList<String> namnLista = idb.fetchColumn(fraga);
 
-                    for (String namn : namnLista) {
-                        lista.addElement(namn);
-
-                    }
-                    personalLista.setModel(lista);
+            if (namnLista != null) {
+                javax.swing.DefaultListModel<String> model = new javax.swing.DefaultListModel<>();
+                for (String namn : namnLista) {
+                    model.addElement(namn);
                 }
+                personalLista.setModel(model);
             }
-
-        } catch (InfException felMeddelande) {
-            System.out.println("Det har uppstått ett fel!" + felMeddelande.getMessage());
-
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte hitta avdelning för den inloggade användaren.");
         }
+
+    } catch (InfException ex) {
+        // Krav: Felmeddelanden ska hjälpa användaren och inte bara skrivas i konsolen
+        javax.swing.JOptionPane.showMessageDialog(this, "Ett fel uppstod vid hämtning av personal: " + ex.getMessage());
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
+    }   
 
     }
 
