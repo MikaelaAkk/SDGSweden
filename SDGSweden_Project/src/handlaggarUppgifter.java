@@ -46,10 +46,10 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Databasfel: " + ex.getMessage());
         }
     }
-                                                       
+                                                 
    
     private javax.swing.JLabel lblNamn;
-   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,21 +159,34 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-      try{
-        String nyAdress = txtAdress.getText();
-        String nyTel = txtTelefon.getText();
-        String nyttLosen = new String(txtLosenord.getPassword());
-        String updateFraga = "UPDATE anstalld SET "
-         + "adress = '" + nyAdress + "', "
-         + "telefon = '" + nyTel + "', "
-         + "losenord = '" + nyttLosen + "' "
-         + "WHERE epost = '" + inloggadAnvandare + "'";
-        idb.update(updateFraga);
-            JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
+  // 1. Validera alla fält först via din Valideringsklass2
+        if (Valideringsklass2.faltHarVarde(txtAdress) && 
+            Valideringsklass2.faltHarVarde(txtTelefon) && 
+            Valideringsklass2.arGiltigtTelefonnummer(txtTelefon) &&
+            Valideringsklass2.faltHarVarde(txtLosenord)) {
+            
+            try {
+                // 2. Hämta de nya värdena från fälten
+                String nyAdress = txtAdress.getText().trim();
+                String nyTel = txtTelefon.getText().trim();
+                String nyttLosen = new String(txtLosenord.getPassword());
 
-        } catch (InfException ex) {
-            JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());    
-    }  
+                // 3. Skapa SQL-frågan för att uppdatera
+                String updateFraga = "UPDATE anstalld SET "
+                        + "adress = '" + nyAdress + "', "
+                        + "telefon = '" + nyTel + "', "
+                        + "losenord = '" + nyttLosen + "' "
+                        + "WHERE epost = '" + inloggadAnvandare + "'";
+                
+                // 4. Kör uppdateringen i databasen
+                idb.update(updateFraga);
+                JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
+
+            } catch (InfException ex) {
+                JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());    
+            }  
+        
+    } // Slut på metoden btnSparaActionPerformed
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void tillbakaKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaKnappActionPerformed
