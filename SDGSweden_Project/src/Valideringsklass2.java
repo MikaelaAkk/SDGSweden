@@ -76,7 +76,42 @@ public class Valideringsklass2 {
         }
         return resultat; 
     }
+    
+    // Kontrollerar om ett fält är tomt och visar felmeddelande
+    public static boolean faltHarVärde(JTextField faltAttTesta, String faltNamn) {
+        if (faltAttTesta.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Fältet " + faltNamn + " får inte vara tomt.");
+            faltAttTesta.requestFocus(); // Sätter markören i det tomma fältet
+            return false;
+        }
+        return true;
+    }
+
+    // Kontrollerar om texten är ett giltigt heltal (t.ex. för telefonnummer eller ID)
+    public static boolean arHeltal(JTextField faltAttTesta) {
+        try {
+            Integer.parseInt(faltAttTesta.getText().trim());
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Var god ange ett giltigt nummer.");
+            faltAttTesta.requestFocus();
+            return false;
+        }
+    }
+
+    // Kontrollerar om e-posten innehåller ett @ (enkel validering)
+    public static boolean arGiltigEpost(JTextField faltAttTesta) {
+        String epost = faltAttTesta.getText().trim();
+        if (!epost.contains("@") || !epost.contains(".")) {
+            JOptionPane.showMessageDialog(null, "Ange en giltig e-postadress.");
+            faltAttTesta.requestFocus();
+            return false;
+        }
+        return true;
+    }
 }
+
+
 
     // Variables declaration - do not modify                     
     // End of variables declaration                   
