@@ -7,7 +7,6 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
@@ -15,9 +14,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 public class HanteraProjektPartners extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HanteraProjektPartners.class.getName());
 
     /**
@@ -27,18 +27,18 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
-        
+
         fyllMinaProjekt();
         fyllAllaPartners();
     }
-    
+
     private void fyllMinaProjekt() {
         try {
             DefaultListModel<String> model = new DefaultListModel<>();
-            String fraga = "SELECT projektnamn FROM projekt " +
-                           "JOIN anstalld ON projekt.projektchef = anstalld.aid " +
-                           "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
-            
+            String fraga = "SELECT projektnamn FROM projekt "
+                    + "JOIN anstalld ON projekt.projektchef = anstalld.aid "
+                    + "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
+
             ArrayList<String> projekt = idb.fetchColumn(fraga);
             if (projekt != null) {
                 for (String p : projekt) {
@@ -201,7 +201,7 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKopplaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKopplaActionPerformed
-   try {
+        try {
             String valtProjekt = lstMinaProjekt.getSelectedValue();
             String valdPartner = lstAllaPartners.getSelectedValue();
 
@@ -213,24 +213,23 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
             String pId = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
             String partnerId = idb.fetchSingle("SELECT pid FROM partner WHERE namn = '" + valdPartner + "'");
 
-           
             idb.insert("INSERT INTO projekt_partner (pid, partner_pid) VALUES (" + pId + ", " + partnerId + ")");
             JOptionPane.showMessageDialog(this, valdPartner + " har lagts till i " + valtProjekt);
 
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "De är redan kopplade eller ett fel uppstod: " + ex.getMessage());
         }
-       
+
     }//GEN-LAST:event_btnKopplaActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-  new ProjektchefPartneradministration(idb, inloggadAnvandare).setVisible(true);
-    this.dispose();                                
-      
+        new ProjektchefPartneradministration(idb, inloggadAnvandare).setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-     try {
+        try {
             String valtProjekt = lstMinaProjekt.getSelectedValue();
             String valdPartner = lstAllaPartners.getSelectedValue();
 
@@ -248,17 +247,13 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "Kunde inte ta bort kopplingen: " + ex.getMessage());
         }
-                                            
 
-   
-    
+
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     /**
      * @param args the command line arguments
      */
-  
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnKoppla;

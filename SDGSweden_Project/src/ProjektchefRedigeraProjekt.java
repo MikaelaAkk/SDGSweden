@@ -7,65 +7,58 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfException;
 import oru.inf.InfDB;
 import java.util.HashMap;
-import javax.swing.JOptionPane; 
+import javax.swing.JOptionPane;
 
 public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
-    
+
     private InfDB idDB;
     private String projektnamn;
     private String valtProjekt;
     private int aid;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefRedigeraProjekt.class.getName());
 
-    
     /**
      * Creates new form ProjektchefRedigeraProjekt
      */
     public ProjektchefRedigeraProjekt(InfDB idDB, String projektnamn) {
-        
+
         this.idDB = idDB;
         this.projektnamn = projektnamn;
         this.aid = aid;
-       
+
         initComponents();
-       
-       
-       this.setLocationRelativeTo(null);
-       fyllProjektData();
-     jLabel1.setText("REDIGERA: " + projektnamn.toUpperCase());   
-     
-        
+
+        this.setLocationRelativeTo(null);
+        fyllProjektData();
+        jLabel1.setText("REDIGERA: " + projektnamn.toUpperCase());
+
     }
-    
+
     private void fyllProjektData() {
-    try {
-       
-        String sql = "SELECT * FROM projekt WHERE projektnamn = '" + projektnamn + "'";
-        HashMap<String, String> projektData = idDB.fetchRow(sql);
+        try {
 
-        if (projektData != null) {
-          
-            txtNamn.setText(projektData.get("projektnamn"));
-            txtBeskrivning.setText(projektData.get("beskrivning"));
-            txtBudget.setText(projektData.get("kostnad"));
-            txtStartdatum.setText(projektData.get("startdatum"));
-            txtSlutdatum.setText(projektData.get("slutdatum"));
-            txtStatus.setText(projektData.get("status"));
-            
-            jLabel1.setText("Redigera projekt: " + projektnamn);
-            
+            String sql = "SELECT * FROM projekt WHERE projektnamn = '" + projektnamn + "'";
+            HashMap<String, String> projektData = idDB.fetchRow(sql);
+
+            if (projektData != null) {
+
+                txtNamn.setText(projektData.get("projektnamn"));
+                txtBeskrivning.setText(projektData.get("beskrivning"));
+                txtBudget.setText(projektData.get("kostnad"));
+                txtStartdatum.setText(projektData.get("startdatum"));
+                txtSlutdatum.setText(projektData.get("slutdatum"));
+                txtStatus.setText(projektData.get("status"));
+
+                jLabel1.setText("Redigera projekt: " + projektnamn);
+
+            }
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(null, "Kunde inte hämta projektdata!");
         }
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(null, "Kunde inte hämta projektdata!");
     }
-}
-
-    
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,50 +240,50 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaÄndringarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaÄndringarActionPerformed
-    String nyttNamn = txtNamn.getText();
-    String nyBudgetStr = txtBudget.getText();
-    String nyBeskrivning = txtBeskrivning.getText();
-    String start = txtStartdatum.getText();
-    String slut = txtSlutdatum.getText();
-    String status = txtStatus.getText();   
-        
-    if (nyttNamn.isEmpty() || nyBudgetStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Namn och budget måste fyllas i!");
-        return;
-    }
-    
-    double budgetSiffra;
-    try {
-        budgetSiffra = Double.parseDouble(nyBudgetStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Budgeten måste vara ett tal (t.ex. 5000 eller 5000.50)");
-        return; 
-    }
-    
-       try {
-      
-           String sql = "UPDATE projekt SET " +
-        "projektnamn = '" + nyttNamn + "', " +
-        "beskrivning = '" + nyBeskrivning + "', " +
-        "startdatum = '" + start + "', " +
-        "slutdatum = '" + slut + "', " +
-        "kostnad = " + budgetSiffra + ", " +
-        "status = '" + status + "' " +
-        "WHERE projektnamn = '" + this.projektnamn + "'";
-        
-        idDB.update(sql);
-        JOptionPane.showMessageDialog(this, "Projektet har uppdaterats!");
-        this.dispose(); 
-        this.projektnamn = nyttNamn;
-        
-    } catch (InfException e) {
-        JOptionPane.showMessageDialog(this, "Kunde inte spara: " + e.getMessage());
-    
-       }
+        String nyttNamn = txtNamn.getText();
+        String nyBudgetStr = txtBudget.getText();
+        String nyBeskrivning = txtBeskrivning.getText();
+        String start = txtStartdatum.getText();
+        String slut = txtSlutdatum.getText();
+        String status = txtStatus.getText();
+
+        if (nyttNamn.isEmpty() || nyBudgetStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Namn och budget måste fyllas i!");
+            return;
+        }
+
+        double budgetSiffra;
+        try {
+            budgetSiffra = Double.parseDouble(nyBudgetStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Budgeten måste vara ett tal (t.ex. 5000 eller 5000.50)");
+            return;
+        }
+
+        try {
+
+            String sql = "UPDATE projekt SET "
+                    + "projektnamn = '" + nyttNamn + "', "
+                    + "beskrivning = '" + nyBeskrivning + "', "
+                    + "startdatum = '" + start + "', "
+                    + "slutdatum = '" + slut + "', "
+                    + "kostnad = " + budgetSiffra + ", "
+                    + "status = '" + status + "' "
+                    + "WHERE projektnamn = '" + this.projektnamn + "'";
+
+            idDB.update(sql);
+            JOptionPane.showMessageDialog(this, "Projektet har uppdaterats!");
+            this.dispose();
+            this.projektnamn = nyttNamn;
+
+        } catch (InfException e) {
+            JOptionPane.showMessageDialog(this, "Kunde inte spara: " + e.getMessage());
+
+        }
     }//GEN-LAST:event_btnSparaÄndringarActionPerformed
 
     private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
-        
+
     }//GEN-LAST:event_txtStatusActionPerformed
 
     private void btnAvbrytActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvbrytActionPerformed
@@ -298,15 +291,13 @@ public class ProjektchefRedigeraProjekt extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAvbrytActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-       new ProjektchefProjektAdministration(idDB, aid, "").setVisible(true); 
-    this.dispose();
+        new ProjektchefProjektAdministration(idDB, aid, "").setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvbryt;

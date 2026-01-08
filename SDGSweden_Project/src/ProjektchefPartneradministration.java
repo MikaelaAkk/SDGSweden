@@ -7,7 +7,6 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
@@ -15,14 +14,14 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
-
 public class ProjektchefPartneradministration extends javax.swing.JFrame {
-    private InfDB idb; 
+
+    private InfDB idb;
     private String nuvarandePartnerNamn;
     private String inloggadAnvandare;
     private String inloggadEpost;
     private String epost;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefPartneradministration.class.getName());
 
     /**
@@ -35,46 +34,43 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
         fyllPartnerLista();
         this.epost = epost;
         this.inloggadEpost = inloggadEpost;
-        
+
     }
 
     private void fyllPartnerLista() {
-    try {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        ArrayList<String> partners = idb.fetchColumn("SELECT namn FROM partner");
-        
-        if (partners != null) {
-            for (String namn : partners) {
-                model.addElement(namn);
-            }
-        }
-        lstPartners.setModel(model);
-    } catch (InfException ex) {
-        System.out.println("Hittade inga partners: " + ex.getMessage());
-    }
-}
-   
+        try {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            ArrayList<String> partners = idb.fetchColumn("SELECT namn FROM partner");
 
-    
+            if (partners != null) {
+                for (String namn : partners) {
+                    model.addElement(namn);
+                }
+            }
+            lstPartners.setModel(model);
+        } catch (InfException ex) {
+            System.out.println("Hittade inga partners: " + ex.getMessage());
+        }
+    }
+
     private void fyllPartnerUppgifter(String namn) {
         try {
-            
+
             String fraga = "SELECT * FROM partner WHERE namn = '" + namn + "'";
             HashMap<String, String> rad = idb.fetchRow(fraga);
 
             if (rad != null) {
-                
+
                 nuvarandePartnerNamn = namn;
 
-                
-               txtNamn.setText(rad.get("namn"));
+                txtNamn.setText(rad.get("namn"));
                 txtKontakt.setText(rad.get("kontaktperson"));
-                txtEpost.setText(rad.get("kontaktepost")); 
+                txtEpost.setText(rad.get("kontaktepost"));
                 txtTelefon.setText(rad.get("telefon"));
-                txtAdress.setText(rad.get("adress"));       
-                
+                txtAdress.setText(rad.get("adress"));
+
                 // 
-                if(rad.containsKey("branch")) {
+                if (rad.containsKey("branch")) {
                     txtBransch.setText(rad.get("branch"));
                 } else {
                     txtBransch.setText(rad.get("branch"));
@@ -84,28 +80,28 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
             System.out.println("Fel vid hämtning av uppgifter: " + ex.getMessage());
         }
     }
-    
+
     private void fyllProjektTabell(String namn) {
         try {
-            
-            String fraga = "SELECT projekt.projektnamn, projekt.status, projekt.startdatum " +
-                           "FROM projekt " +
-                           "JOIN projekt_partner ON projekt.pid = projekt_partner.pid " +
-                           "JOIN partner ON projekt_partner.partner_pid = partner.pid " +
-                           "WHERE partner.namn = '" + namn + "'";
+
+            String fraga = "SELECT projekt.projektnamn, projekt.status, projekt.startdatum "
+                    + "FROM projekt "
+                    + "JOIN projekt_partner ON projekt.pid = projekt_partner.pid "
+                    + "JOIN partner ON projekt_partner.partner_pid = partner.pid "
+                    + "WHERE partner.namn = '" + namn + "'";
 
             ArrayList<HashMap<String, String>> rader = idb.fetchRows(fraga);
             DefaultTableModel model = (DefaultTableModel) tblPartnerProjekt.getModel();
 
-            model.setRowCount(0); 
+            model.setRowCount(0);
 
             if (rader != null) {
                 for (HashMap<String, String> rad : rader) {
-                    
+
                     model.addRow(new Object[]{
-                        rad.get("projektnamn"),  
-                        rad.get("status"),      
-                        rad.get("startdatum")   
+                        rad.get("projektnamn"),
+                        rad.get("status"),
+                        rad.get("startdatum")
                     });
                 }
             }
@@ -113,9 +109,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
             System.out.println("Fel vid hämtning av projekt: " + ex.getMessage());
         }
     }
-    
-   
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -432,71 +426,59 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEpostActionPerformed
 
     private void btmSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSparaActionPerformed
-     try {
-        String nyttNamn = txtNamn.getText();
+        try {
+            String nyttNamn = txtNamn.getText();
             String epost = txtEpost.getText();
-            String tel = txtTelefon.getText();     
-            String kontakt = txtKontakt.getText(); 
-            String adress = txtAdress.getText();   
+            String tel = txtTelefon.getText();
+            String kontakt = txtKontakt.getText();
+            String adress = txtAdress.getText();
             String bransch = txtBransch.getText();
-        
-      String sql = "UPDATE partner SET " +
-                         "namn='" + nyttNamn + "', " +
-                         "kontaktepost='" + epost + "', " + 
-                         "telefon='" + tel + "', " +
-                         "kontaktperson='" + kontakt + "', " +
-                         "adress='" + adress + "', " +
-                         "branch='" + bransch + "' " + 
-                         "WHERE namn='" + nuvarandePartnerNamn + "'";
-        
-        idb.update(sql);
-        javax.swing.JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
-        fyllPartnerLista(); 
-        nuvarandePartnerNamn = nyttNamn;
-    } catch (InfException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte spara: " + ex.getMessage());
-    }  
+
+            String sql = "UPDATE partner SET "
+                    + "namn='" + nyttNamn + "', "
+                    + "kontaktepost='" + epost + "', "
+                    + "telefon='" + tel + "', "
+                    + "kontaktperson='" + kontakt + "', "
+                    + "adress='" + adress + "', "
+                    + "branch='" + bransch + "' "
+                    + "WHERE namn='" + nuvarandePartnerNamn + "'";
+
+            idb.update(sql);
+            javax.swing.JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
+            fyllPartnerLista();
+            nuvarandePartnerNamn = nyttNamn;
+        } catch (InfException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte spara: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btmSparaActionPerformed
 
     private void lstPartnersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPartnersValueChanged
-      if (!evt.getValueIsAdjusting()) { 
-        String valtNamn = lstPartners.getSelectedValue();
-        if (valtNamn != null) {
-            fyllPartnerUppgifter(valtNamn);
-            fyllProjektTabell(valtNamn);
+        if (!evt.getValueIsAdjusting()) {
+            String valtNamn = lstPartners.getSelectedValue();
+            if (valtNamn != null) {
+                fyllPartnerUppgifter(valtNamn);
+                fyllProjektTabell(valtNamn);
+            }
         }
-      }
-      
-    
-      
-    
-        
 
-  
-
-
-
-        
-        
 
     }//GEN-LAST:event_lstPartnersValueChanged
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new MenyProjektChef(idb, inloggadEpost).setVisible(true);
-    this.dispose();
+        new MenyProjektChef(idb, inloggadEpost).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void btnHanteraKopplingarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraKopplingarActionPerformed
-     HanteraProjektPartners hantera = new HanteraProjektPartners(idb, inloggadEpost);
-    hantera.setLocationRelativeTo(null);
-    hantera.setVisible(true);
-    this.dispose();
+        HanteraProjektPartners hantera = new HanteraProjektPartners(idb, inloggadEpost);
+        hantera.setLocationRelativeTo(null);
+        hantera.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHanteraKopplingarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btmSpara;

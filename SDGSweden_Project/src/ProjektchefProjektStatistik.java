@@ -7,7 +7,6 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
@@ -16,41 +15,38 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
 public class ProjektchefProjektStatistik extends javax.swing.JFrame {
-private InfDB idDB;
-private int aid;
-private String inloggadEpost;
 
-    
+    private InfDB idDB;
+    private int aid;
+    private String inloggadEpost;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefProjektStatistik.class.getName());
 
-    
     /**
      * Creates new form ProjektchefProjektStatistik
      */
-    
     public ProjektchefProjektStatistik(InfDB idb, int aid, String epost) {
         initComponents();
-        
-       this.idDB = idb;
-    this.aid = aid;
-    this.inloggadEpost = epost;
-   
-    laddaStatistikKort();
-    laddaTabell();
-    
+
+        this.idDB = idb;
+        this.aid = aid;
+        this.inloggadEpost = epost;
+
+        laddaStatistikKort();
+        laddaTabell();
+
     }
-    
+
     private void laddaStatistikKort() {
         try {
             String antal = idDB.fetchSingle("SELECT count(*) FROM projekt");
             String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
             String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
 
-           
             lblAntalVarde.setText(antal != null ? antal : "0");
             lblSummaVarde.setText(summa != null ? summa + " kr" : "0 kr");
             lblSnittVarde.setText(snitt != null ? snitt + " kr" : "0 kr");
-      if (snitt != null) {
+            if (snitt != null) {
                 double snittDubbel = Double.parseDouble(snitt);
                 lblSnittVarde.setText(String.format("%.2f", snittDubbel) + " kr");
             } else {
@@ -61,15 +57,16 @@ private String inloggadEpost;
         }
     }
 
-  private void laddaTabell() {
+    private void laddaTabell() {
         try {
-           
+
             Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
-            if (valdStatusObjekt == null) return;
-            
+            if (valdStatusObjekt == null) {
+                return;
+            }
+
             String valdStatus = valdStatusObjekt.toString();
-            
-           
+
             String sql = "SELECT projektnamn, status, kostnad FROM projekt";
 
             if (!valdStatus.equals("Alla")) {
@@ -78,12 +75,11 @@ private String inloggadEpost;
 
             ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
             DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
-            model.setRowCount(0); 
+            model.setRowCount(0);
 
             if (rader != null) {
                 for (HashMap<String, String> rad : rader) {
                     Object[] tabellRad = {
-                     
                         rad.get("projektnamn"),
                         rad.get("status"),
                         rad.get("kostnad") != null ? rad.get("kostnad") + " kr" : "0 kr"
@@ -94,15 +90,8 @@ private String inloggadEpost;
         } catch (InfException ex) {
             System.out.println("Kunde inte ladda tabellen: " + ex.getMessage());
         }
-    }  
-    
-   
-    
+    }
 
-
- 
-   
-   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -341,7 +330,7 @@ private String inloggadEpost;
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbStatusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusFilterActionPerformed
-    laddaTabell();
+        laddaTabell();
     }//GEN-LAST:event_cbStatusFilterActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
@@ -352,8 +341,6 @@ private String inloggadEpost;
     /**
      * @param args the command line arguments
      */
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTillbaka;

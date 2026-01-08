@@ -7,7 +7,6 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 public class ProjektchefHandläggare extends javax.swing.JFrame {
+
     private InfDB idb; //databaskopplingen
     private String inloggadEpost; //Sparar e-post för den som är inloggad
     private String valdAnstalldAid; //Sparar ID på den handläggare man sökt fram
-   
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefHandläggare.class.getName());
 
     /**
@@ -30,17 +29,18 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
-        
+
         txtSok.setText(""); //Rensar sökfältet vid start
         fyllMinaProjektCombo(); // Fyller menyn med projekt som användaren är chef för
     }
+
     //Fyller comboboxen med projektnamn där den inloggade är projektchef
     private void fyllMinaProjektCombo() {
         try {
             cbMinaProjekt.removeAllItems();
             //Hämtar projektnamn genom att söka på aid via den inloggades e-post
             String fraga = "SELECT projektnamn FROM projekt WHERE projektchef = "
-                         + "(SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "')";
+                    + "(SELECT aid FROM anstalld WHERE epost = '" + inloggadEpost + "')";
             ArrayList<String> projekt = idb.fetchColumn(fraga);
             if (projekt != null) {
                 for (String p : projekt) {
@@ -51,7 +51,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
             System.out.println("Kunde inte ladda projekt: " + ex.getMessage());
         }
     }
-    
+
     //Uppdaterar Jlist med de projekt som den sökta handläggaren jobbar i 
     private void uppdateraProjektLista() {
         try {
@@ -72,56 +72,43 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
             System.out.println("Kunde inte hämta personens projekt: " + ex.getMessage());
         }
     }
-    
-    
-    
-    
- private void utforSokning() {
-     txtResultat.setText("");
-    try {
-        String sokText = txtSok.getText().trim(); //rensar tidigare sökresultat
-        
-        // Vi hämtar även aid här för att kunna använda det till projekt-knapparna
-        String sql = "SELECT a.aid, a.fornamn, a.efternamn, a.epost, avd.namn FROM anstalld a " +
-                     "JOIN avdelning avd ON a.avdelning = avd.avdid " +
-                     "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
 
-        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(sql);
-        txtResultat.setText(""); 
+    private void utforSokning() {
+        txtResultat.setText("");
+        try {
+            String sokText = txtSok.getText().trim(); //rensar tidigare sökresultat
 
-        if (resultat == null || resultat.isEmpty()) {
-            txtResultat.append("Ingen handläggare hittades.");
-            valdAnstalldAid = null; // Nollställ om ingen hittas
-        } else {
-            // Vi tar den första personen som hittas och sätter som "vald"
-            HashMap<String, String> person = resultat.get(0);
-            valdAnstalldAid = person.get("aid"); 
-           
-           // Loopar igenom reslutaten och skriver ut info i textarean
-            for (HashMap<String, String> rad : resultat) {
-                txtResultat.append("Namn: " + rad.get("fornamn") + " " + rad.get("efternamn") + "\n");
-                txtResultat.append("E-post: " + rad.get("epost") + "\n");
-                txtResultat.append("Avdelning: " + rad.get("namn") + "\n");
-                txtResultat.append("--------------------------------------\n");
+            // Vi hämtar även aid här för att kunna använda det till projekt-knapparna
+            String sql = "SELECT a.aid, a.fornamn, a.efternamn, a.epost, avd.namn FROM anstalld a "
+                    + "JOIN avdelning avd ON a.avdelning = avd.avdid "
+                    + "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
+
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(sql);
+            txtResultat.setText("");
+
+            if (resultat == null || resultat.isEmpty()) {
+                txtResultat.append("Ingen handläggare hittades.");
+                valdAnstalldAid = null; // Nollställ om ingen hittas
+            } else {
+                // Vi tar den första personen som hittas och sätter som "vald"
+                HashMap<String, String> person = resultat.get(0);
+                valdAnstalldAid = person.get("aid");
+
+                // Loopar igenom reslutaten och skriver ut info i textarean
+                for (HashMap<String, String> rad : resultat) {
+                    txtResultat.append("Namn: " + rad.get("fornamn") + " " + rad.get("efternamn") + "\n");
+                    txtResultat.append("E-post: " + rad.get("epost") + "\n");
+                    txtResultat.append("Avdelning: " + rad.get("namn") + "\n");
+                    txtResultat.append("--------------------------------------\n");
+                }
+
+                uppdateraProjektLista();
             }
-            
-            
-            uppdateraProjektLista();
+        } catch (InfException ex) {
+            txtResultat.setText("Ett fel uppstod: " + ex.getMessage());
         }
-    } catch (InfException ex) {
-        txtResultat.setText("Ett fel uppstod: " + ex.getMessage());
     }
-}
-          
- 
 
-  
-
-   
-    
-    
-   
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -318,30 +305,30 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
 
     // Knapp: Lägg till den framsökta handläggaren i valt projekt
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-    try {
-           
+        try {
+
             if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
                 // Hämta projektets ID baserat på namnet i comboboxen
-                
+
                 String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
                 idb.insert(insertSql);
-                
+
                 JOptionPane.showMessageDialog(this, "Handläggare tillagd i projektet!");
-                uppdateraProjektLista(); 
+                uppdateraProjektLista();
             } else {
                 JOptionPane.showMessageDialog(this, "Sök fram en handläggare först och välj ett projekt.");
             }
         } catch (InfException ex) {
-           
+
             JOptionPane.showMessageDialog(this, "Kunde inte lägga till: " + ex.getMessage());
-    
+
         }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-     try {
+        try {
             if (valdAnstalldAid != null && cbMinaProjekt.getSelectedItem() != null) {
                 String valtProjektNamn = (String) cbMinaProjekt.getSelectedItem();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjektNamn + "'");
@@ -350,16 +337,16 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 idb.delete(deleteSql);
 
                 javax.swing.JOptionPane.showMessageDialog(this, "Personen borttagen från ditt projekt.");
-                uppdateraProjektLista(); 
+                uppdateraProjektLista();
             }
         } catch (InfException ex) {
             System.out.println("Kunde inte ta bort: " + ex.getMessage());
         }
-    
+
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
-    utforSokning();  
+        utforSokning();
     }//GEN-LAST:event_btnSokActionPerformed
 
     private void jLabel2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel2KeyReleased
@@ -367,11 +354,10 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2KeyReleased
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-    new MenyProjektChef(idb, inloggadEpost).setVisible(true);
-    this.dispose();
+        new MenyProjektChef(idb, inloggadEpost).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLaggTill;

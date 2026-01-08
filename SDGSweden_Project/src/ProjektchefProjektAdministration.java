@@ -7,38 +7,34 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class ProjektchefProjektAdministration extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefProjektAdministration.class.getName());
-private InfDB idDB;
-private int aid;
-private String projektnamn;
-private String epost;
-private String InloggadEpost;
+    private InfDB idDB;
+    private int aid;
+    private String projektnamn;
+    private String epost;
+    private String InloggadEpost;
+
     /**
      * Creates new form ProjektchefAdministration
      */
-   
-    public ProjektchefProjektAdministration(InfDB idb,int aid, String epost) { 
-    this.idDB = idb;
-    this.aid = aid;
-    this.epost = epost;
-    initComponents();
-    this.InloggadEpost = InloggadEpost;
-    
 
-    
-    fyllProjektLista("SELECT projektnamn FROM projekt WHERE projektchef = " + aid);
-    
+    public ProjektchefProjektAdministration(InfDB idb, int aid, String epost) {
+        this.idDB = idb;
+        this.aid = aid;
+        this.epost = epost;
+        initComponents();
+        this.InloggadEpost = InloggadEpost;
+
+        fyllProjektLista("SELECT projektnamn FROM projekt WHERE projektchef = " + aid);
+
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -310,7 +306,7 @@ private String InloggadEpost;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
+
     private void btnFiltreraPaStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraPaStatusActionPerformed
         String status = cbStatusFilter.getSelectedItem().toString();
         String fraga;
@@ -331,12 +327,12 @@ private String InloggadEpost;
     }//GEN-LAST:event_btnFiltreraProjektActionPerformed
 
     private void btnRedigeraProjektUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraProjektUppgifterActionPerformed
-    if (cbProjektVal.getSelectedItem() != null) {
-        
-    }
+        if (cbProjektVal.getSelectedItem() != null) {
+
+        }
         String valtProjekt = cbProjektVal.getSelectedItem().toString();
-     new ProjektchefRedigeraProjekt(idDB, valtProjekt).setVisible(true);
-     this.dispose();
+        new ProjektchefRedigeraProjekt(idDB, valtProjekt).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRedigeraProjektUppgifterActionPerformed
 
     private void cbProjektValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProjektValActionPerformed
@@ -358,31 +354,30 @@ private String InloggadEpost;
     }//GEN-LAST:event_cbProjektValActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
-      new MenyProjektChef(idDB, epost).setVisible(true);
-      this.dispose();
+        new MenyProjektChef(idDB, epost).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
-private void fyllProjektLista(String sqlFraga) {
-    try {
-        cbProjektVal.removeAllItems();
-        var rader = idDB.fetchRows(sqlFraga);
-        if (rader != null) {
-            for (var rad : rader) {
-                cbProjektVal.addItem(rad.get("projektnamn"));
+    private void fyllProjektLista(String sqlFraga) {
+        try {
+            cbProjektVal.removeAllItems();
+            var rader = idDB.fetchRows(sqlFraga);
+            if (rader != null) {
+                for (var rad : rader) {
+                    cbProjektVal.addItem(rad.get("projektnamn"));
+                }
+                if (cbProjektVal.getItemCount() > 0) {
+                    cbProjektVal.setSelectedIndex(0);
+                }
             }
-            if (cbProjektVal.getItemCount() > 0) {
-                cbProjektVal.setSelectedIndex(0); 
-            }
+        } catch (Exception e) {
+            System.out.println("Fel: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.out.println("Fel: " + e.getMessage());
     }
-}
-    
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFiltreraPaStatus;

@@ -7,7 +7,6 @@
  *
  * @author elinjugas
  */
-
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import java.util.ArrayList;
@@ -15,9 +14,10 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 
 public class ProjektchefStatistikLand extends javax.swing.JFrame {
-   private InfDB idb;
+
+    private InfDB idb;
     private String inloggadEpost;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefStatistikLand.class.getName());
 
     /**
@@ -27,64 +27,63 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadEpost = inloggadEpost;
-        
+
         fyllLandVäljare();
         txtStatistik.setFont(new java.awt.Font("Monospaced", 0, 12));
     }
-    
+
     private void fyllLandVäljare() {
-    try {
-        cbLand.removeAllItems();
-        String fraga = "SELECT namn FROM land ORDER BY namn";
-        java.util.ArrayList<String> lander = idb.fetchColumn(fraga);
+        try {
+            cbLand.removeAllItems();
+            String fraga = "SELECT namn FROM land ORDER BY namn";
+            java.util.ArrayList<String> lander = idb.fetchColumn(fraga);
 
-        if (lander != null) {
-            for (String land : lander) {
-                cbLand.addItem(land);
+            if (lander != null) {
+                for (String land : lander) {
+                    cbLand.addItem(land);
+                }
             }
+        } catch (oru.inf.InfException ex) {
+            System.out.println("Fel vid hämtning av länder: " + ex.getMessage());
         }
-    } catch (oru.inf.InfException ex) {
-        System.out.println("Fel vid hämtning av länder: " + ex.getMessage());
     }
-}
-    
-  private void visaLandStatistik() {
-    try {
-        String valtLand = (String) cbLand.getSelectedItem();
-        txtStatistik.setText(""); 
 
-        
-        String sql = "SELECT p.projektnamn, p.kostnad FROM projekt p " +
-                     "JOIN land l ON p.land = l.lid " +
-                     "WHERE l.namn = '" + valtLand + "'";
+    private void visaLandStatistik() {
+        try {
+            String valtLand = (String) cbLand.getSelectedItem();
+            txtStatistik.setText("");
 
-        java.util.ArrayList<java.util.HashMap<String, String>> resultat = idb.fetchRows(sql);
+            String sql = "SELECT p.projektnamn, p.kostnad FROM projekt p "
+                    + "JOIN land l ON p.land = l.lid "
+                    + "WHERE l.namn = '" + valtLand + "'";
 
-        txtStatistik.append("KOSTNADSRAPPORT: " + valtLand.toUpperCase() + "\n");
-        txtStatistik.append("==========================================\n");
-        txtStatistik.append(String.format("%-25s %-15s\n", "Projekt", "Kostnad"));
-        txtStatistik.append("------------------------------------------\n");
+            java.util.ArrayList<java.util.HashMap<String, String>> resultat = idb.fetchRows(sql);
 
-        double totalSumma = 0;
-
-        if (resultat != null && !resultat.isEmpty()) {
-            for (java.util.HashMap<String, String> rad : resultat) {
-                String namn = rad.get("projektnamn");
-                double kostnad = Double.parseDouble(rad.get("kostnad"));
-                totalSumma += kostnad;
-
-                txtStatistik.append(String.format("%-25s %,.0f kr\n", namn, kostnad));
-            }
+            txtStatistik.append("KOSTNADSRAPPORT: " + valtLand.toUpperCase() + "\n");
+            txtStatistik.append("==========================================\n");
+            txtStatistik.append(String.format("%-25s %-15s\n", "Projekt", "Kostnad"));
             txtStatistik.append("------------------------------------------\n");
-            txtStatistik.append(String.format("%-25s %,.0f kr\n", "TOTAL SUMMA:", totalSumma));
-        } else {
-            txtStatistik.append("Inga projekt hittades för detta land.");
-        }
 
-    } catch (Exception ex) {
-        txtStatistik.setText("Ett fel uppstod: " + ex.getMessage());
+            double totalSumma = 0;
+
+            if (resultat != null && !resultat.isEmpty()) {
+                for (java.util.HashMap<String, String> rad : resultat) {
+                    String namn = rad.get("projektnamn");
+                    double kostnad = Double.parseDouble(rad.get("kostnad"));
+                    totalSumma += kostnad;
+
+                    txtStatistik.append(String.format("%-25s %,.0f kr\n", namn, kostnad));
+                }
+                txtStatistik.append("------------------------------------------\n");
+                txtStatistik.append(String.format("%-25s %,.0f kr\n", "TOTAL SUMMA:", totalSumma));
+            } else {
+                txtStatistik.append("Inga projekt hittades för detta land.");
+            }
+
+        } catch (Exception ex) {
+            txtStatistik.setText("Ett fel uppstod: " + ex.getMessage());
+        }
     }
-}  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -198,14 +197,13 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVisaStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaStatistikActionPerformed
-   visaLandStatistik();
+        visaLandStatistik();
     }//GEN-LAST:event_btnVisaStatistikActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     new MenyProjektChef(idb, inloggadEpost).setVisible(true); 
+        new MenyProjektChef(idb, inloggadEpost).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVisaStatistik;
