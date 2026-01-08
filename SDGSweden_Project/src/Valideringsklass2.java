@@ -77,7 +77,7 @@ public class Valideringsklass2 {
     }
     
     // Metod 4: Din kontroll med fältnamn
-    public static boolean faltHarVärde(JTextField faltAttTesta, String faltNamn) {
+    public static boolean faltHarVarde(JTextField faltAttTesta, String faltNamn) {
         if (faltAttTesta.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet " + faltNamn + " får inte vara tomt.");
             faltAttTesta.requestFocus();
