@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 
-/**
- *
- * @author User
- */
 public class hallbarhetsmal extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    
+    private javax.swing.JFrame previousFrame;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
 private ArrayList<String>malLista = new ArrayList<>();
@@ -21,10 +17,11 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
     /**
      * Creates new form hallbarhetsmal
      */
-    public hallbarhetsmal(InfDB idb, String inloggadAnvandare) {
+    public hallbarhetsmal(InfDB idb, String inloggadAnvandare, javax.swing.JFrame previousFrame) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        this.previousFrame = previousFrame; 
         
         malLista.add("1. Ingen fattigdom - Avskaffa fattigdom i alla dess former överallt.");
         malLista.add("2. Ingen hunger – Utrota hunger, uppnå trygg livsmedelsförsörjning och förbättrad nutrition. ");
@@ -106,9 +103,10 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     this.dispose();
+        { previousFrame.setVisible(true);   
     }//GEN-LAST:event_jButton1ActionPerformed
-
+     this.dispose(); 
+}
     /**
      * @param args the command line arguments
      */
