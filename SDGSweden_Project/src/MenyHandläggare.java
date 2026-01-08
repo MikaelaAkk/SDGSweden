@@ -114,7 +114,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
  * @param evt 
  */
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
-    new Hallbarhetsmal(idb, inloggadAnvandare, previousFrame).setVisible(true);
+    new Hallbarhetsmal(idb, inloggadAnvandare, this).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 /*
