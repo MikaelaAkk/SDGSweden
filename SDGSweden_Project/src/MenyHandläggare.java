@@ -13,7 +13,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyHandläggare.class.getName());
 
     /**
-     * skapaar menyn i konstruktorn vid inloggning
+     * skapar menyn i konstruktorn vid inloggning
      */
 
     public MenyHandläggare(InfDB idb, String inloggadAnvandare) {
@@ -92,52 +92,74 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * hämtar handläggarens uppgifter. 
+ * @param evt 
+ */
     private void minaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaUppgifterActionPerformed
        new handlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_minaUppgifterActionPerformed
-
+/**
+ * öppnar klassen som visar mina projekt som handläggare.
+ * @param evt 
+ */
     private void minaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaProjektActionPerformed
 
        new HandlaggareProjekt(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_minaProjektActionPerformed
-
+/** 
+ * öppnar klassen med listan av hållbarhetsmål.
+ * @param evt 
+ */
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
     new Hallbarhetsmal(idb, inloggadAnvandare, previousFrame).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
-
+/*
+    logga ut knapp som tar en tillbaka till inloggninssidan. 
+    */
+   
     private void loggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggaUtActionPerformed
         new Inlogg(idb).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_loggaUtActionPerformed
-
+/* 
+    öppnar klassen för sammarbetspartners. 
+    */
     private void sammarbetsPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sammarbetsPartnersActionPerformed
     new HandlaggarePartner(idb, inloggadAnvandare).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_sammarbetsPartnersActionPerformed
-
+/*
+    öppnar klassen där vi kan se projekten på min avdelning. 
+    */
     private void avdelningsProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avdelningsProjektActionPerformed
         
         new HandlaggareAvdProjekt(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_avdelningsProjektActionPerformed
-
+/*
+    öppnar klassen med listan för personal på min avdelning. 
+    */
     private void personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalActionPerformed
        new HandläggarePersonal(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     
     
     }//GEN-LAST:event_personalActionPerformed
-
+/*
+    öppnar klassen för att söka på projekt som handläggare. 
+    */
     private void sokProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokProjektActionPerformed
 
     new SökProjektDatum(idb, inloggadAnvandare).setVisible(true);
     this.dispose(); // Stänger menyn
     }//GEN-LAST:event_sokProjektActionPerformed
-
+/*
+    öppnar klassen för att söka på handläggare. 
+    */
     private void sokHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokHandlaggareActionPerformed
       new SokHandlaggare(idb, inloggadAnvandare).setVisible(true);
       this.setVisible(false);
