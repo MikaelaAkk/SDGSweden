@@ -4,10 +4,7 @@
  */
 import oru.inf.InfDB;
 import oru.inf.InfException; 
-/**
- *
- * @author oliviacollin
- */
+
 public class MenyHandläggare extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
@@ -16,18 +13,14 @@ public class MenyHandläggare extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyHandläggare.class.getName());
 
     /**
-     * skapaar menyn efter inloggning
+     * skapaar menyn i konstruktorn vid inloggning
      */
 
     public MenyHandläggare(InfDB idb, String inloggadAnvandare) {
-    // Sätt variablerna först
+   
     this.idb = idb;
     this.inloggadAnvandare = inloggadAnvandare;
-    
-    
     initComponents();
-    
-    // Uppdatera etiketten
     lblInloggad.setText("Inloggad som: " + inloggadAnvandare);    
 }
     /**
@@ -41,15 +34,15 @@ public class MenyHandläggare extends javax.swing.JFrame {
 
         lblNamn = new javax.swing.JLabel();
         lblInloggad = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        minaUppgifter = new javax.swing.JButton();
+        minaProjekt = new javax.swing.JButton();
+        loggaUt = new javax.swing.JButton();
         hallbarhetsmål = new javax.swing.JButton();
         personal = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        sammarbetsPartners = new javax.swing.JButton();
+        avdelningsProjekt = new javax.swing.JButton();
+        sokProjekt = new javax.swing.JButton();
+        sokHandlaggare = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -61,17 +54,17 @@ public class MenyHandläggare extends javax.swing.JFrame {
         lblInloggad.setText("Inloggad som:  ");
         getContentPane().add(lblInloggad, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 10, 340, -1));
 
-        jButton1.setText("Mina uppgifter");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
+        minaUppgifter.setText("Mina uppgifter");
+        minaUppgifter.addActionListener(this::minaUppgifterActionPerformed);
+        getContentPane().add(minaUppgifter, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 190, -1));
 
-        jButton3.setText("Mina projekt");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 190, -1));
+        minaProjekt.setText("Mina projekt");
+        minaProjekt.addActionListener(this::minaProjektActionPerformed);
+        getContentPane().add(minaProjekt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 190, -1));
 
-        jButton4.setText("Logga ut");
-        jButton4.addActionListener(this::jButton4ActionPerformed);
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, -1, -1));
+        loggaUt.setText("Logga ut");
+        loggaUt.addActionListener(this::loggaUtActionPerformed);
+        getContentPane().add(loggaUt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, -1, -1));
 
         hallbarhetsmål.setText("Hållbarhetsmålen");
         hallbarhetsmål.addActionListener(this::hallbarhetsmålActionPerformed);
@@ -81,56 +74,56 @@ public class MenyHandläggare extends javax.swing.JFrame {
         personal.addActionListener(this::personalActionPerformed);
         getContentPane().add(personal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 190, -1));
 
-        jButton2.setText("Sammarbets Partners");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 190, -1));
+        sammarbetsPartners.setText("Sammarbets Partners");
+        sammarbetsPartners.addActionListener(this::sammarbetsPartnersActionPerformed);
+        getContentPane().add(sammarbetsPartners, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 190, -1));
 
-        jButton5.setText("Avdelnings projekt");
-        jButton5.addActionListener(this::jButton5ActionPerformed);
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 190, -1));
+        avdelningsProjekt.setText("Avdelnings projekt");
+        avdelningsProjekt.addActionListener(this::avdelningsProjektActionPerformed);
+        getContentPane().add(avdelningsProjekt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 190, -1));
 
-        jButton6.setText("Sök projekt");
-        jButton6.addActionListener(this::jButton6ActionPerformed);
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 190, -1));
+        sokProjekt.setText("Sök projekt");
+        sokProjekt.addActionListener(this::sokProjektActionPerformed);
+        getContentPane().add(sokProjekt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 190, -1));
 
-        jButton7.setText("Sök handläggare");
-        jButton7.addActionListener(this::jButton7ActionPerformed);
-        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 190, -1));
+        sokHandlaggare.setText("Sök handläggare");
+        sokHandlaggare.addActionListener(this::sokHandlaggareActionPerformed);
+        getContentPane().add(sokHandlaggare, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 190, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new handlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
+    private void minaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaUppgifterActionPerformed
+       new HandlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_minaUppgifterActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    private void minaProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaProjektActionPerformed
+
        new HandlaggareProjekt(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_minaProjektActionPerformed
 
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
-    new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
-this.setVisible(false);
+    new Hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
+    this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void loggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggaUtActionPerformed
         new Inlogg(idb).setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_loggaUtActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void sammarbetsPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sammarbetsPartnersActionPerformed
     new HandlaggarePartner(idb, inloggadAnvandare).setVisible(true);
     this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_sammarbetsPartnersActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+    private void avdelningsProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avdelningsProjektActionPerformed
+        
         new HandlaggareAvdProjekt(idb, inloggadAnvandare).setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_avdelningsProjektActionPerformed
 
     private void personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalActionPerformed
        new HandläggarePersonal(idb, inloggadAnvandare).setVisible(true);
@@ -139,34 +132,33 @@ this.setVisible(false);
     
     }//GEN-LAST:event_personalActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        // Öppnar det nya fönstret och skickar med databasen och användaren
+    private void sokProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokProjektActionPerformed
+
     new SökProjektDatum(idb, inloggadAnvandare).setVisible(true);
     this.dispose(); // Stänger menyn
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_sokProjektActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void sokHandlaggareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokHandlaggareActionPerformed
       new SokHandlaggare(idb, inloggadAnvandare).setVisible(true);
       this.setVisible(false);
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_sokHandlaggareActionPerformed
 
 
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton avdelningsProjekt;
     private javax.swing.JButton hallbarhetsmål;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel lblInloggad;
     private javax.swing.JLabel lblNamn;
+    private javax.swing.JButton loggaUt;
+    private javax.swing.JButton minaProjekt;
+    private javax.swing.JButton minaUppgifter;
     private javax.swing.JButton personal;
+    private javax.swing.JButton sammarbetsPartners;
+    private javax.swing.JButton sokHandlaggare;
+    private javax.swing.JButton sokProjekt;
     // End of variables declaration//GEN-END:variables
 
 

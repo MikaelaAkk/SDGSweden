@@ -10,18 +10,18 @@ import oru.inf.InfDB;
  *
  * @author User
  */
-public class hallbarhetsmal extends javax.swing.JFrame {
+public class Hallbarhetsmal extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
     
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Hallbarhetsmal.class.getName());
 private ArrayList<String>malLista = new ArrayList<>();
 private DefaultListModel<String>listModel = new DefaultListModel<>();
     /**
      * Creates new form hallbarhetsmal
      */
-    public hallbarhetsmal(InfDB idb, String inloggadAnvandare) {
+    public Hallbarhetsmal(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
@@ -131,7 +131,7 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
         //</editor-fold>
 
         /* Create and display the form */
-      //  java.awt.EventQueue.invokeLater(() -> new hallbarhetsmal().setVisible(true));
+      //  java.awt.EventQueue.invokeLater(() -> new Hallbarhetsmal().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

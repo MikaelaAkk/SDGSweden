@@ -374,9 +374,13 @@ statistikFonster.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 // Öppnar fönstret fr Hållbarhetsmålen
     private void btnVisaMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMalActionPerformed
+
+        
         hallbarhetsmal malFonster = new hallbarhetsmal(idb, inloggadEpost);
         malFonster.setLocationRelativeTo(this);
         malFonster.setVisible(true);
+
+       
     }//GEN-LAST:event_btnVisaMalActionPerformed
 // Öppnar personalöversikten för projektchefen
     private void btnVisaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaPersonalActionPerformed
