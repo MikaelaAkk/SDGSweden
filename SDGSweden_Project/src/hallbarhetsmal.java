@@ -6,46 +6,47 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import oru.inf.InfDB;
 
-public class hallbarhetsmal extends javax.swing.JFrame {
+public class Hallbarhetsmal extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
     private javax.swing.JFrame previousFrame;
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hallbarhetsmal.class.getName());
-private ArrayList<String>malLista = new ArrayList<>();
-private DefaultListModel<String>listModel = new DefaultListModel<>();
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Hallbarhetsmal.class.getName());
+    private ArrayList<String> malLista = new ArrayList<>();
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
+
     /**
-     * Creates new form hallbarhetsmal
+     * öppnar listan med hållbarhetsmål direkt i konstruktorn så att listan kommer upp direkt. 
      */
-    public hallbarhetsmal(InfDB idb, String inloggadAnvandare, javax.swing.JFrame previousFrame) {
+    public Hallbarhetsmal(InfDB idb, String inloggadAnvandare, javax.swing.JFrame previousFrame) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
-        this.previousFrame = previousFrame; 
-        
+        this.previousFrame = previousFrame;
+
         malLista.add("1. Ingen fattigdom - Avskaffa fattigdom i alla dess former överallt.");
         malLista.add("2. Ingen hunger – Utrota hunger, uppnå trygg livsmedelsförsörjning och förbättrad nutrition. ");
         malLista.add("3. God hälsa och välbefinnande – Säkerställa hälsa och främja välbefinnande för alla i alla åldrar.");
-    malLista.add("4. God utbildning för alla – Säkerställa inkluderande och likvärdig utbildning av god kvalitet.");
-    malLista.add("5. Jämställdhet – Uppnå jämställdhet och stärka alla kvinnors och flickors egenmakt.");
-    malLista.add("6. Rent vatten och sanitet – Säkerställa tillgång till rent vatten och sanitet för alla.");
-    malLista.add("7. Hållbar energi för alla – Säkerställa tillgång till prisvärd, pålitlig och hållbar energi.");
-    malLista.add("8. Anständiga arbetsvillkor och ekonomisk tillväxt – Främja hållbar ekonomisk tillväxt och goda arbetsvillkor.");
-    malLista.add("9. Hållbar industri, innovationer och infrastruktur – Bygga motståndskraftig infrastruktur och främja innovation.");
-    malLista.add("10. Minskad ojämlikhet – Minska ojämlikhet inom och mellan länder.");
-    malLista.add("11. Hållbara städer och samhällen – Göra städer och bosättningar inkluderande, säkra och hållbara.");
-    malLista.add("12. Hållbar konsumtion och produktion – Säkerställa hållbara konsumtions- och produktionsmönster.");
-    malLista.add("13. Bekämpa klimatförändringarna – Vidta omedelbara åtgärder mot klimatförändringar och dess konsekvenser.");
-    malLista.add("14. Hav och marina resurser – Bevara och nyttja haven och marina resurser på ett hållbart sätt.");
-    malLista.add("15. Ekosystem och biologisk mångfald – Skydda ekosystem, skogar och biologisk mångfald.");
-    malLista.add("16. Fredliga och inkluderande samhällen – Främja fred, rättvisa och starka institutioner.");
-    malLista.add("17. Genomförande och globalt partnerskap – Stärka samarbetet för att nå alla hållbarhetsmålen.");
-    for(String mal : malLista){
-        listModel.addElement(mal);
-         }
-    jList1.setModel(listModel);
+        malLista.add("4. God utbildning för alla – Säkerställa inkluderande och likvärdig utbildning av god kvalitet.");
+        malLista.add("5. Jämställdhet – Uppnå jämställdhet och stärka alla kvinnors och flickors egenmakt.");
+        malLista.add("6. Rent vatten och sanitet – Säkerställa tillgång till rent vatten och sanitet för alla.");
+        malLista.add("7. Hållbar energi för alla – Säkerställa tillgång till prisvärd, pålitlig och hållbar energi.");
+        malLista.add("8. Anständiga arbetsvillkor och ekonomisk tillväxt – Främja hållbar ekonomisk tillväxt och goda arbetsvillkor.");
+        malLista.add("9. Hållbar industri, innovationer och infrastruktur – Bygga motståndskraftig infrastruktur och främja innovation.");
+        malLista.add("10. Minskad ojämlikhet – Minska ojämlikhet inom och mellan länder.");
+        malLista.add("11. Hållbara städer och samhällen – Göra städer och bosättningar inkluderande, säkra och hållbara.");
+        malLista.add("12. Hållbar konsumtion och produktion – Säkerställa hållbara konsumtions- och produktionsmönster.");
+        malLista.add("13. Bekämpa klimatförändringarna – Vidta omedelbara åtgärder mot klimatförändringar och dess konsekvenser.");
+        malLista.add("14. Hav och marina resurser – Bevara och nyttja haven och marina resurser på ett hållbart sätt.");
+        malLista.add("15. Ekosystem och biologisk mångfald – Skydda ekosystem, skogar och biologisk mångfald.");
+        malLista.add("16. Fredliga och inkluderande samhällen – Främja fred, rättvisa och starka institutioner.");
+        malLista.add("17. Genomförande och globalt partnerskap – Stärka samarbetet för att nå alla hållbarhetsmålen.");
+        for (String mal : malLista) {
+            listModel.addElement(mal);
+        }
+        jList1.setModel(listModel);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,12 +102,17 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/** 
+ * Tillbaka knappen för att komma tillbaka till föregående sida som man varit på. 
+ */
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        { previousFrame.setVisible(true);   
+        {
+            previousFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-     this.dispose(); 
-}
+        this.dispose();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -129,7 +135,7 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
         //</editor-fold>
 
         /* Create and display the form */
-      //  java.awt.EventQueue.invokeLater(() -> new Hallbarhetsmal().setVisible(true));
+        //  java.awt.EventQueue.invokeLater(() -> new Hallbarhetsmal().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -139,9 +145,4 @@ private DefaultListModel<String>listModel = new DefaultListModel<>();
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-    }
-    
-
-
-
-
+}

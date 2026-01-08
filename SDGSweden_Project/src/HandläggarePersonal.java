@@ -4,18 +4,16 @@
  */
 import oru.inf.InfDB;
 import oru.inf.InfException;
-/**
- *
- * @author User
- */
+
 public class HandläggarePersonal extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandläggarePersonal.class.getName());
 
     /**
-     * Creates new form HandläggarePersonal
+     * Öppnar en lista med personal på min avdelning direkt i konstruktorn. 
      */
     public HandläggarePersonal(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
@@ -23,32 +21,34 @@ public class HandläggarePersonal extends javax.swing.JFrame {
         initComponents();
         listaPersonalPaMinAvd();
     }
-    public void listaPersonalPaMinAvd(){
-        try{
+/** 
+ * Metoden som skapar listan, anropas sedan i konstruktorn ovan.
+ */
+    public void listaPersonalPaMinAvd() {
+        try {
             String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
-           if(avdId != null){
-               String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = " + "'" + avdId + "'";
-               java.util.ArrayList<String>namnLista = idb.fetchColumn(fraga);
-               
-               if(namnLista != null){
-                   javax.swing.DefaultListModel<String>lista = new javax.swing.DefaultListModel<>();
-                   
-                   for(String namn : namnLista){
-                       lista.addElement(namn);
-                       
-                   }
-                   personalLista.setModel(lista);
-                   }
-               }
-     
-           } catch(InfException felMeddelande){
-               System.out.println("Det har uppstått ett fel!" + felMeddelande.getMessage());
-            
-            
+            if (avdId != null) {
+                String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = " + "'" + avdId + "'";
+                java.util.ArrayList<String> namnLista = idb.fetchColumn(fraga);
+
+                if (namnLista != null) {
+                    javax.swing.DefaultListModel<String> lista = new javax.swing.DefaultListModel<>();
+
+                    for (String namn : namnLista) {
+                        lista.addElement(namn);
+
+                    }
+                    personalLista.setModel(lista);
+                }
+            }
+
+        } catch (InfException felMeddelande) {
+            System.out.println("Det har uppstått ett fel!" + felMeddelande.getMessage());
+
         }
-    
-        
-    }      
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,11 +103,10 @@ public class HandläggarePersonal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tillbakaTillMenyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaTillMenyActionPerformed
-       new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-       this.setVisible(false);
+        new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_tillbakaTillMenyActionPerformed
 
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
