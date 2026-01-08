@@ -137,7 +137,7 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
     }// </editor-fold>//GEN-END:initComponents
 /** 
  * knappen som utför sökningen. här anropar vi även ifylltTxtFalt från valideringsklassen
- * för att säkerställa att textfältet är ifyllt när vi söker.
+ * för att säkerställa att textfältet är ifyllt när vi söker. Annars visas ett felmeddelande.
  * @param evt 
  */
     private void sokKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokKnappActionPerformed
@@ -148,7 +148,10 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
          info.setText("Vänligen fyll i namn eller epost på den handläggare du söker efter. ");
      }
     }//GEN-LAST:event_sokKnappActionPerformed
-
+/** 
+ * knapp för att komma tillbaka till menyn. 
+ * @param evt 
+ */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
       this.setVisible(false);
