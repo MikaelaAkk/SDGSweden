@@ -21,6 +21,7 @@ import java.time.LocalDate;
  * @author User
  */
 public class Valideringsklass2 {
+
     // Metod 1: Hanterar inloggningslogik
     public static void kontrolleraInlogg(InfDB idb, String ePost, String losen, JFrame inloggningsFonster, JLabel felLable) {
         try {
@@ -30,7 +31,6 @@ public class Valideringsklass2 {
             if (dbLosen != null && losen.equals(dbLosen)) {
                 String aid = idb.fetchSingle("SELECT aid FROM anstalld WHERE epost= '" + ePost + "'");
                 
-                // Kontrollera roller
                 String isAdministrator = idb.fetchSingle("SELECT aid FROM admin WHERE aid = " + aid);
                 String isProjektChef = idb.fetchSingle("SELECT projektchef FROM projekt WHERE projektchef = " + aid + " LIMIT 1");
 
@@ -51,15 +51,13 @@ public class Valideringsklass2 {
         }
     }
 
-    // Metod 2: Hanterar datumvalidering för sökfunktionen
+    // Metod 2: Hanterar datumvalidering
     public static boolean arGiltigtDatum(JTextField ettFalt) {
         String datumString = ettFalt.getText().trim();
-
         if (datumString.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Datumfältet får inte vara tomt.");
             return false;
         }
-
         try {
             LocalDate.parse(datumString);
             return true;
@@ -68,26 +66,27 @@ public class Valideringsklass2 {
             return false;
         }
     }
+
+    // Metod 3: Din ifyllt-kontroll
     public static boolean ifylltTxtFalt(javax.swing.JTextField faltAttTesta){
         boolean resultat = true;
         if (faltAttTesta.getText().trim().isEmpty()){
             resultat = false;
-            
         }
         return resultat; 
     }
     
-    // Kontrollerar om ett fält är tomt och visar felmeddelande
+    // Metod 4: Din kontroll med fältnamn
     public static boolean faltHarVärde(JTextField faltAttTesta, String faltNamn) {
         if (faltAttTesta.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet " + faltNamn + " får inte vara tomt.");
-            faltAttTesta.requestFocus(); // Sätter markören i det tomma fältet
+            faltAttTesta.requestFocus();
             return false;
         }
         return true;
     }
 
-    // Kontrollerar om texten är ett giltigt heltal (t.ex. för telefonnummer eller ID)
+    // Metod 5: Kontrollerar heltal
     public static boolean arHeltal(JTextField faltAttTesta) {
         try {
             Integer.parseInt(faltAttTesta.getText().trim());
@@ -99,7 +98,7 @@ public class Valideringsklass2 {
         }
     }
 
-    // Kontrollerar om e-posten innehåller ett @ (enkel validering)
+    // Metod 6: E-post kontroll
     public static boolean arGiltigEpost(JTextField faltAttTesta) {
         String epost = faltAttTesta.getText().trim();
         if (!epost.contains("@") || !epost.contains(".")) {
@@ -109,29 +108,19 @@ public class Valideringsklass2 {
         }
         return true;
     }
+
+    // Metod 7: Telefonnummer kontroll (Regex)
+    public static boolean arGiltigtTelefonnummer(JTextField ettFalt) {
+        String tel = ettFalt.getText().trim();
+        if (!tel.matches("^[0-9\\s-]{5,20}$")) {
+            JOptionPane.showMessageDialog(null, "Ange ett giltigt telefonnummer.");
+            ettFalt.requestFocus();
+            return false;
+        }
+        return true;
+    }
 }
 
-// Kontrollerar om ett textfält är tomt
-public static boolean faltHarVarde(JTextField ettFalt) {
-    if (ettFalt.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Fältet får inte vara tomt.");
-        ettFalt.requestFocus(); // Sätter markören i det tomma fältet
-        return false;
-    }
-    return true;
-}
-
-// Kontrollerar om telefonnumret följer ett enkelt mönster (endast siffror, bindestreck eller mellanslag)
-public static boolean arGiltigtTelefonnummer(JTextField ettFalt) {
-    String tel = ettFalt.getText().trim();
-    // Regex: Tillåter siffror, mellanslag och bindestreck, 5-20 tecken långt
-    if (!tel.matches("^[0-9\\s-]{5,20}$")) {
-        JOptionPane.showMessageDialog(null, "Ange ett giltigt telefonnummer (endast siffror, bindestreck eller mellanslag).");
-        ettFalt.requestFocus();
-        return false;
-    }
-    return true;
-}
 
     // Variables declaration - do not modify                     
     // End of variables declaration                   
