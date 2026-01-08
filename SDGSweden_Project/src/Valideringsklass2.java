@@ -122,8 +122,7 @@ public class Valideringsklass2 {
 }
 
 
-    // Variables declaration - do not modify                     
-    // End of variables declaration                   
+                  
 
 
 
