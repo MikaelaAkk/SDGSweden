@@ -8,7 +8,7 @@ import oru.inf.InfException;
 public class MenyHandläggare extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
-    
+    private javax.swing.JFrame previousFrame; 
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyHandläggare.class.getName());
 
@@ -105,7 +105,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_minaProjektActionPerformed
 
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
-    new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
+    new Hallbarhetsmal(idb, inloggadAnvandare, previousFrame).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 

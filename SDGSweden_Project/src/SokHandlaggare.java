@@ -20,6 +20,14 @@ public class SokHandlaggare extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
+    
+    /**
+     * metod för att söka på handläggare. Vi använder en hashmap
+     * för att hämta listan med både nyckeln och värdet från en handläggare. 
+     * Vi använder även arraylist för att vi behöver ha en lista med denna samling 
+     * av nycklar och värden. 
+     */
+    
 public void sokHandlaggare(){
     String sokInfo = sokRuta.getText();
     try {
@@ -32,6 +40,12 @@ public void sokHandlaggare(){
         System.out.println("Söknings Fel: " + ex.getMessage());
     }
 }
+
+/**
+ * även här använder vi både en arraylist och en hashmap då vi hämtar infon om handläggaren 
+ * på samma sätt som vi söker på den.
+ * @param handlaggarInfo 
+ */
 public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
     info.setText("");
     if(handlaggarInfo == null || handlaggarInfo.isEmpty()){
@@ -121,7 +135,11 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/** 
+ * knappen som utför sökningen. här anropar vi även ifylltTxtFalt från valideringsklassen
+ * för att säkerställa att textfältet är ifyllt när vi söker.
+ * @param evt 
+ */
     private void sokKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokKnappActionPerformed
      if (Valideringsklass2.ifylltTxtFalt(sokRuta)){
          sokHandlaggare();
