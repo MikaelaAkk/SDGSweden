@@ -200,13 +200,21 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
         // TODO add your handling code here:
                                                 
     try {
+        // 1. Kontrollerar att namn inte är tomt
+        if (!Valideringsklass2.ifylltTxtFalt(txtNamn)) {
+            JOptionPane.showMessageDialog(this, "Välj ett land i listan först!");
+            return; 
+        }
+
+        // 2. Kontrollerar att tidszonen är ett giltigt nummer
+        if (!Valideringsklass2.arHeltal(txtTidszon)) {
+            return; // Metoden i valideringsklassen sköter felmeddelandet
+        }
         // Kontrollerar att ett landnamn finns i textfältet
         String namn = txtNamn.getText();
 
-        if (namn.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Välj ett land i listan först.");
-            return;
-        }
+        
+        
 
         // Skapar UPDATE-frågan för att ändra värdena i tabellen 'land'
         String fraga = "UPDATE land SET "
@@ -232,6 +240,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
                                                     
     this.dispose();
     new Administratör(idb, "Admin").setVisible(true);
+    
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 

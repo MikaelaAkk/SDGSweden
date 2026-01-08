@@ -240,6 +240,21 @@ fyllPartnerLista();
         // TODO add your handling code here:
                                                    
     try {
+        // 1. Kontrollera att namn och e-post är ifyllda
+            if (!Valideringsklass2.ifylltTxtFalt(txtNamn) || !Valideringsklass2.ifylltTxtFalt(txtEpost)) {
+                JOptionPane.showMessageDialog(this, "Namn och E-post måste fyllas i!");
+                return; // Stoppar metoden
+            }
+
+            // 2. Kontrollera e-postformat (letar efter @ och .)
+            if (!Valideringsklass2.arGiltigEpost(txtEpost)) {
+                return; // Stoppar metoden
+            }
+
+            // 3. Kontrollera att telefonnumret bara innehåller siffror
+            if (!Valideringsklass2.arHeltal(txtTelefon)) {
+                return; // Stoppar metoden
+            }
        // Hämtar ID (pid) för att veta vilken rad i tabellen som ska uppdateras
         String id = txtId.getText();
         
