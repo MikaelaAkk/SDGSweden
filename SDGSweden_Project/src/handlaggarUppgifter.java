@@ -10,16 +10,16 @@ import javax.swing.JOptionPane;
  *
  * @author User
  */
-public class HandlaggarUppgifter extends javax.swing.JFrame {
+public class handlaggarUppgifter extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandlaggarUppgifter.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(handlaggarUppgifter.class.getName());
 
     /**
      * Creates new form handlaggarUppgifter
      */
-    public HandlaggarUppgifter(InfDB idb, String inloggadAnvandare) {
+    public handlaggarUppgifter(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();

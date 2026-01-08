@@ -94,7 +94,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void minaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minaUppgifterActionPerformed
-       new HandlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
+       new handlaggarUppgifter(idb, inloggadAnvandare).setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_minaUppgifterActionPerformed
 
@@ -105,7 +105,7 @@ public class MenyHandläggare extends javax.swing.JFrame {
     }//GEN-LAST:event_minaProjektActionPerformed
 
     private void hallbarhetsmålActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hallbarhetsmålActionPerformed
-    new Hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
+    new hallbarhetsmal(idb, inloggadAnvandare).setVisible(true);
     this.setVisible(false);
     }//GEN-LAST:event_hallbarhetsmålActionPerformed
 
