@@ -33,37 +33,48 @@ public class HandlaggareProjekt extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
-        hamtaMinaProjekt(); // Anropar hämtningen direkt vid start
+        hamtaMinaTilldeladeProjekt(); // Anropar hämtningen direkt vid start
     }
 
-        private void hamtaMinaProjekt() {
+    private void hamtaMinaTilldeladeProjekt() {
     try {
-        // SQL-fråga: Hämtar projekt där den inloggade är projektchef
-        String fraga = "SELECT projektnamn, status, kostnad FROM projekt " +
-                       "WHERE projektchef = (SELECT aid FROM anstalld WHERE epost = '" + inloggadAnvandare + "')";
+        // SQL-frågan hämtar projektnamn och status för de projekt 
+        // där den inloggade användarens e-post matchar i ans_proj
+        String fraga = "SELECT projekt.projektnamn, projekt.status, projekt.startdatum " +
+                       "FROM projekt " +
+                       "JOIN ans_proj ON projekt.pid = ans_proj.pid " +
+                       "JOIN anstalld ON ans_proj.aid = anstalld.aid " +
+                       "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
 
-        // Hämtar listan med rader från databasen
-        ArrayList<HashMap<String, String>> projektLista = idb.fetchRows(fraga);
+        // Hämtar rader från databasen
+        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(fraga);
 
-        if (projektLista != null && !projektLista.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Mina ledda projekt:\n");
-            sb.append("==========================================\n");
+        // StringBuilder för att bygga texten som ska visas
+        StringBuilder sb = new StringBuilder();
+        sb.append("Mina tilldelade projekt:\n");
+        sb.append("------------------------------------------\n");
 
-            for (HashMap<String, String> rad : projektLista) {
-                sb.append("NAMN: ").append(rad.get("projektnamn")).append("\n");
-                sb.append("Status: ").append(rad.get("status")).append("\n");
-                sb.append("Budget: ").append(rad.get("kostnad")).append(" kr\n");
-                sb.append("------------------------------------------\n");
+        if (resultat != null && !resultat.isEmpty()) {
+            for (HashMap<String, String> rad : resultat) {
+                // Hämtar värden från kolumnerna
+                String namn = rad.get("projektnamn");
+                String status = rad.get("status");
+                String start = rad.get("startdatum");
+
+                sb.append("Namn: ").append(namn)
+                  .append("\nStatus: ").append(status)
+                  .append("\nStartade: ").append(start)
+                  .append("\n------------------------------------------\n");
             }
+            // Sätter texten i din JTextArea (kontrollera variabelnamnet, t.ex. txtProjekt)
             txtMinaProjekt.setText(sb.toString());
         } else {
-            txtMinaProjekt.setText("Du står inte som projektchef för några projekt just nu.");
+            txtMinaProjekt.setText("Du är inte tilldelad några projekt för tillfället.");
         }
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning: " + ex.getMessage());
+    } catch (InfException e) {
+        JOptionPane.showMessageDialog(this, "Fel vid hämtning av projekt: " + e.getMessage());
     }
-        }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
