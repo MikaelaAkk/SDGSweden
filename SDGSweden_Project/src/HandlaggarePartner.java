@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
  *
  * @author oliviacollin
  */
+/**
+ * Klass för att visa samarbetspartners för de projekt som handläggaren deltar i.
+ */
 public class HandlaggarePartner extends javax.swing.JFrame {
     private InfDB idb;
     private String inloggadAnvandare;
@@ -26,6 +29,7 @@ public class HandlaggarePartner extends javax.swing.JFrame {
         initComponents();
         hamtaMinaPartners();
     }
+    // METOD: Hämtar partners genom att koppla ihop fyra olika tabeller
 private void hamtaMinaPartners() {
     try {
         // Uppdaterad SQL-fråga baserat på ditt skript:
@@ -42,11 +46,11 @@ private void hamtaMinaPartners() {
         System.out.println("Kör SQL: " + fraga);
 
         ArrayList<HashMap<String, String>> resultat = idb.fetchRows(fraga);
-
+// Skapar en StringBuilder för att snyggt bygga upp texten som ska visas
         StringBuilder sb = new StringBuilder();
         sb.append("Partnernamn\t\tE-post\n");
         sb.append("------------------------------------------------------------\n");
-
+// Kontrollerar om vi fick några träffar
         if (resultat != null && !resultat.isEmpty()) {
             for (HashMap<String, String> rad : resultat) {
                 // Hämta värdena med exakt samma namn som i SELECT-frågan
@@ -116,7 +120,7 @@ private void hamtaMinaPartners() {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//kommer tillbaka till meny
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
     new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
