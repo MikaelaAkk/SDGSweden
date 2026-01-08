@@ -11,50 +11,21 @@ import javax.swing.JOptionPane;
  */
 public class Administratör extends javax.swing.JFrame {
     
+    // Variabler för att hålla databaskopplingen och inloggad användare
     private InfDB idb;
     private String ePost;
     
 private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyAdministrator.class.getName());
 
-    public Administratör(InfDB idb, String ePost) { // Denna rad är viktig!
+// Konstruktor: Körs när fönstret skapas
+    public Administratör(InfDB idb, String ePost) { 
         this.idb = idb;
         this.ePost = ePost;
-        initComponents();
+        initComponents(); // Skapar alla knappar och rutor från design-vyn
     }
     
-    private void laggTillAvdelning() {
-    try {
-        String namn = btnAvdId.getText();
-        String beskrivning = btnPartner.getText();
-        String nyttId = idb.getAutoIncrement("avdelning", "avdid");
-
-        String fraga = "INSERT INTO avdelning (avdid, namn, beskrivning) VALUES (" + nyttId + ", '" + namn + "', '" + beskrivning + "')";
-        
-        idb.insert(fraga);
-        javax.swing.JOptionPane.showMessageDialog(null, "Avdelningen har sparats!");
-    } // Denna stänger try
-    catch (Exception ettFel) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Något gick fel!");
-    } // Denna stänger catch
-} // Denna stänger hela metoden laggTillAvdelning
     
-private void andraAvdelning() {
-    try {
-        String nyttNamn = btnAvdId.getText();
-        String nyBeskrivning = btnPartner.getText();
-        
-        // Du måste definiera 'id' här! Exempelvis från ett textfält:
-        String id = btnAvdId.getText(); 
 
-        String fraga = "UPDATE avdelning SET namn = '" + nyttNamn + "', beskrivning = '" + nyBeskrivning + "' WHERE avdid = " + id;
-        
-        idb.update(fraga);
-        JOptionPane.showMessageDialog(null, "Avdelningen har uppdaterats!");
-    } 
-    catch (Exception ettFel) {
-        JOptionPane.showMessageDialog(null, "Kunde inte uppdatera!");
-    }
-}
    
     
         
@@ -73,6 +44,7 @@ private void andraAvdelning() {
         btnAvdId = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnPartner = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,50 +59,61 @@ private void andraAvdelning() {
         btnPartner.setText("Partner");
         btnPartner.addActionListener(this::btnPartnerActionPerformed);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Välkommen Administratör");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 158, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(140, 140, 140)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnLand, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(141, 141, 141))
+                    .addComponent(btnAvdId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPartner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLand, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(96, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(83, 83, 83))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAvdId)
                 .addGap(18, 18, 18)
                 .addComponent(btnPartner)
                 .addGap(18, 18, 18)
                 .addComponent(btnLand)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLandActionPerformed
+        // Öppnar fönstret för landhantering och stänger huvudmenyn
         new AdminLandUppgifter(idb).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnLandActionPerformed
 
     private void btnAvdIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvdIdActionPerformed
         // TODO add your handling code here:
+        // Öppnar fönstret för avdelningshantering
         new AdminAvdelningUppgifter(idb).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAvdIdActionPerformed
 
     private void btnPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnerActionPerformed
         // TODO add your handling code here:
+       // Öppnar fönstret för partnerhantering
         new AdminPartnerUppgifter(idb).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPartnerActionPerformed
@@ -138,6 +121,7 @@ private void andraAvdelning() {
     /**
      * @param args the command line arguments
      */
+    // Main-metoden som startar fönstret
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -161,12 +145,13 @@ private void andraAvdelning() {
     }
 
 
-
+// Här deklareras alla knappar och rubriker som skapats i Design-vyn
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvdId;
     private javax.swing.JButton btnLand;
     private javax.swing.JButton btnPartner;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
 

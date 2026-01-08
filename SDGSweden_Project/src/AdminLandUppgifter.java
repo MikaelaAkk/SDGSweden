@@ -11,6 +11,7 @@ import java.util.HashMap;
  *
  * @author lucya
  */
+// Klass för att hantera och uppdatera information om länder
 public class AdminLandUppgifter extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminLandUppgifter.class.getName());
@@ -19,6 +20,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
     /**
      * Creates new form AdminLandUppgifter
      */
+    // Konstruktor: Kopplar databasen och laddar startfunktioner
     public AdminLandUppgifter(InfDB idb) {
         this.idb = idb;
         initComponents();
@@ -158,18 +160,22 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Händelsehanterare för textfältet Valuta
     private void txtValutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValutaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtValutaActionPerformed
 
+    // Händelsehanterare för textfältet Tidszon
     private void txtTidszonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTidszonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTidszonActionPerformed
 
+    // Metod som körs när ett land väljs i rullistan för att visa landets info
     private void cbLanderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLanderActionPerformed
         // TODO add your handling code here:
                                                  
     try {
+        // Hämtar valt namn och ställer en SQL-fråga för att få ut all data om landet
         String valtNamn = cbLander.getSelectedItem().toString();
         String fraga = "SELECT * FROM land WHERE namn = '" + valtNamn + "'";
         HashMap<String, String> rad = idb.fetchRow(fraga);
@@ -189,11 +195,12 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cbLanderActionPerformed
 
+    // Metod som sparar de redigerade uppgifterna tillbaka till databasen
     private void btnSparaLandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaLandActionPerformed
         // TODO add your handling code here:
                                                 
     try {
-        // Vi utgår från att namnet i fältet är det land vi vill ändra
+        // Kontrollerar att ett landnamn finns i textfältet
         String namn = txtNamn.getText();
 
         if (namn.isEmpty()) {
@@ -201,6 +208,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
             return;
         }
 
+        // Skapar UPDATE-frågan för att ändra värdena i tabellen 'land'
         String fraga = "UPDATE land SET "
                 + "sprak = '" + txtSprak.getText() + "', "
                 + "valuta = '" + txtValuta.getText() + "', "
@@ -218,6 +226,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSparaLandActionPerformed
 
+    // Stänger ner det nuvarande fönstret och återgår till administratörsmenyn
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
                                                     
@@ -226,6 +235,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
+    // // Hämtar alla landnamn från databasen och lägger till dem i JComboBoxen
     private void fyllComboBox() {
     try {
         cbLander.removeAllItems(); // cbLander är namnet på din JComboBox

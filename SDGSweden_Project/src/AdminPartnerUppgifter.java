@@ -15,11 +15,14 @@ public class AdminPartnerUppgifter extends javax.swing.JFrame {
     /**
      * Creates new form AdminPartnerUppgifter
      */
+    // Konstruktor: Körs när fönstret skapas
     public AdminPartnerUppgifter(InfDB idb) {
         this.idb = idb;
         initComponents();
+        // Döljer ID-fältet och dess rubrik för användaren då pid inte ska ändras manuellt
         txtId.setVisible(false);
-jLabel2.setVisible(false); // Detta döljer även texten "ID"
+jLabel2.setVisible(false); 
+// Fyller rullistan med partners direkt vid start
 fyllPartnerLista();
     }
 
@@ -188,10 +191,12 @@ fyllPartnerLista();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Händelsehanterare för ID-fältet
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
 
+    // Stänger fönstret och går tillbaka till administratörens huvudmeny
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
                                                                                              
@@ -203,18 +208,19 @@ fyllPartnerLista();
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
+    // Metod som körs när användaren väljer en partner i rullistan
     private void cmbPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPartnersActionPerformed
         // TODO add your handling code here:
         try {
-    // Hämta namnet som användaren just klickade på
+    // // Hämtar namnet på den valda partnern
     String valtNamn = cmbPartners.getSelectedItem().toString();
     
-    // Fråga databasen efter ALL info om just den partnern
+    // // Ställer en fråga till databasen för att hämta all info om den valda partnern
     String fraga = "SELECT * FROM partner WHERE namn = '" + valtNamn + "'";
     java.util.HashMap<String, String> rad = idb.fetchRow(fraga);
 
     if (rad != null) {
-        // Fyll i de dolda och synliga fälten med info från databasen
+        // Fyller i alla fälten med data från databasen
         txtId.setText(rad.get("pid"));
         txtNamn.setText(rad.get("namn"));
         txtKontaktperson.setText(rad.get("kontaktperson"));
@@ -229,11 +235,12 @@ fyllPartnerLista();
 }
     }//GEN-LAST:event_cmbPartnersActionPerformed
 
+    // Metod som sparar ändringarna för partnern i databasen
     private void btnSparaPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaPartnerActionPerformed
         // TODO add your handling code here:
                                                    
     try {
-        // Vi hämtar ID från det dolda fältet för att veta vilken partner vi ska ändra
+       // Hämtar ID (pid) för att veta vilken rad i tabellen som ska uppdateras
         String id = txtId.getText();
         
         if (id.isEmpty()) {
@@ -241,8 +248,7 @@ fyllPartnerLista();
             return;
         }
 
-        // Här skapar vi SQL-frågan. 
-        // OBS: Dubbelkolla om kolumnen heter 'branch' eller 'bransch' i din databas!
+        // Bygger SQL-frågan för att uppdatera alla kolumner i tabellen partner
         String fraga = "UPDATE partner SET "
                 + "namn = '" + txtNamn.getText() + "', "
                 + "kontaktperson = '" + txtKontaktperson.getText() + "', "
@@ -253,10 +259,11 @@ fyllPartnerLista();
                 + "stad = '" + txtStad.getText() + "' "
                 + "WHERE pid = " + id;
 
+        // Kör uppdateringen och meddelar användaren
         idb.update(fraga);
         JOptionPane.showMessageDialog(this, "Partnerns uppgifter har sparats!");
         
-        // Uppdatera rullistan ifall namnet har ändrats
+        // Uppdatera rullistan ifall namnet på partnern har ändrats
         fyllPartnerLista();
         
     } catch (Exception e) {
@@ -312,16 +319,17 @@ fyllPartnerLista();
     private javax.swing.JTextField txtStad;
     private javax.swing.JTextField txtTelefon;
     // End of variables declaration//GEN-END:variables
-private void fyllPartnerLista() {
+// Hjälpmetod för att hämta alla partnernamn från databasen till rullistan
+    private void fyllPartnerLista() {
     try {
-        // Ta bort "Item 1, Item 2" som NetBeans lägger dit som standard
+        // Rensar listan först så vi inte får dubbletter
         cmbPartners.removeAllItems(); 
         
-        // Hämta alla namn från kolumnen 'namn' i tabellen 'partner'
+        // Hämtar alla namn från kolumnen 'namn' i tabellen 'partner'
         String fraga = "SELECT namn FROM partner";
         java.util.ArrayList<String> allaPartner = idb.fetchColumn(fraga);
 
-        // Om vi fick svar från databasen, lägg till varje namn i rullistan
+        // Om vi får svar från databasen läggs varje namn till som ett val i rullistan
         if (allaPartner != null) {
             for (String namn : allaPartner) {
                 cmbPartners.addItem(namn);
@@ -332,6 +340,7 @@ private void fyllPartnerLista() {
     }
 }
 
+    // Metod för att snabbt rensa alla textfälten vid behov
     private void rensaFalt() {
     txtId.setText("");
     txtNamn.setText("");

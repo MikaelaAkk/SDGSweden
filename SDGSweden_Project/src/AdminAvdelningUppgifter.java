@@ -10,6 +10,7 @@ import java.util.HashMap;
  *
  * @author lucya
  */
+
 public class AdminAvdelningUppgifter extends javax.swing.JFrame {
     private InfDB idb;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAvdelningUppgifter.class.getName());
@@ -17,20 +18,23 @@ public class AdminAvdelningUppgifter extends javax.swing.JFrame {
     /**
      * Creates new form AdminAvdelningUppgifter
      */
- public AdminAvdelningUppgifter(InfDB idb) { 
+ // Konstruktor: Tar emot databasobjektet och sätter igång fönstret
+    public AdminAvdelningUppgifter(InfDB idb) { 
         this.idb = idb;
         initComponents();
         fyllComboBox();
  }
-
+// Metod som hämtar alla avdelningsnamn och lägger dem i rullistan
 private void fyllComboBox() {
     try {
         // Rensa listan först så vi inte får dubbletter om metoden anropas igen
         cbAvdelningar.removeAllItems();
         
+        // SQL-fråga för att hämta namnen från tabellen avdelning
         String fraga = "SELECT namn FROM avdelning";
         ArrayList<String> allaAvdelningar = idb.fetchColumn(fraga);
 
+        // Loopar igenom resultatet och lägger till varje namn i ComboBoxen
         if (allaAvdelningar != null) {
             for (String namn : allaAvdelningar) {
                 cbAvdelningar.addItem(namn);
@@ -40,7 +44,7 @@ private void fyllComboBox() {
         JOptionPane.showMessageDialog(this, "Kunde inte ladda avdelningar: " + e.getMessage());
     }
 }
-
+// Metod som sköter själva uppdateringen av databasen
 private void andraAvdelning() {
     // 1. Hämta data från textfälten
     String namn = txtNamn.getText();
@@ -51,16 +55,16 @@ private void andraAvdelning() {
     String stad = txtStad.getText();
     String chef = txtChef.getText();
 
-    // 2. Enkel validering (kontrollera att namn inte är tomt, då det oftast behövs för WHERE-klausulen)
+    // Enkel validering (kontrollera att namn inte är tomt, då det oftast behövs för WHERE-klausulen)
     if (namn.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Vänligen ange namnet på avdelningen du vill ändra.");
         return;
     }
 
     try {
-        // 3. Skapa SQL-frågan. 
-        // OBS: Se till att kolumnnamnen matchar exakt de du har i din databastabell.
-        // Jag antar här att tabellen heter 'avdelning' och att man identifierar raden via 'namn'.
+        // Bygger upp SQL-strängen för att uppdatera alla kolumner
+        // Namnet används för att identfiera vilken rad som ska ändras
+        
         String fraga = "UPDATE avdelning SET "
                 + "beskrivning = '" + beskrivning + "', "
                 + "adress = '" + adress + "', "
@@ -70,10 +74,10 @@ private void andraAvdelning() {
                 + "chef = '" + chef + "' "
                 + "WHERE namn = '" + namn + "'";
 
-        // 4. Kör frågan i databasen
+        // Skickar uppdateringskommandot till databasen
         idb.update(fraga);
 
-        // 5. Bekräfta för användaren
+        // Meddelar användaren att det lyckades
         JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
 
     } catch (Exception ettUndantag) {
@@ -81,15 +85,18 @@ private void andraAvdelning() {
         JOptionPane.showMessageDialog(this, "Något gick fel vid lagring: " + ettUndantag.getMessage());
     }
 }
+        // Metod som körs när man väljer en avdelning i rullistan
     private void cmbAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {                                               
     try {
+        // Hämtar namnet på den valda avdelningen
         String valtNamn = cbAvdelningar.getSelectedItem().toString();
+        // Hämtar all information om just den avdelningen
         String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
         
         HashMap<String, String> rad = idb.fetchRow(fraga);
         
         if (rad != null) {
-            // Fyll alla textfält med data från databasen
+            // Fyller alla textfält med information från databasen
             txtNamn.setText(rad.get("namn"));
             txtBeskrivning.setText(rad.get("beskrivning"));
             txtAdress.setText(rad.get("adress"));
@@ -270,6 +277,7 @@ private void andraAvdelning() {
 
     private void btnSparaAvdelningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaAvdelningActionPerformed
         // TODO add your handling code here:
+        // Knapp för att spara ändringar: anropar metoden andraAvdelning()
         andraAvdelning();
     }//GEN-LAST:event_btnSparaAvdelningActionPerformed
 
@@ -305,10 +313,10 @@ private void andraAvdelning() {
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
                                                     
-    // 1. Stäng ner det nuvarande fönstret
+    //  Stäng ner det nuvarande fönstret
     this.dispose();
     
-    // 2. Öppna administratörens meny och skicka med databasobjektet (idb)
+    // Öppna administratörens meny och skicka med databasobjektet (idb)
     // Vi skickar även med en tom sträng eller "Admin" om din huvudmeny kräver ett namn
     new Administratör(idb, "Admin").setVisible(true); 
 
