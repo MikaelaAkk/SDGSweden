@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 import java.time.LocalDate;
+
 /**
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -76,8 +77,8 @@ public class Valideringsklass2 {
         return resultat; 
     }
     
-    // Metod 4: Din kontroll med fältnamn
-    public static boolean faltHarVarde(JTextField faltAttTesta, String faltNamn) {
+ 
+    public static boolean faltHarVarde(JTextField faltAttTesta) {
         if (faltAttTesta.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Fältet " + faltNamn + " får inte vara tomt.");
             faltAttTesta.requestFocus();
@@ -161,10 +162,10 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return true;
     }
 
-  // Kontrollerar att sökfältet bara innehåller tillåtna tecken (Krav: RegEx)
+ 
     public static boolean isSafeSearch(JTextField fältAttTesta) {
         String text = fältAttTesta.getText().trim();
-        // Tillåter bokstäver, siffror, @, punkt och mellanslag. Hindrar t.ex. semikolon eller SQL-tecken.
+        
         if (!text.matches("^[a-zA-Z0-9åäöÅÄÖ\\s@.]+$")) {
             JOptionPane.showMessageDialog(null, "Sökningen innehåller ogiltiga tecken. Använd endast bokstäver och siffror.");
             fältAttTesta.requestFocus();
@@ -174,7 +175,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     }
     
    public static boolean arGiltigText(javax.swing.JTextField faltAttTesta, String namn) {
-    // Tillåter bokstäver (inkl åäö), mellanslag och bindestreck
+
     if (!faltAttTesta.getText().trim().matches("^[a-zA-ZåäöÅÄÖ\\s-]+$")) {
         javax.swing.JOptionPane.showMessageDialog(null, "Fältet för " + namn + " får endast innehålla bokstäver.");
         faltAttTesta.requestFocus();
@@ -188,7 +189,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         javax.swing.JOptionPane.showMessageDialog(null, "Sessionen är ogiltig. Logga in igen.");
         return false;
     }
-    // Enkel RegEx-kontroll
+  
     if (!epost.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
         javax.swing.JOptionPane.showMessageDialog(null, "Användarens identitet är i fel format.");
         return false;
@@ -205,7 +206,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     
    }
    
-  // Kontrollerar att slutdatum inte är före startdatum
+
 public static boolean arGiltigtDatumIntervall(JTextField startFalt, JTextField slutFalt) {
     try {
         LocalDate start = LocalDate.parse(startFalt.getText().trim());
@@ -217,7 +218,7 @@ public static boolean arGiltigtDatumIntervall(JTextField startFalt, JTextField s
         }
         return true;
     } catch (Exception e) {
-        // Formaten kontrolleras redan av arGiltigtDatum, så vi behöver bara returnera false här
+      
         return false;
     }
 } 
@@ -230,7 +231,6 @@ public static boolean comboHarValtVarde(javax.swing.JComboBox enBox, String namn
     return true;
 }
 
-// Metod för att formatera ett strängvärde (t.ex. från avg/sum) till snygg valuta
 public static String formateraValuta(String varde) {
     if (varde == null || varde.equals("null")) {
         return "0,00 kr";
@@ -243,7 +243,7 @@ public static String formateraValuta(String varde) {
     }
 }
 
-// Kontrollera om en tabell-lista är tom och informera användaren
+
 public static boolean kontrolleraHittadData(java.util.ArrayList lista, String meddelande) {
     if (lista == null || lista.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Information: " + meddelande);
@@ -252,7 +252,7 @@ public static boolean kontrolleraHittadData(java.util.ArrayList lista, String me
     return true;
 }
 
-// Kontrollera att budget är ett giltigt decimaltal
+
 public static boolean arGiltigDecimal(JTextField faltAttTesta, String namn) {
     try {
         String varde = faltAttTesta.getText().trim().replace(',', '.'); // Hanterar både komma och punkt
@@ -265,7 +265,7 @@ public static boolean arGiltigDecimal(JTextField faltAttTesta, String namn) {
     }
 }
 
-// Kontrollera att status är ett av de tillåtna värdena (Användarvänlighet)
+
 public static boolean arGiltigStatus(JTextField faltAttTesta) {
     String status = faltAttTesta.getText().trim().toLowerCase();
     String[] giltiga = {"pågående", "planerat", "pausat", "avslutat"};
@@ -275,7 +275,7 @@ public static boolean arGiltigStatus(JTextField faltAttTesta) {
     JOptionPane.showMessageDialog(null, "Ogiltig status. Välj mellan: Pågående, Planerat, Pausat eller Avslutat.");
     return false;
 }
-// Ersätter ' med '' för att förhindra SQL-fel och injektionsförsök
+
 public static String escapeSql(String text) {
     if (text == null) {
         return "";
