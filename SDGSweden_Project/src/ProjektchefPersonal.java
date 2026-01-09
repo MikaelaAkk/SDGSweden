@@ -6,11 +6,13 @@ import oru.inf.InfDB;
 import oru.inf.InfException;
 
 /**
- *
+ * Klass för att visa en lista över prsonal som arbetar på en avdelning
  * @author User
  */
+
 public class ProjektchefPersonal extends javax.swing.JFrame {
 
+    //Instansvariabler för databasanslutning och lagrar epost
     private InfDB idb;
     private String inloggadAnvandare;
 
@@ -23,9 +25,11 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
+        //Kör metoden som hämtar personelen direkt när fönstrt öppnas
         listaPersonalPaMinAvd();
     }
 
+    //Metod som hämtar och visar alla anställda som tillhör samma avdelning
     public void listaPersonalPaMinAvd() {
      // Validera inmatning/tillstånd innan körning (Krav: All inmatning ska kontrolleras)
     if (!Valideringsklass2.idArSatt(inloggadAnvandare, "användare")) {
@@ -35,22 +39,25 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
     try {
         // Hämta avdelnings-ID
         String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
-        
+        // Hämtar förnamn och efternamn på alla som har samma avdelnings-ID
+        //Concat används för att få ihop namnen till en snygg sträng
         if (avdId != null) {
             String fraga = "SELECT CONCAT(fornamn , ' ' , efternamn) FROM anstalld WHERE avdelning = '" + avdId + "'";
             java.util.ArrayList<String> namnLista = idb.fetchColumn(fraga);
 
+            // Om vi fick träffar, lägger in den i en Jlist via defaultList
             if (namnLista != null) {
                 javax.swing.DefaultListModel<String> model = new javax.swing.DefaultListModel<>();
                 for (String namn : namnLista) {
                     model.addElement(namn);
                 }
-                personalLista.setModel(model);
+                personalLista.setModel(model); // Kopplar modellen till den grafiska listan
             }
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Kunde inte hitta avdelning för den inloggade användaren.");
         }
 
+        // Felmeddelande  om något strular
     } catch (InfException ex) {
         // Krav: Felmeddelanden ska hjälpa användaren och inte bara skrivas i konsolen
         javax.swing.JOptionPane.showMessageDialog(this, "Ett fel uppstod vid hämtning av personal: " + ex.getMessage());
@@ -113,6 +120,7 @@ public class ProjektchefPersonal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Körd när användaren klickar "Tillbaka" till huvudmenyn
     private void tillbakaTillMenyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaTillMenyActionPerformed
         new MenyProjektChef(idb, inloggadAnvandare).setVisible(true);
         this.dispose();

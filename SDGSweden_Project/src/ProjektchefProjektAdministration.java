@@ -4,7 +4,9 @@
  */
 
 /**
- *
+ *Klass för att administrera och filtrera projekt
+ * Projektcehefer kan se detaljerad
+ * 
  * @author elinjugas
  */
 import oru.inf.InfDB;

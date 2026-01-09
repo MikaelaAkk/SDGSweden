@@ -210,7 +210,7 @@ public class HanteraProjektPartners extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKopplaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKopplaActionPerformed
-    // 1. Validera att användaren valt något i listorna
+    //  Validera att användaren valt något i listorna
     if (Valideringsklass2.listidArValt(lstMinaProjekt.getSelectedValue(), "projekt") &&
         Valideringsklass2.listidArValt(lstAllaPartners.getSelectedValue(), "partner")) {
         

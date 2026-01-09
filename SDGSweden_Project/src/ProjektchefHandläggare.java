@@ -314,7 +314,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
 
-                // Krav: Validera ID med RegEx innan INSERT
+                
                 if (Valideringsklass2.arGiltigtId(pid) && Valideringsklass2.arGiltigtId(valdAnstalldAid)) {
                     String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
                     idb.insert(insertSql);
@@ -340,7 +340,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 String valtProjektNamn = (String) cbMinaProjekt.getSelectedItem();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjektNamn + "'");
 
-                // Bekräftelse innan borttagning för bättre UX
+                // Bekräftelse innan borttagning 
                 int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort handläggaren från projektet?", "Bekräfta", JOptionPane.YES_NO_OPTION);
                 
                 if (svar == JOptionPane.YES_OPTION && Valideringsklass2.arGiltigtId(pid)) {

@@ -4,7 +4,7 @@
  */
 
 /**
- *
+ * Klass för att hantera partners, se, ändra och följa upp
  * @author elinjugas
  */
 import oru.inf.InfDB;
@@ -16,8 +16,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class ProjektchefPartneradministration extends javax.swing.JFrame {
 
+    //Instansvariabler för databas, inloggning.
     private InfDB idb;
-    private String nuvarandePartnerNamn;
+    private String nuvarandePartnerNamn; // Håller koll på vilken partner som redigeras just nu
     private String inloggadAnvandare;
     private String inloggadEpost;
     private String epost;
@@ -31,15 +32,19 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
         initComponents();
         this.idb = idb;
         this.inloggadAnvandare = inloggadAnvandare;
+        
+        // Fyller listan till vänster med partners vid start
         fyllPartnerLista();
         this.epost = epost;
         this.inloggadEpost = inloggadEpost;
 
     }
 
+    //Hämtar alla partnernamn från databasen och lägger dem i Jlist
     private void fyllPartnerLista() {
         try {
             DefaultListModel<String> model = new DefaultListModel<>();
+            //Hämtar endast namnen för att visa i listan
             ArrayList<String> partners = idb.fetchColumn("SELECT namn FROM partner");
 
             if (partners != null) {
@@ -52,17 +57,22 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
             System.out.println("Hittade inga partners: " + ex.getMessage());
         }
     }
-
+ 
+    //Hämtar detaljerad information om en specifik partner när man klickar i partner
     private void fyllPartnerUppgifter(String namn) {
         try {
 
+            //SQL-fråga för att hämta all info om den valda personen
             String fraga = "SELECT * FROM partner WHERE namn = '" + namn + "'";
             HashMap<String, String> rad = idb.fetchRow(fraga);
 
             if (rad != null) {
+                //Sparar namnet för att veta vilken rad som ska uppdateras senare
 
+                //Sparar namnet i en variabel för att veta vilken rad som ska uppdateras senare
                 nuvarandePartnerNamn = namn;
 
+                //Sätter texterna i textfälten baserat på databasens värde
                 txtNamn.setText(rad.get("namn"));
                 txtKontakt.setText(rad.get("kontaktperson"));
                 txtEpost.setText(rad.get("kontaktepost"));
@@ -81,9 +91,11 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
         }
     }
 
+    //Hämtar projekt kopplade till partnern och visar dem i en tabell. 
     private void fyllProjektTabell(String namn) {
         try {
 
+            //Använder Join för att koppla ihop tabellerna partner, projektpartner och projekt
             String fraga = "SELECT projekt.projektnamn, projekt.status, projekt.startdatum "
                     + "FROM projekt "
                     + "JOIN projekt_partner ON projekt.pid = projekt_partner.pid "
@@ -93,6 +105,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
             ArrayList<HashMap<String, String>> rader = idb.fetchRows(fraga);
             DefaultTableModel model = (DefaultTableModel) tblPartnerProjekt.getModel();
 
+            //Rensa tabellen innan ny data läggs till
             model.setRowCount(0);
 
             if (rader != null) {
@@ -431,7 +444,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
         return;
     }
 
-    // 2. Kontrollera att obligatoriska fält är ifyllda
+    //  Kontrollera att obligatoriska fält är ifyllda
     if (!Valideringsklass2.textfaltHarVarde(txtNamn, "namn") ||
         !Valideringsklass2.textfaltHarVarde(txtEpost, "e-post") ||
         !Valideringsklass2.textfaltHarVarde(txtTelefon, "telefon") ||
@@ -481,6 +494,7 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
     }//GEN-LAST:event_btmSparaActionPerformed
 
     private void lstPartnersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPartnersValueChanged
+        // Gör så att koden bara körs en gång och fyller flikarna 
         if (!evt.getValueIsAdjusting()) {
             String valtNamn = lstPartners.getSelectedValue();
             if (valtNamn != null) {
@@ -492,11 +506,13 @@ public class ProjektchefPartneradministration extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lstPartnersValueChanged
 
+    //Går tillbaka till huvudmenyn för projektchefer
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idb, inloggadEpost).setVisible(true);
-        this.dispose();
+        this.dispose(); //Stänger ner nuvarande fönster
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
+    //Öppnar fönstret för att lägga till eller ta bort partners från projekt
     private void btnHanteraKopplingarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHanteraKopplingarActionPerformed
         HanteraProjektPartners hantera = new HanteraProjektPartners(idb, inloggadEpost);
         hantera.setLocationRelativeTo(null);

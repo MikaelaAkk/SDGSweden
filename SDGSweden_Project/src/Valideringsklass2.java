@@ -102,6 +102,7 @@ public class Valideringsklass2 {
         return true;
     }
     
+    //Metod 6: Kontrollera täxtfält
      public static boolean textfaltHarVarde(javax.swing.JTextField faltAttTesta, String namn) {
     if (faltAttTesta.getText().trim().isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(null, "Fältet för " + namn + " får inte vara tomt.");
@@ -109,6 +110,7 @@ public class Valideringsklass2 {
     }
     return true;
 }
+     //Metod 7: E-postvalidering
     public static boolean arGiltigEpost(javax.swing.JTextField faltAttTesta) {
 String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     if (!faltAttTesta.getText().trim().matches(epostRegEx)) {
@@ -118,7 +120,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     }
     return true;
 }
-    
+    // Metod 7: Heltalskontroll
     public static boolean arHeltal(javax.swing.JTextField faltAttTesta, String namn) {
     try {
         Integer.parseInt(faltAttTesta.getText().trim());
@@ -129,6 +131,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     }
     }
     
+    //Metod 8: Validering av val i lista
     public static boolean listidArValt(Object valtVarde, String listNamn) {
         if (valtVarde == null) {
             JOptionPane.showMessageDialog(null, "Vänligen välj en " + listNamn + " i listan.");
@@ -137,7 +140,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return true;
     }
 
-    
+    //Metod 9: Kontroll av ID-format
      public static boolean arGiltigtId(String id) {
         if (id == null || !id.matches("^[0-9]+$")) {
             JOptionPane.showMessageDialog(null, "Ett tekniskt fel uppstod: Ogiltigt ID-format.");
@@ -146,6 +149,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return true;
     }
     
+     //Metod 10: Kontroll av Combobox
      public static boolean comboValt(Object valtVarde, String namn) {
         if (valtVarde == null) {
             JOptionPane.showMessageDialog(null, "Vänligen välj ett " + namn + " i listan.");
@@ -153,7 +157,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         }
         return true;
     }
-     
+     //Metod 11: Kontroll av sökstatus
      public static boolean idArSatt(String id, String typ) {
         if (id == null || id.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Du måste söka fram en " + typ + " först.");
@@ -162,7 +166,11 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return true;
     }
 
+<<<<<<< Updated upstream
  
+=======
+  // Metod 12: Säker sökning
+>>>>>>> Stashed changes
     public static boolean isSafeSearch(JTextField fältAttTesta) {
         String text = fältAttTesta.getText().trim();
         
@@ -173,7 +181,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         }
         return true;
     }
-    
+   // Metod 13: Validering av ren text
    public static boolean arGiltigText(javax.swing.JTextField faltAttTesta, String namn) {
 
     if (!faltAttTesta.getText().trim().matches("^[a-zA-ZåäöÅÄÖ\\s-]+$")) {
@@ -183,7 +191,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     }
     return true;
 }
-   
+   //Metod 14: Sessionskontroll
    public static boolean arGiltigInloggadAnvandare(String epost) {
     if (epost == null || epost.trim().isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(null, "Sessionen är ogiltig. Logga in igen.");
@@ -196,7 +204,7 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     }
     return true;
 }
-   
+   //Metod 15: Kontroll av hittad data
    public static boolean hittadeData(java.util.ArrayList enLista, String informationstyp) {
     if (enLista == null || enLista.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(null, "Ingen " + informationstyp + " hittades för din avdelning.");
@@ -206,7 +214,11 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     
    }
    
+<<<<<<< Updated upstream
 
+=======
+  // Metod 16: Datumintervallsvalidering
+>>>>>>> Stashed changes
 public static boolean arGiltigtDatumIntervall(JTextField startFalt, JTextField slutFalt) {
     try {
         LocalDate start = LocalDate.parse(startFalt.getText().trim());
@@ -222,7 +234,7 @@ public static boolean arGiltigtDatumIntervall(JTextField startFalt, JTextField s
         return false;
     }
 } 
-
+// Metod 17: Valutaformat
 public static boolean comboHarValtVarde(javax.swing.JComboBox enBox, String namn) {
     if (enBox.getSelectedItem() == null || enBox.getSelectedIndex() == -1) {
         JOptionPane.showMessageDialog(null, "Vänligen välj en " + namn + " i listan först.");
@@ -231,6 +243,10 @@ public static boolean comboHarValtVarde(javax.swing.JComboBox enBox, String namn
     return true;
 }
 
+<<<<<<< Updated upstream
+=======
+// Metod 18: Decimalformskontroll
+>>>>>>> Stashed changes
 public static String formateraValuta(String varde) {
     if (varde == null || varde.equals("null")) {
         return "0,00 kr";
@@ -243,7 +259,11 @@ public static String formateraValuta(String varde) {
     }
 }
 
+<<<<<<< Updated upstream
 
+=======
+//Metod 19: Statusvalidering
+>>>>>>> Stashed changes
 public static boolean kontrolleraHittadData(java.util.ArrayList lista, String meddelande) {
     if (lista == null || lista.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Information: " + meddelande);
@@ -252,7 +272,11 @@ public static boolean kontrolleraHittadData(java.util.ArrayList lista, String me
     return true;
 }
 
+<<<<<<< Updated upstream
 
+=======
+// Metod 20: SQL rensning
+>>>>>>> Stashed changes
 public static boolean arGiltigDecimal(JTextField faltAttTesta, String namn) {
     try {
         String varde = faltAttTesta.getText().trim().replace(',', '.'); // Hanterar både komma och punkt
