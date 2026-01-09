@@ -78,9 +78,9 @@ public class Valideringsklass2 {
     }
     
  
-    public static boolean faltHarVarde(JTextField faltAttTesta) {
+    public static boolean faltHarVarde(JTextField faltAttTesta, String namn) {
         if (faltAttTesta.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Fältet " + faltNamn + " får inte vara tomt.");
+            JOptionPane.showMessageDialog(null, "Fältet " + namn + " får inte vara tomt.");
             faltAttTesta.requestFocus();
             return false;
         }
@@ -166,11 +166,10 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return true;
     }
 
-<<<<<<< Updated upstream
+
  
-=======
   // Metod 12: Säker sökning
->>>>>>> Stashed changes
+
     public static boolean isSafeSearch(JTextField fältAttTesta) {
         String text = fältAttTesta.getText().trim();
         
@@ -214,11 +213,10 @@ String epostRegEx = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
     
    }
    
-<<<<<<< Updated upstream
 
-=======
+
   // Metod 16: Datumintervallsvalidering
->>>>>>> Stashed changes
+
 public static boolean arGiltigtDatumIntervall(JTextField startFalt, JTextField slutFalt) {
     try {
         LocalDate start = LocalDate.parse(startFalt.getText().trim());
@@ -243,10 +241,8 @@ public static boolean comboHarValtVarde(javax.swing.JComboBox enBox, String namn
     return true;
 }
 
-<<<<<<< Updated upstream
-=======
-// Metod 18: Decimalformskontroll
->>>>>>> Stashed changes
+
+// Metod 18: Decimalformskontr
 public static String formateraValuta(String varde) {
     if (varde == null || varde.equals("null")) {
         return "0,00 kr";
@@ -259,11 +255,11 @@ public static String formateraValuta(String varde) {
     }
 }
 
-<<<<<<< Updated upstream
 
-=======
+
+
 //Metod 19: Statusvalidering
->>>>>>> Stashed changes
+
 public static boolean kontrolleraHittadData(java.util.ArrayList lista, String meddelande) {
     if (lista == null || lista.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Information: " + meddelande);
@@ -272,11 +268,11 @@ public static boolean kontrolleraHittadData(java.util.ArrayList lista, String me
     return true;
 }
 
-<<<<<<< Updated upstream
 
-=======
+
+
 // Metod 20: SQL rensning
->>>>>>> Stashed changes
+
 public static boolean arGiltigDecimal(JTextField faltAttTesta, String namn) {
     try {
         String varde = faltAttTesta.getText().trim().replace(',', '.'); // Hanterar både komma och punkt
