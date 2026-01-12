@@ -159,34 +159,31 @@ public class handlaggarUppgifter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSparaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaActionPerformed
-  
-        if (Valideringsklass2.faltHarVarde(txtAdress,) && 
-            Valideringsklass2.faltHarVarde(txtTelefon) && 
-            Valideringsklass2.arGiltigtTelefonnummer(txtTelefon) &&
-            Valideringsklass2.faltHarVarde(txtLosenord)) {
-            
-            try {
-             
-                String nyAdress = txtAdress.getText().trim();
-                String nyTel = txtTelefon.getText().trim();
-                String nyttLosen = new String(txtLosenord.getPassword());
-
-                
-                String updateFraga = "UPDATE anstalld SET "
-                        + "adress = '" + nyAdress + "', "
-                        + "telefon = '" + nyTel + "', "
-                        + "losenord = '" + nyttLosen + "' "
-                        + "WHERE epost = '" + inloggadAnvandare + "'";
-                
-               
-                idb.update(updateFraga);
-                JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
-
-            } catch (InfException ex) {
-                JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());    
-            }  
+ 
+    // Kontrollera fälten och skicka med namnet på fältet som en sträng
+    if (Valideringsklass2.faltHarVarde(txtAdress, "Adress") && 
+        Valideringsklass2.faltHarVarde(txtTelefon, "Telefon") && 
+        Valideringsklass2.arGiltigtTelefonnummer(txtTelefon) &&
+        Valideringsklass2.faltHarVarde(txtLosenord, "Lösenord")) {
         
-    } 
+        try {
+            String nyAdress = txtAdress.getText().trim();
+            String nyTel = txtTelefon.getText().trim();
+            String nyttLosen = new String(txtLosenord.getPassword());
+
+            String updateFraga = "UPDATE anstalld SET "
+                    + "adress = '" + nyAdress + "', "
+                    + "telefon = '" + nyTel + "', "
+                    + "losenord = '" + nyttLosen + "' "
+                    + "WHERE epost = '" + inloggadAnvandare + "'";
+            
+            idb.update(updateFraga);
+            JOptionPane.showMessageDialog(null, "Dina uppgifter har uppdaterats!");
+
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(null, "Kunde inte spara: " + ex.getMessage());
+        }  
+    }
     }//GEN-LAST:event_btnSparaActionPerformed
 
     private void tillbakaKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tillbakaKnappActionPerformed
