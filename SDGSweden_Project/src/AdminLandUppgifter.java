@@ -207,7 +207,7 @@ public class AdminLandUppgifter extends javax.swing.JFrame {
         }
 
         // 2. Kontrollerar att tidszonen är ett giltigt nummer
-        if (!Valideringsklass2.arHeltal(txtTidszon)) {
+        if (!Valideringsklass2.arHeltal(txtTidszon, "tidszon")) {
             return; // Metoden i valideringsklassen sköter felmeddelandet
         }
         // Kontrollerar att ett landnamn finns i textfältet

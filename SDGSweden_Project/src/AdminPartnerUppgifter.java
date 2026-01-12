@@ -252,7 +252,7 @@ fyllPartnerLista();
             }
 
             // 3. Kontrollera att telefonnumret bara innehåller siffror
-            if (!Valideringsklass2.arHeltal(txtTelefon)) {
+            if (!Valideringsklass2.arHeltal(txtTelefon, "telefonnummer")) {
                 return; // Stoppar metoden
             }
        // Hämtar ID (pid) för att veta vilken rad i tabellen som ska uppdateras
