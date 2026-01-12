@@ -337,46 +337,46 @@ statistikFonster.setVisible(true);
 
     //Hämtar värden från textfältet och uppdaterar med de nya uppgifterna
     private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed
-String input = txtTelefon.getText();
-    
-    // Rensa bort allt som inte är siffror
-    String endastSiffror = input.replaceAll("\\D", "");
-    
-    // 3. Uppdatera rutan direkt så användaren (och valideringen) ser det rena numret
-    txtTelefon.setText(endastSiffror);
-//  Validera all indata
+// Validera all indata
     if (Valideringsklass2.textfaltHarVarde(txtAdress, "adress") &&
         Valideringsklass2.textfaltHarVarde(txtEpost, "e-post") &&
         Valideringsklass2.arGiltigEpost(txtEpost) &&
         Valideringsklass2.textfaltHarVarde(txtTelefon, "telefon") &&
-        Valideringsklass2.arHeltal(txtTelefon, "telefon")) 
+        Valideringsklass2.arGiltigtTelefonnummer(txtTelefon)) 
     {
         try {
-            // Hämta värden och tvätta dem för SQL
+            // Hämta och rensa värden
             String nyAdress = Valideringsklass2.escapeSql(txtAdress.getText().trim());
-            String nyTele = Valideringsklass2.escapeSql(txtTelefon.getText().trim());
+            String nyTele = txtTelefon.getText().trim(); // Behåller numret exakt som det står
             String nyEpost = Valideringsklass2.escapeSql(txtEpost.getText().trim());
-            String nyttLosen = Valideringsklass2.escapeSql(new String(txtLosenord.getPassword()));
+            String nyttLosen = Valideringsklass2.escapeSql(
+                    new String(txtLosenord.getPassword()).trim()
+            );
 
-            
+            // Uppdatera databasen
             String sql = "UPDATE anstalld SET "
                     + "adress = '" + nyAdress + "', "
                     + "telefon = '" + nyTele + "', "
                     + "epost = '" + nyEpost + "', "
                     + "losenord = '" + nyttLosen + "' "
-                    + "WHERE aid = " + aid; // Använd AID istället för Epost i WHERE, det är säkrare!
+                    + "WHERE aid = " + aid;
 
             idb.update(sql);
-            
-            // Uppdaterar sessionen i programmet
-            inloggadEpost = nyEpost; 
+
+            //Uppdatera session och GUI
+            inloggadEpost = nyEpost;
             lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
-            
-            javax.swing.JOptionPane.showMessageDialog(this, "Dina uppgifter har uppdaterats!");
-            fyllProfilFalt(); 
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this, "Dina uppgifter har uppdaterats!"
+            );
+
+            fyllProfilFalt();
 
         } catch (InfException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Databasfel: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(
+                    this, "Databasfel: " + ex.getMessage()
+            );
         }
     }
     }//GEN-LAST:event_btnSparaUppgifterActionPerformed

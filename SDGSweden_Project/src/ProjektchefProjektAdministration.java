@@ -63,9 +63,9 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
         lblSlutdatum = new javax.swing.JLabel();
         lblStatusInfo = new javax.swing.JLabel();
         lblBudgetInfo = new javax.swing.JLabel();
-        lblStartDatumInfo = new javax.swing.JLabel();
-        lblSlutDatumInfo = new javax.swing.JLabel();
         lblBeskrivningInfo = new javax.swing.JLabel();
+        lblSlutDatumInfo = new javax.swing.JLabel();
+        lblStartDatumInfo = new javax.swing.JLabel();
         btnRedigeraProjektUppgifter = new javax.swing.JButton();
         lblSokProjekt = new javax.swing.JLabel();
         lblSokProjektFran = new javax.swing.JLabel();
@@ -117,9 +117,8 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
 
         getContentPane().add(pnlLabel, java.awt.BorderLayout.NORTH);
 
-        pnlMain.setLayout(new java.awt.GridLayout(1, 2, 25, 25));
-
         pnlVanster.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mina Projekt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
+        pnlVanster.setAutoscrolls(true);
 
         jLabel1.setText("Mina projekt");
 
@@ -140,11 +139,11 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
 
         lblBudgetInfo.setText("jLabel3");
 
-        lblStartDatumInfo.setText("jLabel4");
+        lblBeskrivningInfo.setText("jLabel4");
 
         lblSlutDatumInfo.setText("jLabel5");
 
-        lblBeskrivningInfo.setText("jLabel6");
+        lblStartDatumInfo.setText("jLabel6");
 
         btnRedigeraProjektUppgifter.setText("Ändra projektuppgifter");
         btnRedigeraProjektUppgifter.addActionListener(this::btnRedigeraProjektUppgifterActionPerformed);
@@ -196,7 +195,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                             .addGroup(pnlVansterLayout.createSequentialGroup()
                                 .addComponent(lblBeskrivning)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblStartDatumInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBeskrivningInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(200, 200, 200))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVansterLayout.createSequentialGroup()
                                 .addComponent(lblSlutdatum)
@@ -212,7 +211,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                             .addGroup(pnlVansterLayout.createSequentialGroup()
                                 .addComponent(lblStartDatum)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblBeskrivningInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblStartDatumInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlVansterLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -236,7 +235,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnFiltreraPaStatus)
                                     .addComponent(btnFiltreraProjekt))))
-                        .addGap(0, 179, Short.MAX_VALUE))))
+                        .addGap(0, 186, Short.MAX_VALUE))))
         );
         pnlVansterLayout.setVerticalGroup(
             pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +268,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStartDatum)
-                    .addComponent(lblBeskrivningInfo)
+                    .addComponent(lblStartDatumInfo)
                     .addComponent(btnTillbaka))
                 .addGap(18, 18, 18)
                 .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -282,7 +281,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                     .addGroup(pnlVansterLayout.createSequentialGroup()
                         .addGroup(pnlVansterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblBeskrivning)
-                            .addComponent(lblStartDatumInfo))
+                            .addComponent(lblBeskrivningInfo))
                         .addGap(24, 24, 24))))
         );
 
@@ -302,7 +301,16 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        pnlMain.add(jPanel2);
+        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
+        pnlMain.setLayout(pnlMainLayout);
+        pnlMainLayout.setHorizontalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        pnlMainLayout.setVerticalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -331,7 +339,11 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
                 String start = jTextField1.getText().trim();
                 String slut = jTextField2.getText().trim();
                 //Hämtar projekt inom det specifika tidsintervallet
-                fyllProjektLista("SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'");
+                fyllProjektLista("SELECT projektnamn FROM projekt "
+                        + "WHERE startdatum <= '" + slut
+                        + "' AND slutdatum >= '" + start + "'"
+                );
+
             }
         }
 
