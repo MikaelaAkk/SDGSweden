@@ -46,7 +46,23 @@ private void fyllComboBox() {
 }
 // Metod som sköter själva uppdateringen av databasen
 private void andraAvdelning() {
-    // 1. Hämta data från textfälten
+    // VALIDERING: Vi kontrollerar fälten INNAN vi försöker spara
+    // Vi använder din metod 'ifylltTxtFalt' från Valideringsklass2
+    
+    if (!Valideringsklass2.ifylltTxtFalt(txtNamn)) {
+        JOptionPane.showMessageDialog(this, "Namn måste fyllas i!");
+        return; // Avbryter metoden om fältet är tomt
+    }
+    
+    if (!Valideringsklass2.ifylltTxtFalt(txtEpost)) {
+        JOptionPane.showMessageDialog(this, "E-post måste fyllas i!");
+        return;
+    }
+
+    // Om du vill kontrollera att det är ett riktigt datum (om du har datumfält)
+    // använder du: if (!Valideringsklass2.arGiltigtDatum(txtDatum)) { return; }
+
+    // 2. Om valideringen går bra, hämta data från textfälten
     String namn = txtNamn.getText();
     String beskrivning = txtBeskrivning.getText();
     String adress = txtAdress.getText();
@@ -55,16 +71,8 @@ private void andraAvdelning() {
     String stad = txtStad.getText();
     String chef = txtChef.getText();
 
-    // Enkel validering (kontrollera att namn inte är tomt, då det oftast behövs för WHERE-klausulen)
-    if (namn.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vänligen ange namnet på avdelningen du vill ändra.");
-        return;
-    }
-
     try {
-        // Bygger upp SQL-strängen för att uppdatera alla kolumner
-        // Namnet används för att identfiera vilken rad som ska ändras
-        
+        // 3. Skicka uppdateringen till databasen
         String fraga = "UPDATE avdelning SET "
                 + "beskrivning = '" + beskrivning + "', "
                 + "adress = '" + adress + "', "
@@ -74,41 +82,13 @@ private void andraAvdelning() {
                 + "chef = '" + chef + "' "
                 + "WHERE namn = '" + namn + "'";
 
-        // Skickar uppdateringskommandot till databasen
         idb.update(fraga);
-
-        // Meddelar användaren att det lyckades
         JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
 
     } catch (Exception ettUndantag) {
-        // Om något går fel (t.ex. SQL-fel) visas ett felmeddelande
         JOptionPane.showMessageDialog(this, "Något gick fel vid lagring: " + ettUndantag.getMessage());
     }
 }
-        // Metod som körs när man väljer en avdelning i rullistan
-    private void cmbAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {                                               
-    try {
-        // Hämtar namnet på den valda avdelningen
-        String valtNamn = cbAvdelningar.getSelectedItem().toString();
-        // Hämtar all information om just den avdelningen
-        String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
-        
-        HashMap<String, String> rad = idb.fetchRow(fraga);
-        
-        if (rad != null) {
-            // Fyller alla textfält med information från databasen
-            txtNamn.setText(rad.get("namn"));
-            txtBeskrivning.setText(rad.get("beskrivning"));
-            txtAdress.setText(rad.get("adress"));
-            txtEpost.setText(rad.get("epost"));
-            txtTelefon.setText(rad.get("telefon"));
-            txtStad.setText(rad.get("stad"));
-            txtChef.setText(rad.get("chef"));
-        }
-    } catch (Exception e) {
-        System.out.println("Fel vid hämtning: " + e.getMessage());
-    }
-}   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -316,7 +296,7 @@ private void andraAvdelning() {
     //  Stäng ner det nuvarande fönstret
     this.dispose();
     
-    // Öppna administratörens meny och skicka med databasobjektet (idb)
+    // 2Öppna administratörens meny och skicka med databasobjektet (idb)
     // Vi skickar även med en tom sträng eller "Admin" om din huvudmeny kräver ett namn
     new Administratör(idb, "Admin").setVisible(true); 
 
