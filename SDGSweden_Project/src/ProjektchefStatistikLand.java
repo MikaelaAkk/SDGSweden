@@ -9,9 +9,6 @@
  */
 import oru.inf.InfDB;
 import oru.inf.InfException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.DefaultListModel;
 
 public class ProjektchefStatistikLand extends javax.swing.JFrame {
 
@@ -26,30 +23,39 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
     public ProjektchefStatistikLand(InfDB idb, String inloggadEpost) {
         initComponents();
         this.idb = idb;
-        this.inloggadEpost = inloggadEpost;
+        this.inloggadEpost = inloggadEpost; //Sparas för att kunna skickas tillbaka till meny
 
+        //Fyller rullistan med länder direkt vid start
         fyllLandVäljare();
+        //Gör att  kolumnerna i fönstret ska ligga rakt
         txtStatistik.setFont(new java.awt.Font("Monospaced", 0, 12));
     }
 
+    //Hämtar alla länder från databasen och lägger de i ComboBoxen
     private void fyllLandVäljare() {
         try {
+            //Tömmer gamla items, items 1, itmes 2 osv
             cbLand.removeAllItems();
+
+            //Hämtar endast de namnen på länderna i bokstavsordning
             String fraga = "SELECT namn FROM land ORDER BY namn";
             java.util.ArrayList<String> lander = idb.fetchColumn(fraga);
 
+            //Kontrollera att listan inte är tom 
             if (lander != null) {
                 for (String land : lander) {
                     cbLand.addItem(land);
                 }
             }
         } catch (oru.inf.InfException ex) {
+            //Loggar felet och skickar ut felmeddleande
             System.out.println("Fel vid hämtning av länder: " + ex.getMessage());
         }
     }
 
     private void visaLandStatistik() {
-      if (!Valideringsklass2.comboHarValtVarde(cbLand, "land")) {
+        //Anropar extern valideringsklass för att se att användaren valt ett land
+        if (!Valideringsklass2.comboHarValtVarde(cbLand, "land")) {
             return;
         }
 
@@ -57,54 +63,63 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
             String valtLand = (String) cbLand.getSelectedItem();
             txtStatistik.setText("");
 
-            // SQL-frågan (Se till att den matchar din databasstruktur)
+            //Använder Join för att koppla ihop projekttabellen med land
+            //p.land används tillsammans med l.led
             String sql = "SELECT p.projektnamn, p.kostnad FROM projekt p "
                     + "JOIN land l ON p.land = l.lid "
                     + "WHERE l.namn = '" + valtLand + "'";
 
             java.util.ArrayList<java.util.HashMap<String, String>> resultat = idb.fetchRows(sql);
 
-            // Ickefunktionellt krav: Feedback till användaren om data saknas
+            // Om landet inte har några projekt skickas felmeddlenade ut
             if (resultat == null || resultat.isEmpty()) {
                 txtStatistik.setText("Inga projekt hittades för " + valtLand + ".");
                 return;
             }
 
-            // Formatering för läsbarhet (Användarvänlighet)
+            // Skapat en mall av en rapport, StringBuilder
             StringBuilder rapport = new StringBuilder();
             rapport.append("KOSTNADSRAPPORT: ").append(valtLand.toUpperCase()).append("\n");
             rapport.append("==========================================\n");
+            //%-25s betyder "en sträng på 25 tecken, vänsterställd"
             rapport.append(String.format("%-25s %-15s\n", "Projekt", "Kostnad"));
             rapport.append("------------------------------------------\n");
 
             double totalSumma = 0;
 
+            //Loopat genom varje projekt vi hittat
             for (java.util.HashMap<String, String> rad : resultat) {
                 String namn = rad.get("projektnamn");
-                // Säkerställ att kostnad inte är null i DB
+                // Säkerställ att kostnad inte är null
                 String kostnadStr = rad.get("kostnad");
+                //Omvandlar text till siffror för att kunna addera dem
+                //Om kostnad saknas sätts de till 0 
                 double kostnad = (kostnadStr != null) ? Double.parseDouble(kostnadStr) : 0;
-                
-                totalSumma += kostnad;
+
+                totalSumma += kostnad; // Adderar till den totala kostnad för landet
                 rapport.append(String.format("%-25s %,.0f kr\n", namn, kostnad));
             }
 
             rapport.append("------------------------------------------\n");
+            //%,.0f formaterar siffran med tusentalsavgränsare
             rapport.append(String.format("%-25s %,.0f kr\n", "TOTAL SUMMA:", totalSumma));
-            
+
+            //Skickar den färdiga strängen
             txtStatistik.setText(rapport.toString());
 
         } catch (InfException ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Databasfel: " + ex.getMessage());
+            //Ifall SQL frågan är felaktig
         } catch (Exception ex) {
+            //Fångar upp andra fel
             javax.swing.JOptionPane.showMessageDialog(this, "Ett oväntat fel uppstod.");
         }
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // Ickefunktionellt krav: Resurshantering (stäng fönster)
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+
         new MenyProjektChef(idb, inloggadEpost).setVisible(true);
-        this.dispose();  
+        this.dispose();
     }
 
     /**
@@ -188,7 +203,7 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnTillbaka)
@@ -218,10 +233,12 @@ public class ProjektchefStatistikLand extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Här körs logiken
     private void btnVisaStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaStatistikActionPerformed
         visaLandStatistik();
     }//GEN-LAST:event_btnVisaStatistikActionPerformed
 
+    //Går tillbaka till projektchefsmenyn
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idb, inloggadEpost).setVisible(true);
         this.dispose();

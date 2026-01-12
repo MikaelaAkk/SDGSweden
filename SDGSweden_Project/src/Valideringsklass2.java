@@ -94,12 +94,14 @@ public class Valideringsklass2 {
     // Metod 5: Telefonnummer kontroll (Regex)
     public static boolean arGiltigtTelefonnummer(JTextField ettFalt) {
         String tel = ettFalt.getText().trim();
-        if (!tel.matches("^[0-9\\s-]{5,20}$")) {
-            JOptionPane.showMessageDialog(null, "Ange ett giltigt telefonnummer.");
-            ettFalt.requestFocus();
-            return false;
-        }
-        return true;
+        if (!tel.matches("^[0-9+ ]{5,20}$")) {
+        JOptionPane.showMessageDialog(null, "Ange ett giltigt telefonnummer (exempel: +3322114453 eller 0701234567).");
+        ettFalt.requestFocus();
+        return false;
+    }
+    return true;
+        
+       
     }
     
     //Metod 6: Kontrollera täxtfält

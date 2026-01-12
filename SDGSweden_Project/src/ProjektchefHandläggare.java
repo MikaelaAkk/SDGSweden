@@ -4,8 +4,11 @@
  */
 
 /**
- * Klass för att hantera handläggare i projekt. 
+ * Klass för att hantera handläggare i projekt.
  * Man kan söka och ta bort kopling av personal i projekt
+ * Man kan även se handläggarens nuvarande projekt
+ * Tilldelning och borttagning av personal i egna projekt
+ *
  * @author elinjugas
  */
 import oru.inf.InfDB;
@@ -36,7 +39,8 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         fyllMinaProjektCombo(); // Fyller menyn med projekt som användaren är chef för
     }
 
-    //Fyller comboboxen med projektnamn där den inloggade är projektchef
+    //Fyller comboboxen med projektnamn där den inloggade är projektchef.
+    //Säkerställer att användaren endast kan administrera egna projekt
     private void fyllMinaProjektCombo() {
         try {
             cbMinaProjekt.removeAllItems();
@@ -75,18 +79,20 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         }
     }
 
+    // Hanterar söklohiken. Validerar data för att få fram informaiton om handläggare
     private void utforSokning() {
-       txtResultat.setText("");
-        // Validera att sökfältet inte är tomt och följer enkla teckenregler (Krav: RegEx)
+        txtResultat.setText("");
+        // Validera att sökfältet inte är tomt och följer RegEx
         if (!Valideringsklass2.textfaltHarVarde(txtSok, "sökfältet") || !Valideringsklass2.isSafeSearch(txtSok)) {
             return;
         }
 
         try {
+            //Hämtar personuppgifter och avdelningsnamn via en Join
             String sokText = txtSok.getText().trim();
             String sql = "SELECT a.aid, a.fornamn, a.efternamn, a.epost, avd.namn FROM anstalld a "
-                       + "JOIN avdelning avd ON a.avdelning = avd.avdid "
-                       + "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
+                    + "JOIN avdelning avd ON a.avdelning = avd.avdid "
+                    + "WHERE a.fornamn LIKE '%" + sokText + "%' OR a.epost LIKE '%" + sokText + "%'";
 
             ArrayList<HashMap<String, String>> resultat = idb.fetchRows(sql);
 
@@ -94,20 +100,23 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 txtResultat.append("Ingen handläggare hittades med det namnet/eposten.");
                 valdAnstalldAid = null;
             } else {
+                // Sätter "Vald" för att kunna lägga till i projektet
                 HashMap<String, String> person = resultat.get(0);
                 valdAnstalldAid = person.get("aid");
 
+                //Loopar igenom resultaten och skriver ut de som information
                 for (HashMap<String, String> rad : resultat) {
                     txtResultat.append("Namn: " + rad.get("fornamn") + " " + rad.get("efternamn") + "\n");
                     txtResultat.append("E-post: " + rad.get("epost") + "\n");
                     txtResultat.append("Avdelning: " + rad.get("namn") + "\n");
                     txtResultat.append("--------------------------------------\n");
                 }
+                //Visar handläggarens nuvarande projekt i listan bredvid
                 uppdateraProjektLista();
             }
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "Sökningen misslyckades: " + ex.getMessage());
-        } 
+        }
     }
 
     /**
@@ -119,20 +128,20 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pnlRubrik = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        pnlSokochInfo = new javax.swing.JPanel();
+        pnlSokHandlaggare = new javax.swing.JLabel();
         txtSok = new javax.swing.JTextField();
         btnSok = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResultat = new javax.swing.JTextArea();
-        jPanel3 = new javax.swing.JPanel();
+        pnlHandlaggareOchProjekt = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstPersonensProjekt = new javax.swing.JList<>();
-        jLabel3 = new javax.swing.JLabel();
+        lblHandlaggareProjekt = new javax.swing.JLabel();
         cbMinaProjekt = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        lblMinaProjekt = new javax.swing.JLabel();
         btnLaggTill = new javax.swing.JButton();
         btnTaBort = new javax.swing.JButton();
         btnTillbaka = new javax.swing.JButton();
@@ -140,34 +149,34 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(52, 153, 242));
 
-        jPanel1.setBackground(new java.awt.Color(52, 153, 242));
+        pnlRubrik.setBackground(new java.awt.Color(52, 153, 242));
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Hantera handläggare");
         jLabel1.setToolTipText("");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlRubrikLayout = new javax.swing.GroupLayout(pnlRubrik);
+        pnlRubrik.setLayout(pnlRubrikLayout);
+        pnlRubrikLayout.setHorizontalGroup(
+            pnlRubrikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRubrikLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlRubrikLayout.setVerticalGroup(
+            pnlRubrikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRubrikLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel1)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jLabel2.setText("Sök efter handläggare (Namn/Epost)");
-        jLabel2.addKeyListener(new java.awt.event.KeyAdapter() {
+        pnlSokHandlaggare.setText("Sök efter handläggare (Namn/Epost)");
+        pnlSokHandlaggare.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jLabel2KeyReleased(evt);
+                pnlSokHandlaggareKeyReleased(evt);
             }
         });
 
@@ -180,32 +189,32 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         txtResultat.setRows(5);
         jScrollPane1.setViewportView(txtResultat);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlSokochInfoLayout = new javax.swing.GroupLayout(pnlSokochInfo);
+        pnlSokochInfo.setLayout(pnlSokochInfoLayout);
+        pnlSokochInfoLayout.setHorizontalGroup(
+            pnlSokochInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSokochInfoLayout.createSequentialGroup()
+                .addGroup(pnlSokochInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlSokochInfoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(pnlSokHandlaggare))
+                    .addGroup(pnlSokochInfoLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlSokochInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(pnlSokochInfoLayout.createSequentialGroup()
                                 .addComponent(txtSok, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSok)))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlSokochInfoLayout.setVerticalGroup(
+            pnlSokochInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSokochInfoLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel2)
+                .addComponent(pnlSokHandlaggare)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlSokochInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSok))
                 .addGap(52, 52, 52)
@@ -220,11 +229,11 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(lstPersonensProjekt);
 
-        jLabel3.setText("Handläggarens projekt:");
+        lblHandlaggareProjekt.setText("Handläggarens projekt:");
 
         cbMinaProjekt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel4.setText("Mina projekt:");
+        lblMinaProjekt.setText("Mina projekt:");
 
         btnLaggTill.setText("Lägg till i mitt projekt");
         btnLaggTill.addActionListener(this::btnLaggTillActionPerformed);
@@ -235,43 +244,43 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlHandlaggareOchProjektLayout = new javax.swing.GroupLayout(pnlHandlaggareOchProjekt);
+        pnlHandlaggareOchProjekt.setLayout(pnlHandlaggareOchProjektLayout);
+        pnlHandlaggareOchProjektLayout.setHorizontalGroup(
+            pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHandlaggareOchProjektLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnTillbaka)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlHandlaggareOchProjektLayout.createSequentialGroup()
+                        .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnLaggTill)
-                            .addComponent(jLabel3)
+                            .addComponent(lblHandlaggareProjekt)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlHandlaggareOchProjektLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(btnTaBort))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(pnlHandlaggareOchProjektLayout.createSequentialGroup()
                                 .addGap(44, 44, 44)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))))))
+                                    .addComponent(lblMinaProjekt))))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        pnlHandlaggareOchProjektLayout.setVerticalGroup(
+            pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHandlaggareOchProjektLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHandlaggareProjekt)
+                    .addComponent(lblMinaProjekt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbMinaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlHandlaggareOchProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLaggTill)
                     .addComponent(btnTaBort))
                 .addGap(18, 18, 18)
@@ -282,22 +291,22 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRubrik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlSokochInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlHandlaggareOchProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlRubrik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlHandlaggareOchProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlSokochInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 18, Short.MAX_VALUE))
         );
 
@@ -306,16 +315,19 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
 
     // Knapp: Lägg till den framsökta handläggaren i valt projekt
     private void btnLaggTillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaggTillActionPerformed
-        try {
 
-            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare") && 
-                Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
-                
+        try {
+            // Kontrollerar att både en person är sökt och ett projekt är valt
+
+            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare")
+                    && Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
+
+                // Hämtar PID för det valda projektnamnet
                 String valtProjekt = cbMinaProjekt.getSelectedItem().toString();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
 
-                
                 if (Valideringsklass2.arGiltigtId(pid) && Valideringsklass2.arGiltigtId(valdAnstalldAid)) {
+                    // Skapar en ny koppling
                     String insertSql = "INSERT INTO ans_proj (pid, aid) VALUES (" + pid + ", " + valdAnstalldAid + ")";
                     idb.insert(insertSql);
                     JOptionPane.showMessageDialog(this, "Handläggare tillagd i projektet!");
@@ -323,7 +335,7 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
                 }
             }
         } catch (InfException ex) {
-            // Krav: Inmatningsfel/Datafel ska inte krascha applikationen
+            //Hanterar när en person redan är kopplad till projektet ochs skriver ut felmeddelande
             if (ex.getMessage().contains("Duplicate")) {
                 JOptionPane.showMessageDialog(this, "Handläggaren är redan med i detta projekt.");
             } else {
@@ -332,28 +344,29 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLaggTillActionPerformed
 
+    //Tar bort kopplingen mellan en handläggare och ett projekt. 
     private void btnTaBortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaBortActionPerformed
-     try {
-            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare") && 
-                Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
-                
+        try {
+            if (Valideringsklass2.idArSatt(valdAnstalldAid, "handläggare")
+                    && Valideringsklass2.comboValt(cbMinaProjekt.getSelectedItem(), "projekt")) {
+
                 String valtProjektNamn = (String) cbMinaProjekt.getSelectedItem();
                 String pid = idb.fetchSingle("SELECT pid FROM projekt WHERE projektnamn = '" + valtProjektNamn + "'");
 
                 // Bekräftelse innan borttagning 
                 int svar = JOptionPane.showConfirmDialog(this, "Är du säker på att du vill ta bort handläggaren från projektet?", "Bekräfta", JOptionPane.YES_NO_OPTION);
-                
+
                 if (svar == JOptionPane.YES_OPTION && Valideringsklass2.arGiltigtId(pid)) {
                     String deleteSql = "DELETE FROM ans_proj WHERE pid = " + pid + " AND aid = " + valdAnstalldAid;
                     idb.delete(deleteSql);
                     JOptionPane.showMessageDialog(this, "Handläggaren har tagits bort från projektet.");
                     uppdateraProjektLista();
-                }   
-         }
+                }
+            }
         } catch (InfException ex) {
             JOptionPane.showMessageDialog(this, "Ett fel uppstod vid borttagning: " + ex.getMessage());
         }
-       
+
     }//GEN-LAST:event_btnTaBortActionPerformed
 
     private void btnSokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSokActionPerformed
@@ -362,9 +375,9 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSokActionPerformed
 
-    private void jLabel2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel2KeyReleased
+    private void pnlSokHandlaggareKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnlSokHandlaggareKeyReleased
 
-    }//GEN-LAST:event_jLabel2KeyReleased
+    }//GEN-LAST:event_pnlSokHandlaggareKeyReleased
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idb, inloggadEpost).setVisible(true);
@@ -379,15 +392,15 @@ public class ProjektchefHandläggare extends javax.swing.JFrame {
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> cbMinaProjekt;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblHandlaggareProjekt;
+    private javax.swing.JLabel lblMinaProjekt;
     private javax.swing.JList<String> lstPersonensProjekt;
+    private javax.swing.JPanel pnlHandlaggareOchProjekt;
+    private javax.swing.JPanel pnlRubrik;
+    private javax.swing.JLabel pnlSokHandlaggare;
+    private javax.swing.JPanel pnlSokochInfo;
     private javax.swing.JTextArea txtResultat;
     private javax.swing.JTextField txtSok;
     // End of variables declaration//GEN-END:variables

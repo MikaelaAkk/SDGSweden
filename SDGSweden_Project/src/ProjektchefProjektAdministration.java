@@ -5,8 +5,9 @@
 
 /**
  *Klass för att administrera och filtrera projekt
- * Projektcehefer kan se detaljerad
- * 
+ * Projektcehefer kan se detaljerad information
+ * Få en överblick över sina projekt
+ *
  * @author elinjugas
  */
 import oru.inf.InfDB;
@@ -18,15 +19,14 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefProjektAdministration.class.getName());
     private InfDB idDB;
-    private int aid;
+    private int aid; // Inloggad projektchefs anställningsid
     private String projektnamn;
-    private String epost;
+    private String epost;// Kommer ihåg epost
     private String InloggadEpost;
 
     /**
      * Creates new form ProjektchefAdministration
      */
-
     public ProjektchefProjektAdministration(InfDB idb, int aid, String epost) {
         this.idDB = idb;
         this.aid = aid;
@@ -34,6 +34,7 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
         initComponents();
         this.InloggadEpost = InloggadEpost;
 
+        //Fyller listan med endast de projekt som den inloggade chefen ansvarar för
         fyllProjektLista("SELECT projektnamn FROM projekt WHERE projektchef = " + aid);
 
     }
@@ -308,10 +309,11 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    // Hanterar filtrering av projekt baserat på vald status
     private void btnFiltreraPaStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraPaStatusActionPerformed
         String status = cbStatusFilter.getSelectedItem().toString();
         String fraga;
+        // Hämtar alla projekt om "Visa alla" är vald, annars sker filitrering
         if (status.equals("Visa alla")) {
             fraga = "SELECT projektnamn FROM projekt";
         } else {
@@ -320,32 +322,37 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
         fyllProjektLista(fraga);
     }//GEN-LAST:event_btnFiltreraPaStatusActionPerformed
 
+    //Hantering av filtrering baserat på datumintervall
     private void btnFiltreraProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltreraProjektActionPerformed
-        // Kontrollera att fälten är ifyllda och har rätt datumformat (RegEx i Valideringsklassen)
-    if (Valideringsklass2.arGiltigtDatum(jTextField1) && Valideringsklass2.arGiltigtDatum(jTextField2)) {
-        // 2. Kolla logik (Start före Slut)
-        if (Valideringsklass2.arGiltigtDatumIntervall(jTextField1, jTextField2)) {
-            String start = jTextField1.getText().trim();
-            String slut = jTextField2.getText().trim();
-            fyllProjektLista("SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'");
+        // Kontrollera att fälten är ifyllda och har rätt datumformat 
+        if (Valideringsklass2.arGiltigtDatum(jTextField1) && Valideringsklass2.arGiltigtDatum(jTextField2)) {
+            // Kolla logik 
+            if (Valideringsklass2.arGiltigtDatumIntervall(jTextField1, jTextField2)) {
+                String start = jTextField1.getText().trim();
+                String slut = jTextField2.getText().trim();
+                //Hämtar projekt inom det specifika tidsintervallet
+                fyllProjektLista("SELECT projektnamn FROM projekt WHERE startdatum >= '" + start + "' AND slutdatum <= '" + slut + "'");
+            }
         }
-    }
 
     }//GEN-LAST:event_btnFiltreraProjektActionPerformed
 
     private void btnRedigeraProjektUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedigeraProjektUppgifterActionPerformed
-        // Hindra NullPointerException om listan är tom
-    if (Valideringsklass2.comboHarValtVarde(cbProjektVal, "projekt")) {
-        String valtProjekt = cbProjektVal.getSelectedItem().toString();
-        new ProjektchefRedigeraProjekt(idDB, valtProjekt).setVisible(true);
-        this.dispose();
-    }
+        //Kontrollera att ett projekt faktiskt är valt i listan innan man går vidare
+        if (Valideringsklass2.comboHarValtVarde(cbProjektVal, "projekt")) {
+            String valtProjekt = cbProjektVal.getSelectedItem().toString();
+            //Skapar nytt objekt och skickar information och projektnamn
+            new ProjektchefRedigeraProjekt(idDB, valtProjekt, aid, epost).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnRedigeraProjektUppgifterActionPerformed
 
+    //Uppdataterar informationsrämstorna när användaren väljer ett projekt i rulllistan
     private void cbProjektValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProjektValActionPerformed
         if (cbProjektVal.getSelectedItem() != null) {
             try {
                 String valtProjekt = cbProjektVal.getSelectedItem().toString();
+                //Hämtar information om det valda projektet
                 var rad = idDB.fetchRow("SELECT * FROM projekt WHERE projektnamn = '" + valtProjekt + "'");
 
                 lblStatusInfo.setText(rad.get("status"));
@@ -359,31 +366,31 @@ public class ProjektchefProjektAdministration extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_cbProjektValActionPerformed
-
+    // Återgår till huvudmeny för projektchefer
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idDB, epost).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     private void fyllProjektLista(String sqlFraga) {
-      try {
-        cbProjektVal.removeAllItems();
-        ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sqlFraga);
-        
-        if (rader != null && !rader.isEmpty()) {
-            for (var rad : rader) {
-                cbProjektVal.addItem(rad.get("projektnamn"));
+        try {
+            cbProjektVal.removeAllItems(); //Rensar listan innan den fylls på
+            ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sqlFraga);
+
+            if (rader != null && !rader.isEmpty()) {
+                for (var rad : rader) {
+                    cbProjektVal.addItem(rad.get("projektnamn"));
+                }
+            } else {
+                //Informera användaren om sökningen blev tom 
+                javax.swing.JOptionPane.showMessageDialog(this, "Inga projekt hittades för det valda filtret.");
             }
-        } else {
-            // Krav: Hjälp användaren förstå varför listan är tom
-            javax.swing.JOptionPane.showMessageDialog(this, "Inga projekt hittades för det valda filtret.");
+        } catch (InfException e) {
+            //Visar felmeddelande till användaren
+            javax.swing.JOptionPane.showMessageDialog(this, "Ett databasfel uppstod: " + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, null, e);
         }
-    } catch (InfException e) {
-        // Krav: Programmet får ej krascha, visa felet grafiskt
-        javax.swing.JOptionPane.showMessageDialog(this, "Ett databasfel uppstod: " + e.getMessage());
-        logger.log(java.util.logging.Level.SEVERE, null, e);
-    }
-      
+
     }
 
     /**

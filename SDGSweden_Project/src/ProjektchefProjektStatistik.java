@@ -4,6 +4,7 @@
  */
 
 /**
+ *Klass för att visa statistik och listor över projekt
  *
  * @author elinjugas
  */
@@ -17,7 +18,7 @@ import javax.swing.JOptionPane;
 public class ProjektchefProjektStatistik extends javax.swing.JFrame {
 
     private InfDB idDB;
-    private int aid;
+    private int aid; //hämtar aid och epost för den inloggade
     private String inloggadEpost;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProjektchefProjektStatistik.class.getName());
@@ -32,63 +33,73 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
         this.aid = aid;
         this.inloggadEpost = epost;
 
+        // Fyller statsistik ettiketerna och tabellen direkt vid start 
         laddaStatistikKort();
         laddaTabell();
 
     }
 
+    //Häntar data från databasen  och att sedan visa den i korten
+    //Använder SQL för att räjna antal, sumera kostnad och räkna ut snitt
     private void laddaStatistikKort() {
         try {
-        String antal = idDB.fetchSingle("SELECT count(*) FROM projekt");
-        String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
-        String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
+            //För att få fram ett värde
+            String antal = idDB.fetchSingle("SELECT count(*) FROM projekt");
+            String summa = idDB.fetchSingle("SELECT sum(kostnad) FROM projekt");
+            String snitt = idDB.fetchSingle("SELECT avg(kostnad) FROM projekt");
 
-        // Använd valideringsklassen för konsekvent formatering
-        lblAntalVarde.setText(antal != null ? antal : "0");
-        lblSummaVarde.setText(Valideringsklass2.formateraValuta(summa));
-        lblSnittVarde.setText(Valideringsklass2.formateraValuta(snitt));
-        
-    } catch (InfException ex) {
-        // Krav: Visa felmeddelanden grafiskt
-        JOptionPane.showMessageDialog(this, "Kunde inte hämta statistik: " + ex.getMessage());
-        logger.log(java.util.logging.Level.SEVERE, null, ex);
+            // Använder valideringsklassen för att snygga till siffror
+            lblAntalVarde.setText(antal != null ? antal : "0");
+            lblSummaVarde.setText(Valideringsklass2.formateraValuta(summa));
+            lblSnittVarde.setText(Valideringsklass2.formateraValuta(snitt));
+
+        } catch (InfException ex) {
+            // Visar felmeddelnande om de görs en felhantering
+            JOptionPane.showMessageDialog(this, "Kunde inte hämta statistik: " + ex.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
     }
-}
 
+    //Fuller tabellen med projektdata på det valda filtret
+    //Rensar mtabellen och ritar upp den på nytt vid varja anrop
     private void laddaTabell() {
-        
-    try {
-        Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
-        if (!Valideringsklass2.comboValt(valdStatusObjekt, "status")) {
-            return;
-        }
 
-        String valdStatus = valdStatusObjekt.toString();
-        String sql = "SELECT projektnamn, status, kostnad FROM projekt";
-
-        if (!valdStatus.equals("Alla")) {
-            sql += " WHERE status = '" + valdStatus + "'";
-        }
-
-        ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
-        DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
-        model.setRowCount(0);
-
-        // Krav: Informera användaren om data saknas för filtret
-        if (Valideringsklass2.kontrolleraHittadData(rader, "Inga projekt matchar valt filter.")) {
-            for (HashMap<String, String> rad : rader) {
-                Object[] tabellRad = {
-                    rad.get("projektnamn"),
-                    rad.get("status"),
-                    Valideringsklass2.formateraValuta(rad.get("kostnad"))
-                };
-                model.addRow(tabellRad);
+        try {
+            //Kontrollera att ett filtigt val gjorts i comboboxen via validering
+            Object valdStatusObjekt = cbStatusFilter.getSelectedItem();
+            if (!Valideringsklass2.comboValt(valdStatusObjekt, "status")) {
+                return;
             }
+
+            String valdStatus = valdStatusObjekt.toString();
+            String sql = "SELECT projektnamn, status, kostnad FROM projekt";
+            //Söker om användaren valt en specifik status
+
+            if (!valdStatus.equals("Alla")) {
+                sql += " WHERE status = '" + valdStatus + "'";
+            }
+
+            ArrayList<HashMap<String, String>> rader = idDB.fetchRows(sql);
+            //Hänmtar tabellens modell för att kunna skapa rader
+            DefaultTableModel model = (DefaultTableModel) tblProjektLista.getModel();
+            model.setRowCount(0); //Tömmer tabellen inför ett nytt anrop
+
+            //Validering och kontroll om data hittades, annars får man ett felmeddelande
+            if (Valideringsklass2.kontrolleraHittadData(rader, "Inga projekt matchar valt filter.")) {
+                for (HashMap<String, String> rad : rader) {
+                    //Skapar en array av objekt som representerar en rad
+                    Object[] tabellRad = {
+                        rad.get("projektnamn"),
+                        rad.get("status"),
+                        Valideringsklass2.formateraValuta(rad.get("kostnad"))
+                    };
+                    model.addRow(tabellRad); //Lägger till raden i tabellen
+                }
+            }
+        } catch (InfException ex) {
+            JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod när tabellen skulle laddas.");
         }
-    } catch (InfException ex) {
-        JOptionPane.showMessageDialog(this, "Ett tekniskt fel uppstod när tabellen skulle laddas.");
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,15 +113,15 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         pnlNorth = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblProjektStatistik = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        pnlAktivaProjekt = new javax.swing.JPanel();
         lblAntalVarde = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        pnlTotalInvestering = new javax.swing.JPanel();
         lblSummaVarde = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        pnlProjektbudget = new javax.swing.JPanel();
         lblSnittVarde = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
+        pnlFiltreraProjekt = new javax.swing.JPanel();
         cbStatusFilter = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -136,10 +147,10 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
 
         pnlNorth.setBackground(new java.awt.Color(51, 153, 255));
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Projektöversikt & statistik");
-        jLabel1.setToolTipText("");
+        lblProjektStatistik.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        lblProjektStatistik.setForeground(new java.awt.Color(255, 255, 255));
+        lblProjektStatistik.setText("Projektstatistik");
+        lblProjektStatistik.setToolTipText("");
 
         javax.swing.GroupLayout pnlNorthLayout = new javax.swing.GroupLayout(pnlNorth);
         pnlNorth.setLayout(pnlNorthLayout);
@@ -147,75 +158,75 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
             pnlNorthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNorthLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProjektStatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlNorthLayout.setVerticalGroup(
             pnlNorthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNorthLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProjektStatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Antal aktiva projekt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
+        pnlAktivaProjekt.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Antal aktiva projekt", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
 
         lblAntalVarde.setText("Antal:");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlAktivaProjektLayout = new javax.swing.GroupLayout(pnlAktivaProjekt);
+        pnlAktivaProjekt.setLayout(pnlAktivaProjektLayout);
+        pnlAktivaProjektLayout.setHorizontalGroup(
+            pnlAktivaProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAktivaProjektLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(lblAntalVarde, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlAktivaProjektLayout.setVerticalGroup(
+            pnlAktivaProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAktivaProjektLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(lblAntalVarde, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total investering", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
+        pnlTotalInvestering.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total investering", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
 
         lblSummaVarde.setText("Summa:");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlTotalInvesteringLayout = new javax.swing.GroupLayout(pnlTotalInvestering);
+        pnlTotalInvestering.setLayout(pnlTotalInvesteringLayout);
+        pnlTotalInvesteringLayout.setHorizontalGroup(
+            pnlTotalInvesteringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTotalInvesteringLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(lblSummaVarde, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        pnlTotalInvesteringLayout.setVerticalGroup(
+            pnlTotalInvesteringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTotalInvesteringLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(lblSummaVarde)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Genomsnittlig projektbudget", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
+        pnlProjektbudget.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Genomsnittlig projektbudget", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 14))); // NOI18N
 
         lblSnittVarde.setText("Summa:");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlProjektbudgetLayout = new javax.swing.GroupLayout(pnlProjektbudget);
+        pnlProjektbudget.setLayout(pnlProjektbudgetLayout);
+        pnlProjektbudgetLayout.setHorizontalGroup(
+            pnlProjektbudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProjektbudgetLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(lblSnittVarde)
                 .addContainerGap(166, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        pnlProjektbudgetLayout.setVerticalGroup(
+            pnlProjektbudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProjektbudgetLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(lblSnittVarde)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -227,22 +238,22 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlAktivaProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTotalInvestering, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlProjektbudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(pnlTotalInvestering, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlProjektbudget, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlAktivaProjekt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         cbStatusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alla", "Pågående", "Planerat", "Pausade", "Avslutat", " " }));
@@ -266,36 +277,34 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
         btnTillbaka.setText("Tillbaka");
         btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlFiltreraProjektLayout = new javax.swing.GroupLayout(pnlFiltreraProjekt);
+        pnlFiltreraProjekt.setLayout(pnlFiltreraProjektLayout);
+        pnlFiltreraProjektLayout.setHorizontalGroup(
+            pnlFiltreraProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFiltreraProjektLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbStatusFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTillbaka)
-                .addGap(39, 39, 39))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        pnlFiltreraProjektLayout.setVerticalGroup(
+            pnlFiltreraProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFiltreraProjektLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlFiltreraProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbStatusFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(310, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addComponent(btnTillbaka)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlFiltreraProjektLayout.createSequentialGroup()
+                .addGroup(pnlFiltreraProjektLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnTillbaka)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -304,13 +313,12 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlNorth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addComponent(pnlFiltreraProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -320,17 +328,21 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
                 .addComponent(pnlNorth, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlFiltreraProjekt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Händelsehanterare för när användaren byter filter i rullsitan
+    //Gör en omladdning av tabellen med nya filteringen
     private void cbStatusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusFilterActionPerformed
         laddaTabell();
     }//GEN-LAST:event_cbStatusFilterActionPerformed
 
+    //Ständer statistikvyn och återgår till huvudmeny för projektchefer. 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         new MenyProjektChef(idDB, inloggadEpost).setVisible(true);
         this.dispose();
@@ -343,20 +355,20 @@ public class ProjektchefProjektStatistik extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> cbStatusFilter;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblAntalVarde;
+    private javax.swing.JLabel lblProjektStatistik;
     private javax.swing.JLabel lblSnittVarde;
     private javax.swing.JLabel lblSummaVarde;
+    private javax.swing.JPanel pnlAktivaProjekt;
+    private javax.swing.JPanel pnlFiltreraProjekt;
     private javax.swing.JPanel pnlNorth;
+    private javax.swing.JPanel pnlProjektbudget;
+    private javax.swing.JPanel pnlTotalInvestering;
     private javax.swing.JTable tblProjektLista;
     // End of variables declaration//GEN-END:variables
 }

@@ -100,8 +100,8 @@ public class MenyProjektChef extends javax.swing.JFrame {
         txtLosenord = new javax.swing.JPasswordField();
         lblNamn = new javax.swing.JLabel();
         btnSparaUppgifter = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lblRubrik = new javax.swing.JLabel();
+        btnPartnerHantering = new javax.swing.JButton();
         btnVisaMal = new javax.swing.JButton();
         btnVisaPersonal = new javax.swing.JButton();
         btnHanteraHandlaggare = new javax.swing.JButton();
@@ -218,12 +218,12 @@ public class MenyProjektChef extends javax.swing.JFrame {
                 .addComponent(btnSparaUppgifter))
         );
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel1.setText("SDG SWEDEN");
+        lblRubrik.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblRubrik.setForeground(new java.awt.Color(0, 153, 255));
+        lblRubrik.setText("SDG SWEDEN");
 
-        jButton1.setText("Partnerhantering");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnPartnerHantering.setText("Partnerhantering");
+        btnPartnerHantering.addActionListener(this::btnPartnerHanteringActionPerformed);
 
         btnVisaMal.setText("Hållbarhetsmålen");
         btnVisaMal.addActionListener(this::btnVisaMalActionPerformed);
@@ -252,18 +252,17 @@ public class MenyProjektChef extends javax.swing.JFrame {
                                 .addGap(20, 20, 20)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnVisaStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(btnHanteraHandlaggare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnVisaPersonal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnVisaMal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(btnHanteraHandlaggare, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnVisaPersonal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnVisaMal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnPartnerHantering, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGåTillAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbInloggadAnvandare))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRubrik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -284,14 +283,14 @@ public class MenyProjektChef extends javax.swing.JFrame {
                         .addComponent(lbInloggadAnvandare)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblRubrik, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGåTillAdmin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGåTillStatistik, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(btnPartnerHantering)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVisaMal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,11 +298,9 @@ public class MenyProjektChef extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnHanteraHandlaggare)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVisaStatistik)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(pnlMinProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)))
+                        .addComponent(btnVisaStatistik))
+                    .addComponent(pnlMinProfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(btnLoggaUt)
                 .addGap(10, 10, 10))
         );
@@ -340,7 +337,14 @@ statistikFonster.setVisible(true);
 
     //Hämtar värden från textfältet och uppdaterar med de nya uppgifterna
     private void btnSparaUppgifterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaUppgifterActionPerformed
-    // 1. Validera all indata
+String input = txtTelefon.getText();
+    
+    // Rensa bort allt som inte är siffror
+    String endastSiffror = input.replaceAll("\\D", "");
+    
+    // 3. Uppdatera rutan direkt så användaren (och valideringen) ser det rena numret
+    txtTelefon.setText(endastSiffror);
+//  Validera all indata
     if (Valideringsklass2.textfaltHarVarde(txtAdress, "adress") &&
         Valideringsklass2.textfaltHarVarde(txtEpost, "e-post") &&
         Valideringsklass2.arGiltigEpost(txtEpost) &&
@@ -348,13 +352,13 @@ statistikFonster.setVisible(true);
         Valideringsklass2.arHeltal(txtTelefon, "telefon")) 
     {
         try {
-            // Hämta värden och tvätta dem för SQL-säkerhet
+            // Hämta värden och tvätta dem för SQL
             String nyAdress = Valideringsklass2.escapeSql(txtAdress.getText().trim());
             String nyTele = Valideringsklass2.escapeSql(txtTelefon.getText().trim());
             String nyEpost = Valideringsklass2.escapeSql(txtEpost.getText().trim());
             String nyttLosen = Valideringsklass2.escapeSql(new String(txtLosenord.getPassword()));
 
-            // SQL fråga - Notera de extra citattecknen runt nyttLosen!
+            
             String sql = "UPDATE anstalld SET "
                     + "adress = '" + nyAdress + "', "
                     + "telefon = '" + nyTele + "', "
@@ -364,7 +368,7 @@ statistikFonster.setVisible(true);
 
             idb.update(sql);
             
-            // Uppdatera sessionen i programmet
+            // Uppdaterar sessionen i programmet
             inloggadEpost = nyEpost; 
             lbInloggadAnvandare.setText("Inloggad som: " + inloggadEpost);
             
@@ -378,14 +382,14 @@ statistikFonster.setVisible(true);
     }//GEN-LAST:event_btnSparaUppgifterActionPerformed
 
     //öppnar fönstret för partnerhantering
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnPartnerHanteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnerHanteringActionPerformed
 
         ProjektchefPartneradministration partnerFonster = new ProjektchefPartneradministration(idb, inloggadEpost);
         partnerFonster.setLocationRelativeTo(null);
         partnerFonster.setVisible(true);
         this.dispose();
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnPartnerHanteringActionPerformed
 // Öppnar fönstret fr Hållbarhetsmålen
     private void btnVisaMalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisaMalActionPerformed
 
@@ -462,12 +466,11 @@ statistikFonster.setVisible(true);
     private javax.swing.JButton btnGåTillStatistik;
     private javax.swing.JButton btnHanteraHandlaggare;
     private javax.swing.JButton btnLoggaUt;
+    private javax.swing.JButton btnPartnerHantering;
     private javax.swing.JButton btnSparaUppgifter;
     private javax.swing.JButton btnVisaMal;
     private javax.swing.JButton btnVisaPersonal;
     private javax.swing.JButton btnVisaStatistik;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbInloggadAnvandare;
@@ -476,6 +479,7 @@ statistikFonster.setVisible(true);
     private javax.swing.JLabel lblEpost;
     private javax.swing.JLabel lblLosenord;
     private javax.swing.JLabel lblNamn;
+    private javax.swing.JLabel lblRubrik;
     private javax.swing.JLabel lblTelefon;
     private javax.swing.JPanel pnlMinProfil;
     private javax.swing.JTextField txtAdress;
