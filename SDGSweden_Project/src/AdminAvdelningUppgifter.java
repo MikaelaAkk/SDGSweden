@@ -50,8 +50,8 @@ public class AdminAvdelningUppgifter extends javax.swing.JFrame {
 // Metod som sköter själva uppdateringen av databasen
 
     private void andraAvdelning() {
-        // VALIDERING: Vi kontrollerar fälten INNAN vi försöker spara
-        // Vi använder din metod 'ifylltTxtFalt' från Valideringsklass2
+        // Validering - kontrollerar fälten 
+        // 
 
         if (!Valideringsklass2.ifylltTxtFalt(txtNamn)) {
             JOptionPane.showMessageDialog(this, "Namn måste fyllas i!");
@@ -63,8 +63,8 @@ public class AdminAvdelningUppgifter extends javax.swing.JFrame {
             return;
         }
 
-        // Om du vill kontrollera att det är ett riktigt datum (om du har datumfält)
-        // använder du: if (!Valideringsklass2.arGiltigtDatum(txtDatum)) { return; }
+        
+        
         // 2. Om valideringen går bra, hämta data från textfälten
         String namn = txtNamn.getText();
         String beskrivning = txtBeskrivning.getText();
