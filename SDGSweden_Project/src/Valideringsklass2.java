@@ -23,7 +23,7 @@ import java.time.LocalDate;
  */
 public class Valideringsklass2 {
 
-    //Hanterar inloggningslogik
+    //Hanterar inloggningen
     public static void kontrolleraInlogg(InfDB idb, String ePost, String losen, JFrame inloggningsFonster, JLabel felLable) {
         try {
             String sqlFraga = "SELECT losenord FROM anstalld WHERE epost = '" + ePost + "'";
@@ -68,7 +68,7 @@ public class Valideringsklass2 {
         }
     }
 
-    // Din ifyllt-kontroll
+    //  Kontroll för att kolla ifyllt fält
     public static boolean ifylltTxtFalt(javax.swing.JTextField faltAttTesta){
         boolean resultat = true;
         if (faltAttTesta.getText().trim().isEmpty()){
