@@ -2,16 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-import oru.inf.InfDB; 
+import oru.inf.InfDB;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author lucya
  */
 public class AdminPartnerUppgifter extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPartnerUppgifter.class.getName());
     private InfDB idb;
+
     /**
      * Creates new form AdminPartnerUppgifter
      */
@@ -21,9 +23,9 @@ public class AdminPartnerUppgifter extends javax.swing.JFrame {
         initComponents();
         // Döljer ID-fältet och dess rubrik för användaren då pid inte ska ändras manuellt
         txtId.setVisible(false);
-jLabel2.setVisible(false); 
+        jLabel2.setVisible(false);
 // Fyller rullistan med partners direkt vid start
-fyllPartnerLista();
+        fyllPartnerLista();
     }
 
     /**
@@ -199,12 +201,12 @@ fyllPartnerLista();
     // Stänger fönstret och går tillbaka till administratörens huvudmeny
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-                                                                                             
-    // Stänger ner det nuvarande fönstret
-    this.dispose();
-    
-    // Öppnar klassen Administrator istället
-    new Administratör(idb, "Admin").setVisible(true);
+
+        // Stänger ner det nuvarande fönstret
+        this.dispose();
+
+        // Öppnar klassen Administrator istället
+        new Administratör(idb, "Admin").setVisible(true);
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
@@ -212,35 +214,35 @@ fyllPartnerLista();
     private void cmbPartnersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPartnersActionPerformed
         // TODO add your handling code here:
         try {
-    // // Hämtar namnet på den valda partnern
-    String valtNamn = cmbPartners.getSelectedItem().toString();
-    
-    // // Ställer en fråga till databasen för att hämta all info om den valda partnern
-    String fraga = "SELECT * FROM partner WHERE namn = '" + valtNamn + "'";
-    java.util.HashMap<String, String> rad = idb.fetchRow(fraga);
+            // // Hämtar namnet på den valda partnern
+            String valtNamn = cmbPartners.getSelectedItem().toString();
 
-    if (rad != null) {
-        // Fyller i alla fälten med data från databasen
-        txtId.setText(rad.get("pid"));
-        txtNamn.setText(rad.get("namn"));
-        txtKontaktperson.setText(rad.get("kontaktperson"));
-        txtEpost.setText(rad.get("kontaktepost"));
-        txtTelefon.setText(rad.get("telefon"));
-        txtAdress.setText(rad.get("adress"));
-        txtBransch.setText(rad.get("branch"));
-        txtStad.setText(rad.get("stad"));
-    }
-} catch (Exception e) {
-    // Tom catch för att undvika felmeddelanden när listan rensas/uppdateras
-}
+            // // Ställer en fråga till databasen för att hämta all info om den valda partnern
+            String fraga = "SELECT * FROM partner WHERE namn = '" + valtNamn + "'";
+            java.util.HashMap<String, String> rad = idb.fetchRow(fraga);
+
+            if (rad != null) {
+                // Fyller i alla fälten med data från databasen
+                txtId.setText(rad.get("pid"));
+                txtNamn.setText(rad.get("namn"));
+                txtKontaktperson.setText(rad.get("kontaktperson"));
+                txtEpost.setText(rad.get("kontaktepost"));
+                txtTelefon.setText(rad.get("telefon"));
+                txtAdress.setText(rad.get("adress"));
+                txtBransch.setText(rad.get("branch"));
+                txtStad.setText(rad.get("stad"));
+            }
+        } catch (Exception e) {
+            // Tom catch för att undvika felmeddelanden när listan rensas/uppdateras
+        }
     }//GEN-LAST:event_cmbPartnersActionPerformed
 
     // Metod som sparar ändringarna för partnern i databasen
     private void btnSparaPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSparaPartnerActionPerformed
         // TODO add your handling code here:
-                                                   
-    try {
-        // 1. Kontrollera att namn och e-post är ifyllda
+
+        try {
+            // 1. Kontrollera att namn och e-post är ifyllda
             if (!Valideringsklass2.ifylltTxtFalt(txtNamn) || !Valideringsklass2.ifylltTxtFalt(txtEpost)) {
                 JOptionPane.showMessageDialog(this, "Namn och E-post måste fyllas i!");
                 return; // Stoppar metoden
@@ -255,35 +257,35 @@ fyllPartnerLista();
             if (!Valideringsklass2.arHeltal(txtTelefon, "telefonnummer")) {
                 return; // Stoppar metoden
             }
-       // Hämtar ID (pid) för att veta vilken rad i tabellen som ska uppdateras
-        String id = txtId.getText();
-        
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Välj en partner i listan först.");
-            return;
+            // Hämtar ID (pid) för att veta vilken rad i tabellen som ska uppdateras
+            String id = txtId.getText();
+
+            if (id.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Välj en partner i listan först.");
+                return;
+            }
+
+            // Bygger SQL-frågan för att uppdatera alla kolumner i tabellen partner
+            String fraga = "UPDATE partner SET "
+                    + "namn = '" + txtNamn.getText() + "', "
+                    + "kontaktperson = '" + txtKontaktperson.getText() + "', "
+                    + "kontaktepost = '" + txtEpost.getText() + "', "
+                    + "telefon = '" + txtTelefon.getText() + "', "
+                    + "adress = '" + txtAdress.getText() + "', "
+                    + "branch = '" + txtBransch.getText() + "', " // Ändra till 'bransch' om det behövs
+                    + "stad = '" + txtStad.getText() + "' "
+                    + "WHERE pid = " + id;
+
+            // Kör uppdateringen och meddelar användaren
+            idb.update(fraga);
+            JOptionPane.showMessageDialog(this, "Partnerns uppgifter har sparats!");
+
+            // Uppdatera rullistan ifall namnet på partnern har ändrats
+            fyllPartnerLista();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Fel vid lagring: " + e.getMessage());
         }
-
-        // Bygger SQL-frågan för att uppdatera alla kolumner i tabellen partner
-        String fraga = "UPDATE partner SET "
-                + "namn = '" + txtNamn.getText() + "', "
-                + "kontaktperson = '" + txtKontaktperson.getText() + "', "
-                + "kontaktepost = '" + txtEpost.getText() + "', "
-                + "telefon = '" + txtTelefon.getText() + "', "
-                + "adress = '" + txtAdress.getText() + "', "
-                + "branch = '" + txtBransch.getText() + "', " // Ändra till 'bransch' om det behövs
-                + "stad = '" + txtStad.getText() + "' "
-                + "WHERE pid = " + id;
-
-        // Kör uppdateringen och meddelar användaren
-        idb.update(fraga);
-        JOptionPane.showMessageDialog(this, "Partnerns uppgifter har sparats!");
-        
-        // Uppdatera rullistan ifall namnet på partnern har ändrats
-        fyllPartnerLista();
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Fel vid lagring: " + e.getMessage());
-    }
 
     }//GEN-LAST:event_btnSparaPartnerActionPerformed
 
@@ -291,25 +293,25 @@ fyllPartnerLista();
      * @param args the command line arguments
      */
     //public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-      //  try {
-        //    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-          //      if ("Nimbus".equals(info.getName())) {
-            //        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-              //      break;
-                //}
-            //}
-        //} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-          //  logger.log(java.util.logging.Level.SEVERE, null, ex);
-        //}
-        //</editor-fold>
+     */
+    //  try {
+    //    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+    //      if ("Nimbus".equals(info.getName())) {
+    //        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    //      break;
+    //}
+    //}
+    //} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+    //  logger.log(java.util.logging.Level.SEVERE, null, ex);
+    //}
+    //</editor-fold>
 
-        /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(() -> new AdminPartnerUppgifter().setVisible(true));
+    /* Create and display the form */
+    //java.awt.EventQueue.invokeLater(() -> new AdminPartnerUppgifter().setVisible(true));
     //}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -336,37 +338,34 @@ fyllPartnerLista();
     // End of variables declaration//GEN-END:variables
 // Hjälpmetod för att hämta alla partnernamn från databasen till rullistan
     private void fyllPartnerLista() {
-    try {
-        // Rensar listan först så vi inte får dubbletter
-        cmbPartners.removeAllItems(); 
-        
-        // Hämtar alla namn från kolumnen 'namn' i tabellen 'partner'
-        String fraga = "SELECT namn FROM partner";
-        java.util.ArrayList<String> allaPartner = idb.fetchColumn(fraga);
+        try {
+            // Rensar listan först så vi inte får dubbletter
+            cmbPartners.removeAllItems();
 
-        // Om vi får svar från databasen läggs varje namn till som ett val i rullistan
-        if (allaPartner != null) {
-            for (String namn : allaPartner) {
-                cmbPartners.addItem(namn);
+            // Hämtar alla namn från kolumnen 'namn' i tabellen 'partner'
+            String fraga = "SELECT namn FROM partner";
+            java.util.ArrayList<String> allaPartner = idb.fetchColumn(fraga);
+
+            // Om vi får svar från databasen läggs varje namn till som ett val i rullistan
+            if (allaPartner != null) {
+                for (String namn : allaPartner) {
+                    cmbPartners.addItem(namn);
+                }
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Kunde inte ladda partners: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Kunde inte ladda partners: " + e.getMessage());
     }
-}
 
     // Metod för att snabbt rensa alla textfälten vid behov
     private void rensaFalt() {
-    txtId.setText("");
-    txtNamn.setText("");
-    txtKontaktperson.setText("");
-    txtEpost.setText("");
-    txtTelefon.setText("");
-    txtAdress.setText("");
-    txtBransch.setText("");
-    txtStad.setText("");
+        txtId.setText("");
+        txtNamn.setText("");
+        txtKontaktperson.setText("");
+        txtEpost.setText("");
+        txtTelefon.setText("");
+        txtAdress.setText("");
+        txtBransch.setText("");
+        txtStad.setText("");
+    }
 }
-}
-
-
-

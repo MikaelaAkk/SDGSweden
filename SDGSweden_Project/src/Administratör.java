@@ -5,31 +5,25 @@
 import oru.inf.InfDB;
 import oru.inf.InfException;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author lucya
  */
 public class Administratör extends javax.swing.JFrame {
-    
+
     // Variabler för att hålla databaskopplingen och inloggad användare
     private InfDB idb;
     private String ePost;
-    
-private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyAdministrator.class.getName());
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenyAdministrator.class.getName());
 
 // Konstruktor: Körs när fönstret skapas
-    public Administratör(InfDB idb, String ePost) { 
+    public Administratör(InfDB idb, String ePost) {
         this.idb = idb;
         this.ePost = ePost;
         initComponents(); // Skapar alla knappar och rutor från design-vyn
     }
-    
-    
-
-   
-    
-        
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,24 +118,23 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
 
     private void btnPartnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartnerActionPerformed
         // TODO add your handling code here:
-       // Öppnar fönstret för partnerhantering
+        // Öppnar fönstret för partnerhantering
         new AdminPartnerUppgifter(idb).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPartnerActionPerformed
 
     private void btnLoggaUtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoggaUtActionPerformed
         // TODO add your handling code here:
-                                                
-        
+
         // Vi skickar med 'idb' så att inloggningssidan har tillgång till databasen
         new Inlogg(idb).setVisible(true);
-        
+
         // Stänger ner det nuvarande administratörsfönstret
         this.dispose();
-        
+
         // Visar en liten bekräftelse
         JOptionPane.showMessageDialog(null, "Du har nu loggats ut.");
-    
+
     }//GEN-LAST:event_btnLoggaUtActionPerformed
 
     /**
@@ -170,7 +163,6 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
         //java.awt.EventQueue.invokeLater(() -> new Administratör(null).setVisible(true));
     }
 
-
 // Här deklareras alla knappar och rubriker som skapats i Design-vyn
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvdId;
@@ -181,4 +173,3 @@ private static final java.util.logging.Logger logger = java.util.logging.Logger.
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
-
