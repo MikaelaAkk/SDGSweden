@@ -63,9 +63,9 @@ public class HandlaggarePartner extends javax.swing.JFrame {
 
                     sb.append(namn).append("\t\t").append(epost).append("\n");
                 }
-                txtPartners.setText(sb.toString());
+                txtText.setText(sb.toString());
             } else {
-                txtPartners.setText("Inga samarbetspartners hittades för dina projekt.");
+                txtText.setText("Inga samarbetspartners hittades för dina projekt.");
             }
         } catch (Exception e) {
             // Detta visar det felmeddelande du såg på bilden
@@ -82,21 +82,21 @@ public class HandlaggarePartner extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lblPartner = new javax.swing.JLabel();
+        btntillbaka = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtPartners = new javax.swing.JTextArea();
+        txtText = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Mina samarbetspartners");
+        lblPartner.setText("Mina samarbetspartners");
 
-        jButton1.setText("Tillbaka");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btntillbaka.setText("Tillbaka");
+        btntillbaka.addActionListener(this::btntillbakaActionPerformed);
 
-        txtPartners.setColumns(20);
-        txtPartners.setRows(5);
-        jScrollPane1.setViewportView(txtPartners);
+        txtText.setColumns(20);
+        txtText.setRows(5);
+        jScrollPane1.setViewportView(txtText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,31 +105,31 @@ public class HandlaggarePartner extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(lblPartner)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btntillbaka))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(lblPartner)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btntillbaka)
                 .addGap(54, 54, 54))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 //kommer tillbaka till meny
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btntillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntillbakaActionPerformed
 
         new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btntillbakaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,9 +137,9 @@ public class HandlaggarePartner extends javax.swing.JFrame {
     // public static void main(String args[]) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btntillbaka;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtPartners;
+    private javax.swing.JLabel lblPartner;
+    private javax.swing.JTextArea txtText;
     // End of variables declaration//GEN-END:variables
 }

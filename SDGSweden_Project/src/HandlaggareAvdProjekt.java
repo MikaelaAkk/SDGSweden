@@ -108,22 +108,22 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblProjektAvd = new javax.swing.JLabel();
+        lblrojekt = new javax.swing.JLabel();
         cbStatus = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scpText = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         btnTillbaka = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblProjektAvd.setText("Projekt på min avdelning");
+        lblrojekt.setText("Projekt på min avdelning");
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Välj status", "Pågående", "Planerat", "Avslutat" }));
         cbStatus.addActionListener(this::cbStatusActionPerformed);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        scpText.setViewportView(jTextArea1);
 
         btnTillbaka.setText("Tillbaka till menyn");
         btnTillbaka.addActionListener(this::btnTillbakaActionPerformed);
@@ -136,20 +136,20 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnTillbaka)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scpText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProjektAvd))
+                    .addComponent(lblrojekt))
                 .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(lblProjektAvd)
+                .addComponent(lblrojekt)
                 .addGap(18, 18, 18)
                 .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scpText, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnTillbaka)
                 .addContainerGap(14, Short.MAX_VALUE))
@@ -173,8 +173,8 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTillbaka;
     private javax.swing.JComboBox<String> cbStatus;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel lblProjektAvd;
+    private javax.swing.JLabel lblrojekt;
+    private javax.swing.JScrollPane scpText;
     // End of variables declaration//GEN-END:variables
 }
