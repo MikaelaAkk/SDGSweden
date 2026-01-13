@@ -1,4 +1,5 @@
- /*
+
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -139,15 +140,9 @@ public class Inlogg extends javax.swing.JFrame {
         Valideringsklass2.kontrolleraInlogg(idb, ePost, losen, this, lblFelMeddelande);
     }//GEN-LAST:event_btnLoggaInActionPerformed
 
-
- 
-    
-         public void run() {
-         new Inlogg(idb).setVisible(true);
-            }
-
-        
-    
+    public void run() {
+        new Inlogg(idb).setVisible(true);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

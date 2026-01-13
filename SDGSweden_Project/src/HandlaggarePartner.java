@@ -7,17 +7,20 @@ import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author oliviacollin
  */
 /**
- * Klass för att visa samarbetspartners för de projekt som handläggaren deltar i.
+ * Klass för att visa samarbetspartners för de projekt som handläggaren deltar
+ * i.
  */
 public class HandlaggarePartner extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandlaggarePartner.class.getName());
 
     /**
@@ -30,44 +33,45 @@ public class HandlaggarePartner extends javax.swing.JFrame {
         hamtaMinaPartners();
     }
     // METOD: Hämtar partners genom att koppla ihop fyra olika tabeller
-private void hamtaMinaPartners() {
-    try {
-        // Uppdaterad SQL-fråga baserat på ditt skript:
-        // Partner-ID i 'partner' heter pid.
-        // Partner-ID i 'projekt_partner' heter partner_pid.
-        // Projekt-ID i 'projekt_partner' heter pid.
-        String fraga = "SELECT partner.namn, partner.kontaktepost, partner.telefon FROM partner " +
-                       "JOIN projekt_partner ON partner.pid = projekt_partner.partner_pid " +
-                       "JOIN ans_proj ON projekt_partner.pid = ans_proj.pid " +
-                       "JOIN anstalld ON ans_proj.aid = anstalld.aid " +
-                       "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
 
-        // Debug: Skriver ut frågan i Output så du kan kontrollera den
-        System.out.println("Kör SQL: " + fraga);
+    private void hamtaMinaPartners() {
+        try {
+            // Uppdaterad SQL-fråga baserat på ditt skript:
+            // Partner-ID i 'partner' heter pid.
+            // Partner-ID i 'projekt_partner' heter partner_pid.
+            // Projekt-ID i 'projekt_partner' heter pid.
+            String fraga = "SELECT partner.namn, partner.kontaktepost, partner.telefon FROM partner "
+                    + "JOIN projekt_partner ON partner.pid = projekt_partner.partner_pid "
+                    + "JOIN ans_proj ON projekt_partner.pid = ans_proj.pid "
+                    + "JOIN anstalld ON ans_proj.aid = anstalld.aid "
+                    + "WHERE anstalld.epost = '" + inloggadAnvandare + "'";
 
-        ArrayList<HashMap<String, String>> resultat = idb.fetchRows(fraga);
+            // Debug: Skriver ut frågan i Output så du kan kontrollera den
+            System.out.println("Kör SQL: " + fraga);
+
+            ArrayList<HashMap<String, String>> resultat = idb.fetchRows(fraga);
 // Skapar en StringBuilder för att snyggt bygga upp texten som ska visas
-        StringBuilder sb = new StringBuilder();
-        sb.append("Partnernamn\t\tE-post\n");
-        sb.append("------------------------------------------------------------\n");
+            StringBuilder sb = new StringBuilder();
+            sb.append("Partnernamn\t\tE-post\n");
+            sb.append("------------------------------------------------------------\n");
 // Kontrollerar om vi fick några träffar
-        if (resultat != null && !resultat.isEmpty()) {
-            for (HashMap<String, String> rad : resultat) {
-                // Hämta värdena med exakt samma namn som i SELECT-frågan
-                String namn = rad.get("namn");
-                String epost = rad.get("kontaktepost");
-                
-                sb.append(namn).append("\t\t").append(epost).append("\n");
+            if (resultat != null && !resultat.isEmpty()) {
+                for (HashMap<String, String> rad : resultat) {
+                    // Hämta värdena med exakt samma namn som i SELECT-frågan
+                    String namn = rad.get("namn");
+                    String epost = rad.get("kontaktepost");
+
+                    sb.append(namn).append("\t\t").append(epost).append("\n");
+                }
+                txtPartners.setText(sb.toString());
+            } else {
+                txtPartners.setText("Inga samarbetspartners hittades för dina projekt.");
             }
-            txtPartners.setText(sb.toString());
-        } else {
-            txtPartners.setText("Inga samarbetspartners hittades för dina projekt.");
+        } catch (Exception e) {
+            // Detta visar det felmeddelande du såg på bilden
+            JOptionPane.showMessageDialog(this, "Fel vid hämtning av partners: " + e.getMessage());
         }
-    } catch (Exception e) {
-        // Detta visar det felmeddelande du såg på bilden
-        JOptionPane.showMessageDialog(this, "Fel vid hämtning av partners: " + e.getMessage());
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,16 +126,15 @@ private void hamtaMinaPartners() {
     }// </editor-fold>//GEN-END:initComponents
 //kommer tillbaka till meny
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-    new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-    this.dispose();
+
+        new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   // public static void main(String args[]) {
-    
+    // public static void main(String args[]) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

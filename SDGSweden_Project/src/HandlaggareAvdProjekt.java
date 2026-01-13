@@ -12,10 +12,11 @@ import javax.swing.JOptionPane;
  * @author oliviacollin
  */
 public class HandlaggareAvdProjekt extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandlaggareAvdProjekt.class.getName());
     private InfDB idb;
     private String inloggadAnvandare;
+
     /**
      * Creates new form HandlaggareAvdProjekt
      */
@@ -24,77 +25,80 @@ public class HandlaggareAvdProjekt extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
-     
-private void uppdateraProjektLista() {
-    try {
-        // 1. Kontrollera inloggad användare
-        if (inloggadAnvandare == null || inloggadAnvandare.isEmpty()) {
-            return;
-        }
 
-        // 2. Hämta avdelnings-ID för den inloggade
-        String avdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
-        String avdelningId = idb.fetchSingle(avdFraga);
-        
-        if (avdelningId == null) {
-            jTextArea1.setText("Kunde inte hitta din avdelning.");
-            return;
-        }
-
-        // 3. Hämta alla anställda (aid) på den avdelningen
-        String anstalldaFraga = "SELECT aid FROM anstalld WHERE avdelning = '" + avdelningId + "'";
-        ArrayList<String> allaAid = idb.fetchColumn(anstalldaFraga);
-
-        if (allaAid == null || allaAid.isEmpty()) {
-            jTextArea1.setText("Inga anställda hittades på din avdelning.");
-            return;
-        }
-
-        // 4. Formatera ID-listan med fnuttar: ('3','31','32'...)
-        ArrayList<String> formateradeAid = new ArrayList<>();
-        for (String aid : allaAid) {
-            if (aid != null) {
-                formateradeAid.add("'" + aid.trim() + "'");
+    private void uppdateraProjektLista() {
+        try {
+            // 1. Kontrollera inloggad användare
+            if (inloggadAnvandare == null || inloggadAnvandare.isEmpty()) {
+                return;
             }
-        }
-        String aidLista = String.join(",", formateradeAid);
 
-        // 5. Hämta vald status och hantera Å-problemet
-        if (cbStatus.getSelectedItem() == null) return;
-        String valdStatus = cbStatus.getSelectedItem().toString();
-        if (valdStatus.equals("Välj status")) {
+            // 2. Hämta avdelnings-ID för den inloggade
+            String avdFraga = "SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'";
+            String avdelningId = idb.fetchSingle(avdFraga);
+
+            if (avdelningId == null) {
+                jTextArea1.setText("Kunde inte hitta din avdelning.");
+                return;
+            }
+
+            // 3. Hämta alla anställda (aid) på den avdelningen
+            String anstalldaFraga = "SELECT aid FROM anstalld WHERE avdelning = '" + avdelningId + "'";
+            ArrayList<String> allaAid = idb.fetchColumn(anstalldaFraga);
+
+            if (allaAid == null || allaAid.isEmpty()) {
+                jTextArea1.setText("Inga anställda hittades på din avdelning.");
+                return;
+            }
+
+            // 4. Formatera ID-listan med fnuttar: ('3','31','32'...)
+            ArrayList<String> formateradeAid = new ArrayList<>();
+            for (String aid : allaAid) {
+                if (aid != null) {
+                    formateradeAid.add("'" + aid.trim() + "'");
+                }
+            }
+            String aidLista = String.join(",", formateradeAid);
+
+            // 5. Hämta vald status och hantera Å-problemet
+            if (cbStatus.getSelectedItem() == null) {
+                return;
+            }
+            String valdStatus = cbStatus.getSelectedItem().toString();
+            if (valdStatus.equals("Välj status")) {
+                jTextArea1.setText("");
+                return;
+            }
+
+            String statusFilter = valdStatus;
+            if (valdStatus.equalsIgnoreCase("Pågående")) {
+                statusFilter = "P%g%ende";
+            }
+
+            // 6. Slutgiltig SQL - Nu med 'projektchef'
+            String fraga = "SELECT projektnamn FROM projekt "
+                    + "WHERE status LIKE '" + statusFilter + "' "
+                    + "AND projektchef IN (" + aidLista + ")";
+
+            System.out.println("DEBUG - Kör SQL: " + fraga);
+            ArrayList<String> projekt = idb.fetchColumn(fraga);
+
+            // 7. Visa resultatet
             jTextArea1.setText("");
-            return;
-        }
-
-        String statusFilter = valdStatus;
-        if (valdStatus.equalsIgnoreCase("Pågående")) {
-            statusFilter = "P%g%ende";
-        }
-
-        // 6. Slutgiltig SQL - Nu med 'projektchef'
-        String fraga = "SELECT projektnamn FROM projekt " +
-                       "WHERE status LIKE '" + statusFilter + "' " +
-                       "AND projektchef IN (" + aidLista + ")";
-
-        System.out.println("DEBUG - Kör SQL: " + fraga);
-        ArrayList<String> projekt = idb.fetchColumn(fraga);
-
-        // 7. Visa resultatet
-        jTextArea1.setText(""); 
-        if (projekt != null && !projekt.isEmpty()) {
-            for (String namn : projekt) {
-                jTextArea1.append(namn + "\n");
+            if (projekt != null && !projekt.isEmpty()) {
+                for (String namn : projekt) {
+                    jTextArea1.append(namn + "\n");
+                }
+            } else {
+                jTextArea1.setText("Inga projekt hittades för " + valdStatus + " på din avdelning.");
             }
-        } else {
-            jTextArea1.setText("Inga projekt hittades för " + valdStatus + " på din avdelning.");
-        }
 
-    } catch (Exception e) {
-        System.out.println("FEL: " + e.getMessage());
-        JOptionPane.showMessageDialog(this, "Ett fel uppstod: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("FEL: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Ett fel uppstod: " + e.getMessage());
+        }
     }
-}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -155,16 +159,15 @@ private void uppdateraProjektLista() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
-      uppdateraProjektLista();
+        uppdateraProjektLista();
 
     }//GEN-LAST:event_cbStatusActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-    new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-    this.dispose(); // Stänger ner detta fönster
+        new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+        this.dispose(); // Stänger ner detta fönster
     }//GEN-LAST:event_btnTillbakaActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

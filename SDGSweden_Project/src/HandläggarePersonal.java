@@ -13,7 +13,7 @@ public class HandläggarePersonal extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HandläggarePersonal.class.getName());
 
     /**
-     * Öppnar en lista med personal på min avdelning direkt i konstruktorn. 
+     * Öppnar en lista med personal på min avdelning direkt i konstruktorn.
      */
     public HandläggarePersonal(InfDB idb, String inloggadAnvandare) {
         this.idb = idb;
@@ -21,9 +21,10 @@ public class HandläggarePersonal extends javax.swing.JFrame {
         initComponents();
         listaPersonalPaMinAvd();
     }
-/** 
- * Metoden som skapar listan, anropas sedan i konstruktorn ovan.
- */
+
+    /**
+     * Metoden som skapar listan, anropas sedan i konstruktorn ovan.
+     */
     public void listaPersonalPaMinAvd() {
         try {
             String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");

@@ -3,11 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import oru.inf.InfDB;
-import oru.inf.InfException; 
+import oru.inf.InfException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SokHandlaggare extends javax.swing.JFrame {
+
     private InfDB idb;
     private String inloggadAnvandare;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SokHandlaggare.class.getName());
@@ -20,46 +21,47 @@ public class SokHandlaggare extends javax.swing.JFrame {
         this.inloggadAnvandare = inloggadAnvandare;
         initComponents();
     }
-    
-    /**
-     * metod för att söka på handläggare. Vi använder en hashmap
-     * för att hämta listan med både nyckeln och värdet från en handläggare. 
-     * Vi använder även arraylist för att vi behöver ha en lista med denna samling 
-     * av nycklar och värden. 
-     */
-    
-public void sokHandlaggare(){
-    String sokInfo = sokRuta.getText();
-    try {
-        String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
-    String sql = "SELECT fornamn, efternamn, epost, telefon FROM anstalld " + "WHERE avdelning = " + avdId + " " + 
-            "AND (fornamn LIKE '%" + sokInfo + "%' OR epost LIKE '%" + sokInfo + "%')";
-    ArrayList<HashMap<String, String>>infoResultat = idb.fetchRows(sql);
-    visaInfo(infoResultat);
-    }catch (InfException ex){
-        System.out.println("Söknings Fel: " + ex.getMessage());
-    }
-}
 
-/**
- * även här använder vi både en arraylist och en hashmap då vi hämtar infon om handläggaren 
- * på samma sätt som vi söker på den.
- * @param handlaggarInfo 
- */
-public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
-    info.setText("");
-    if(handlaggarInfo == null || handlaggarInfo.isEmpty()){
-       info.append("Det finns inga handläggare på din avdelning som matchar din sökning");
-        return; 
-    } 
-       
-    for(HashMap<String, String> rader : handlaggarInfo){
-        info.append("Namn: " + rader.get("fornamn") + "\n");
-        info.append("Efternamn: " + rader.get("efternamn") + "\n");
-        info.append("E-post: " + rader.get("epost") + "\n");
-        info.append("Telefonnummer: " + rader.get("telefon")+ "\n");
-}
-}
+    /**
+     * metod för att söka på handläggare. Vi använder en hashmap för att hämta
+     * listan med både nyckeln och värdet från en handläggare. Vi använder även
+     * arraylist för att vi behöver ha en lista med denna samling av nycklar och
+     * värden.
+     */
+    public void sokHandlaggare() {
+        String sokInfo = sokRuta.getText();
+        try {
+            String avdId = idb.fetchSingle("SELECT avdelning FROM anstalld WHERE epost = '" + inloggadAnvandare + "'");
+            String sql = "SELECT fornamn, efternamn, epost, telefon FROM anstalld " + "WHERE avdelning = " + avdId + " "
+                    + "AND (fornamn LIKE '%" + sokInfo + "%' OR epost LIKE '%" + sokInfo + "%')";
+            ArrayList<HashMap<String, String>> infoResultat = idb.fetchRows(sql);
+            visaInfo(infoResultat);
+        } catch (InfException ex) {
+            System.out.println("Söknings Fel: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * även här använder vi både en arraylist och en hashmap då vi hämtar infon
+     * om handläggaren på samma sätt som vi söker på den.
+     *
+     * @param handlaggarInfo
+     */
+    public void visaInfo(ArrayList<HashMap<String, String>> handlaggarInfo) {
+        info.setText("");
+        if (handlaggarInfo == null || handlaggarInfo.isEmpty()) {
+            info.append("Det finns inga handläggare på din avdelning som matchar din sökning");
+            return;
+        }
+
+        for (HashMap<String, String> rader : handlaggarInfo) {
+            info.append("Namn: " + rader.get("fornamn") + "\n");
+            info.append("Efternamn: " + rader.get("efternamn") + "\n");
+            info.append("E-post: " + rader.get("epost") + "\n");
+            info.append("Telefonnummer: " + rader.get("telefon") + "\n");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,26 +137,28 @@ public void visaInfo(ArrayList<HashMap<String, String>>handlaggarInfo){
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/** 
- * knappen som utför sökningen. här anropar vi även ifylltTxtFalt från valideringsklassen
- * för att säkerställa att textfältet är ifyllt när vi söker. Annars visas ett felmeddelande.
- * @param evt 
- */
+/**
+     * knappen som utför sökningen. här anropar vi även ifylltTxtFalt från
+     * valideringsklassen för att säkerställa att textfältet är ifyllt när vi
+     * söker. Annars visas ett felmeddelande.
+     *
+     * @param evt
+     */
     private void sokKnappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sokKnappActionPerformed
-     if (Valideringsklass2.ifylltTxtFalt(sokRuta)){
-         sokHandlaggare();
-     }
-     else { 
-         info.setText("Vänligen fyll i namn eller epost på den handläggare du söker efter. ");
-     }
+        if (Valideringsklass2.ifylltTxtFalt(sokRuta)) {
+            sokHandlaggare();
+        } else {
+            info.setText("Vänligen fyll i namn eller epost på den handläggare du söker efter. ");
+        }
     }//GEN-LAST:event_sokKnappActionPerformed
-/** 
- * knapp för att komma tillbaka till menyn. 
- * @param evt 
- */
+    /**
+     * knapp för att komma tillbaka till menyn.
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
-      this.setVisible(false);
+        new MenyHandläggare(idb, inloggadAnvandare).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
