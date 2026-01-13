@@ -83,6 +83,7 @@ public class MenyProjektChef extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jMenu1 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         lbRubtik = new javax.swing.JLabel();
         lbInloggadAnvandare = new javax.swing.JLabel();
@@ -106,6 +107,8 @@ public class MenyProjektChef extends javax.swing.JFrame {
         btnVisaPersonal = new javax.swing.JButton();
         btnHanteraHandlaggare = new javax.swing.JButton();
         btnVisaStatistik = new javax.swing.JButton();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Projektstatistik");
@@ -471,6 +474,7 @@ statistikFonster.setVisible(true);
     private javax.swing.JButton btnVisaMal;
     private javax.swing.JButton btnVisaPersonal;
     private javax.swing.JButton btnVisaStatistik;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbInloggadAnvandare;
