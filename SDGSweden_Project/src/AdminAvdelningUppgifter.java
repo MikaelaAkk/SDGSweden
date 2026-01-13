@@ -6,90 +6,93 @@ import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 /**
  *
  * @author lucya
  */
 
 public class AdminAvdelningUppgifter extends javax.swing.JFrame {
+
     private InfDB idb;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminAvdelningUppgifter.class.getName());
 
     /**
      * Creates new form AdminAvdelningUppgifter
      */
- // Konstruktor: Tar emot databasobjektet och sätter igång fönstret
-    public AdminAvdelningUppgifter(InfDB idb) { 
+    // Konstruktor: Tar emot databasobjektet och sätter igång fönstret
+    public AdminAvdelningUppgifter(InfDB idb) {
         this.idb = idb;
         initComponents();
         fyllComboBox();
- }
+    }
 // Metod som hämtar alla avdelningsnamn och lägger dem i rullistan
-private void fyllComboBox() {
-    try {
-        // Rensa listan först så vi inte får dubbletter om metoden anropas igen
-        cbAvdelningar.removeAllItems();
-        
-        // SQL-fråga för att hämta namnen från tabellen avdelning
-        String fraga = "SELECT namn FROM avdelning";
-        ArrayList<String> allaAvdelningar = idb.fetchColumn(fraga);
 
-        // Loopar igenom resultatet och lägger till varje namn i ComboBoxen
-        if (allaAvdelningar != null) {
-            for (String namn : allaAvdelningar) {
-                cbAvdelningar.addItem(namn);
+    private void fyllComboBox() {
+        try {
+            // Rensa listan först så vi inte får dubbletter om metoden anropas igen
+            cbAvdelningar.removeAllItems();
+
+            // SQL-fråga för att hämta namnen från tabellen avdelning
+            String fraga = "SELECT namn FROM avdelning";
+            ArrayList<String> allaAvdelningar = idb.fetchColumn(fraga);
+
+            // Loopar igenom resultatet och lägger till varje namn i ComboBoxen
+            if (allaAvdelningar != null) {
+                for (String namn : allaAvdelningar) {
+                    cbAvdelningar.addItem(namn);
+                }
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Kunde inte ladda avdelningar: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Kunde inte ladda avdelningar: " + e.getMessage());
     }
-}
 // Metod som sköter själva uppdateringen av databasen
-private void andraAvdelning() {
-    // VALIDERING: Vi kontrollerar fälten INNAN vi försöker spara
-    // Vi använder din metod 'ifylltTxtFalt' från Valideringsklass2
-    
-    if (!Valideringsklass2.ifylltTxtFalt(txtNamn)) {
-        JOptionPane.showMessageDialog(this, "Namn måste fyllas i!");
-        return; // Avbryter metoden om fältet är tomt
+
+    private void andraAvdelning() {
+        // VALIDERING: Vi kontrollerar fälten INNAN vi försöker spara
+        // Vi använder din metod 'ifylltTxtFalt' från Valideringsklass2
+
+        if (!Valideringsklass2.ifylltTxtFalt(txtNamn)) {
+            JOptionPane.showMessageDialog(this, "Namn måste fyllas i!");
+            return; // Avbryter metoden om fältet är tomt
+        }
+
+        if (!Valideringsklass2.ifylltTxtFalt(txtEpost)) {
+            JOptionPane.showMessageDialog(this, "E-post måste fyllas i!");
+            return;
+        }
+
+        // Om du vill kontrollera att det är ett riktigt datum (om du har datumfält)
+        // använder du: if (!Valideringsklass2.arGiltigtDatum(txtDatum)) { return; }
+        // 2. Om valideringen går bra, hämta data från textfälten
+        String namn = txtNamn.getText();
+        String beskrivning = txtBeskrivning.getText();
+        String adress = txtAdress.getText();
+        String epost = txtEpost.getText();
+        String telefon = txtTelefon.getText();
+        String stad = txtStad.getText();
+        String chef = txtChef.getText();
+
+        try {
+            // 3. Skicka uppdateringen till databasen
+            String fraga = "UPDATE avdelning SET "
+                    + "beskrivning = '" + beskrivning + "', "
+                    + "adress = '" + adress + "', "
+                    + "epost = '" + epost + "', "
+                    + "telefon = '" + telefon + "', "
+                    + "stad = '" + stad + "', "
+                    + "chef = '" + chef + "' "
+                    + "WHERE namn = '" + namn + "'";
+
+            idb.update(fraga);
+            JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
+
+        } catch (Exception ettUndantag) {
+            JOptionPane.showMessageDialog(this, "Något gick fel vid lagring: " + ettUndantag.getMessage());
+        }
     }
-    
-    if (!Valideringsklass2.ifylltTxtFalt(txtEpost)) {
-        JOptionPane.showMessageDialog(this, "E-post måste fyllas i!");
-        return;
-    }
 
-    // Om du vill kontrollera att det är ett riktigt datum (om du har datumfält)
-    // använder du: if (!Valideringsklass2.arGiltigtDatum(txtDatum)) { return; }
-
-    // 2. Om valideringen går bra, hämta data från textfälten
-    String namn = txtNamn.getText();
-    String beskrivning = txtBeskrivning.getText();
-    String adress = txtAdress.getText();
-    String epost = txtEpost.getText();
-    String telefon = txtTelefon.getText();
-    String stad = txtStad.getText();
-    String chef = txtChef.getText();
-
-    try {
-        // 3. Skicka uppdateringen till databasen
-        String fraga = "UPDATE avdelning SET "
-                + "beskrivning = '" + beskrivning + "', "
-                + "adress = '" + adress + "', "
-                + "epost = '" + epost + "', "
-                + "telefon = '" + telefon + "', "
-                + "stad = '" + stad + "', "
-                + "chef = '" + chef + "' "
-                + "WHERE namn = '" + namn + "'";
-
-        idb.update(fraga);
-        JOptionPane.showMessageDialog(this, "Uppgifterna har sparats!");
-
-    } catch (Exception ettUndantag) {
-        JOptionPane.showMessageDialog(this, "Något gick fel vid lagring: " + ettUndantag.getMessage());
-    }
-}
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -267,65 +270,65 @@ private void andraAvdelning() {
 
     private void cbAvdelningarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAvdelningarActionPerformed
         // TODO add your handling code here:
-    try {
-        String valtNamn = cbAvdelningar.getSelectedItem().toString();
-        String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
-        
-        HashMap<String, String> rad = idb.fetchRow(fraga);
-        
-        if (rad != null) {
-            // Här sätter vi texten i fälten baserat på databasens kolumnnamn
-            txtNamn.setText(rad.get("namn"));
-            txtBeskrivning.setText(rad.get("beskrivning"));
-            txtAdress.setText(rad.get("adress"));
-            txtEpost.setText(rad.get("epost"));
-            txtTelefon.setText(rad.get("telefon"));
-            txtStad.setText(rad.get("stad"));
-            txtChef.setText(rad.get("chef"));
+        try {
+            String valtNamn = cbAvdelningar.getSelectedItem().toString();
+            String fraga = "SELECT * FROM avdelning WHERE namn = '" + valtNamn + "'";
+
+            HashMap<String, String> rad = idb.fetchRow(fraga);
+
+            if (rad != null) {
+                // Här sätter vi texten i fälten baserat på databasens kolumnnamn
+                txtNamn.setText(rad.get("namn"));
+                txtBeskrivning.setText(rad.get("beskrivning"));
+                txtAdress.setText(rad.get("adress"));
+                txtEpost.setText(rad.get("epost"));
+                txtTelefon.setText(rad.get("telefon"));
+                txtStad.setText(rad.get("stad"));
+                txtChef.setText(rad.get("chef"));
+            }
+        } catch (Exception e) {
+            // Vi loggar tyst eller visar ett meddelande om något går fel
+            System.out.println("Hämtningsfel: " + e.getMessage());
         }
-    } catch (Exception e) {
-        // Vi loggar tyst eller visar ett meddelande om något går fel
-        System.out.println("Hämtningsfel: " + e.getMessage());
-    }
 
     }//GEN-LAST:event_cbAvdelningarActionPerformed
 
     private void btnTillbakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTillbakaActionPerformed
         // TODO add your handling code here:
-                                                    
-    //  Stäng ner det nuvarande fönstret
-    this.dispose();
-    
-    // 2Öppna administratörens meny och skicka med databasobjektet (idb)
-    // Vi skickar även med en tom sträng eller "Admin" om din huvudmeny kräver ett namn
-    new Administratör(idb, "Admin").setVisible(true); 
+
+        //  Stäng ner det nuvarande fönstret
+        this.dispose();
+
+        // 2Öppna administratörens meny och skicka med databasobjektet (idb)
+        // Vi skickar även med en tom sträng eller "Admin" om din huvudmeny kräver ett namn
+        new Administratör(idb, "Admin").setVisible(true);
 
     }//GEN-LAST:event_btnTillbakaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   /**public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /**
+     * public static void main(String args[]) { /* Set the Nimbus look and feel
+     */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        //try {
-          // for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            //    if ("Nimbus".equals(info.getName())) {
-              //      javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                //    break;
-               // }
-            //}
-        //} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-          //  logger.log(java.util.logging.Level.SEVERE, null, ex);
-        //}
-        //</editor-fold>
+     */
+    //try {
+    // for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+    //    if ("Nimbus".equals(info.getName())) {
+    //      javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    //    break;
+    // }
+    //}
+    //} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+    //  logger.log(java.util.logging.Level.SEVERE, null, ex);
+    //}
+    //</editor-fold>
 
-        /* Create and display the form */
-       //java.awt.EventQueue.invokeLater(() -> new AdminAvdelningUppgifter().setVisible(true));
-    
+    /* Create and display the form */
+    //java.awt.EventQueue.invokeLater(() -> new AdminAvdelningUppgifter().setVisible(true));
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSparaAvdelning;
