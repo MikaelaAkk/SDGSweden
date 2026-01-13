@@ -11,21 +11,21 @@ import oru.inf.InfException;
  * @author Mikaela ak, Olivia Collin, Lucy Alp, Elin Jugås
  */
 public class Main {
-    
+
     private static InfDB idb;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        try{
+
+        try {
             idb = new InfDB("sdgsweden", "3306", "dbAdmin2024", "dbAdmin2024PW");
             new Inlogg(idb).setVisible(true);
-        } catch (InfException ex){
+        } catch (InfException ex) {
             System.out.println(ex.getMessage());
-        
+
         }
     }
-    
+
 }
